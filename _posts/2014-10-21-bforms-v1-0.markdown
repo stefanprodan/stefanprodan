@@ -1,0 +1,23 @@
+---
+title:  "BForms v1.0"
+description: "First release of BForms UI Framework for ASP.NET MVC"
+date:   2014-11-01 12:00:00
+categories: [Open Source]
+tags: [BForms]
+---
+
+First release after two year of hard work and fun.
+
+### .NET Integration
+
+The BForms framework integrates Bootstrap CSS grid system and various UI controls with ASP.NET MVC using model behavior throw attributes in combination with Razor HTML extension methods and custom model validator providers.
+
+### JavaScript
+
+Our JavaScript framework consists of AMD compatible modules that make client-side development easy, from HTML5 inputs to date time range, grid and others. Besides our controls, BForms comes with out of the box JavaScript components like Select2 and Typeahead.
+
+### NuGet
+
+BForms for ASP.NET MVC comes as a NuGet package named [BForms.MVC](http://www.nuget.org/packages/BForms.MVC/). Beside the assembly, the package contains all the JavaScript modules as single files and as minified bundles as long with sass and css files. To make server-side debugging easy, we've set-up a symbol source package hosted on SymbolSource.
+
+Documentation and examples website [bforms.veritech.io](http://bforms.veritech.io/).
