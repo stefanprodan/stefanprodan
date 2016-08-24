@@ -2,7 +2,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
+  <meta http-equiv="Content-Language" content="en">
   <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
   <meta name="author" content="{{ site.author.name }}">
@@ -12,21 +12,17 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:site" content="@{{ site.author.twitter_username }}">
-  <meta name="twitter:creator" content="@{{ site.author.twitter_username }}">
-  <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
-  <meta name="twitter:description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-  <meta name="twitter:image" content="{{ site.url }}/images/profile.jpg">
-
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
-  <meta property="og:description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-  <meta name="og:image" content="{{ site.url }}/images/profile.jpg">
-  
   <meta name="google-site-verification" content="TUU6CiyDueNTh7iqqurWUZhpddbj1P5tVOrTChtI0Mk" />
-  
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@{{ site.author.twitter_username }}" />
+  <meta name="twitter:creator" content="@{{ site.author.twitter_username }}" />
+  <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" />
+  <meta name="twitter:description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}" />
+  <meta name="twitter:image" content="{{ site.url }}/images/card.jpg" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" />
+  <meta property="og:description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}" />
+  <meta name="og:image" content="{{ site.url }}/images/card.jpg" /> 
   <link rel="apple-touch-icon" sizes="57x57" href="{{ "images/favicons/apple-icon-57x57.png" | prepend: site.baseurl }}">
   <link rel="apple-touch-icon" sizes="60x60" href="{{ "images/favicons/apple-icon-60x60.png" | prepend: site.baseurl }}">
   <link rel="apple-touch-icon" sizes="72x72" href="{{ "images/favicons/apple-icon-72x72.png" | prepend: site.baseurl }}">
@@ -46,7 +42,6 @@
   <meta name="msapplication-TileColor" content="#ffc40d">
   <meta name="msapplication-TileImage" content="{{ "images/favicons/ms-icon-144x144.png" | prepend: site.baseurl }}">
   <meta name="theme-color" content="#ffffff">
-
   <link rel="stylesheet" href="{{ "css/main.css" | prepend: site.baseurl }}">
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.baseurl }}feed.xml">
