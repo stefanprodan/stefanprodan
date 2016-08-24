@@ -6,7 +6,7 @@ description: 'Co-Founder of Veritech Solutions. Passionate about software archit
 url: 'https://stefanprodan.com'
 baseurl: '/'
 google_analytics: 'UA-21524511-1'
-# disqus_shortname: 'your-disqus-name'
+disqus_shortname: 'stefanprodan'
 
 author:
   name: 'Stefan Prodan'
