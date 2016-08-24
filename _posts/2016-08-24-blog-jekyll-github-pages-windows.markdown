@@ -10,7 +10,7 @@ Jekyll is one of the best static site generator out there. Along with GitHub pag
 
 Jekyll and GitHub pages have lots of advantages over a classic CMS solution like Wordpress. Your blog being a complete static website it's lightning fast and you don't have to deal with security updates, database optimizations, caching plugins and so on. 
 
-All you need to do, to publish a new blog post, is to create a Markdown file and commit it to your free GitHub repo. Say goodbye to WYSIWYG editors, you can write and preview your blog post with Visual Studio Code or any other Markdown editors.
+All you need to do, to publish a new blog post, is to create a Markdown file and commit it to your free GitHub repo. Say goodbye to WYSIWYG editors, you can write and preview your blog post with Visual Studio Code or any other Markdown editors. If you like traditional CMS-style UI you can use [Jekyll admin plugin](https://jekyll.github.io/jekyll-admin/) to author content and administer Jekyll sites. 
 
 Jekyll is not officially-supported on Windows but recently one of the main components of `github-pages` gem has been improved and runs smoothly on Windows 10.
 
@@ -99,7 +99,7 @@ Commit the file to master branch and then you will be able to access your blog u
 As a final step, you could setup a free SSL certificate for your domain. Go to ***Crypto*** page on CloudFlare and select  ***Flexible*** from the SSL options. After your certificate has been issued you can force your domain to always redirect to the HTTPS version. Go to ***Page Rules*** page on CloudFlare and create a new rule. In the ***URL matches*** field add this pattern `http://*your_blog.com/*` and from the rules drop-down select ***Always Use HTTPS***.
 
 That's it, you now have a blazing fast blog on HTTPS with HTTP/2 support, backed up by a global CDN without any costs. Not many hosting companies can offer that and definitely not for free.
-
+ 
 
  
  
