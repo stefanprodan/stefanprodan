@@ -3,7 +3,6 @@
   <meta name="viewport" content="width=device-width initial-scale=1" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta http-equiv="Content-Language" content="en">
-  <meta name="Content-Type" content="text/html; charset=UTF-8">
   <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
   <meta name="keywords" content="veritech,programming,aspnet,aspnetcore,webapi,devops,docker,swarm,powershell,dotnet,javascript,golang">
@@ -18,10 +17,7 @@
   
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:site" content="@{{ site.author.twitter_username }}" />
-  <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" />
-  <meta name="twitter:description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}" />
-  <meta name="twitter:image" content="{{ site.url }}/images/card.jpg" />
-  <meta name="twitter:url" content="{{ page.url | replace:'index.html','' | prepend: site.url }}" />
+  <meta name="twitter:creator" content="@{{ site.author.twitter_username }}" />
   
   <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="article" />
