@@ -18,12 +18,12 @@
   <meta name="twitter:creator" content="@{{ site.author.twitter_username }}">
   <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
   <meta name="twitter:description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-  <meta name="twitter:image:src" content="{{ "images/profile.jpg" | prepend: site.baseurl }}">
+  <meta name="twitter:image:src" content="{{ site.url }}/images/profile.jpg">
 
   <meta property="og:type" content="article">
   <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
   <meta property="og:description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-  <meta name="og:image" content="{{ "images/profile.jpg" | prepend: site.baseurl }}">
+  <meta name="og:image" content="{{ site.url }}/images/profile.jpg">
   
   <meta name="google-site-verification" content="TUU6CiyDueNTh7iqqurWUZhpddbj1P5tVOrTChtI0Mk" />
   

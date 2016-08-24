@@ -3,7 +3,7 @@ encoding: utf-8
 # Site settings
 title: Stefan Prodan
 description: 'Co-Founder of Veritech Solutions. Passionate about software architecture, domain driven design and DevOps. Loves programming in .NET, JS and Go'
-url: 'http://stefanprodan.com'
+url: 'https://stefanprodan.com'
 baseurl: '/'
 google_analytics: 'UA-21524511-1'
 # disqus_shortname: 'your-disqus-name'
