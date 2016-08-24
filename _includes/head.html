@@ -5,6 +5,7 @@
   <meta http-equiv="Content-Language" content="en">
   <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <meta name="keywords" content="veritech,programming,aspnet,aspnetcore,webapi,devops,docker,swarm,powershell,dotnet,javascript,golang">
   <meta name="author" content="{{ site.author.name }}">
   <meta name="copyright" content="{{ site.author.name }}">
   <meta name="HandheldFriendly" content="True">
@@ -13,17 +14,21 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="google-site-verification" content="TUU6CiyDueNTh7iqqurWUZhpddbj1P5tVOrTChtI0Mk" />
+  
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:url" content="{{ page.url | replace:'index.html','' | prepend: site.url }}" />
   <meta name="twitter:site" content="@{{ site.author.twitter_username }}" />
-  <meta name="twitter:creator" content="@{{ site.author.twitter_username }}" />
   <meta name="twitter:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" />
   <meta name="twitter:description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}" />
   <meta name="twitter:image" content="{{ site.url }}/images/card.jpg" />
+  <meta name="twitter:url" content="{{ page.url | replace:'index.html','' | prepend: site.url }}" />
+  
+  <meta property="og:locale" content="en_US" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" />
   <meta property="og:description" content="{% if page.title %}{{ page.description }}{% else %}{{ site.description }}{% endif %}" />
-  <meta name="og:image" content="{{ site.url }}/images/card.jpg" /> 
+  <meta property="og:image" content="{{ site.url }}/images/card.jpg" /> 
+  <meta property="og:url" content="{{ page.url | replace:'index.html','' | prepend: site.url }}" />
+  
   <link rel="apple-touch-icon" sizes="57x57" href="{{ "images/favicons/apple-icon-57x57.png" | prepend: site.baseurl }}">
   <link rel="apple-touch-icon" sizes="60x60" href="{{ "images/favicons/apple-icon-60x60.png" | prepend: site.baseurl }}">
   <link rel="apple-touch-icon" sizes="72x72" href="{{ "images/favicons/apple-icon-72x72.png" | prepend: site.baseurl }}">
@@ -43,6 +48,7 @@
   <meta name="msapplication-TileColor" content="#ffc40d">
   <meta name="msapplication-TileImage" content="{{ "images/favicons/ms-icon-144x144.png" | prepend: site.baseurl }}">
   <meta name="theme-color" content="#ffffff">
+  
   <link rel="stylesheet" href="{{ "css/main.css" | prepend: site.baseurl }}">
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.url }}">
   <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ site.baseurl }}feed.xml">
