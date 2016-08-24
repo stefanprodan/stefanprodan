@@ -1,7 +1,18 @@
+/*Copyright @ Oana Mangiurea */
+
 @import url(uno.css);
 @import url(monokai.css);
 
+
 /* Modifications */
+
+pre code {
+	color: #bbb;	
+}
+
+pre {
+	font-size: 1em;	
+}
 
 pre.highlight,
 .highlight pre {
@@ -39,7 +50,6 @@ pre.highlight code,
 
 .post-meta__tags {
   font-size: 12px;
-  padding: 0 5px;
 }
 
 .footer__copyright {
@@ -53,4 +63,37 @@ pre.highlight code,
   height: 100px;
   border: 3px solid #fff;
   border-radius:100%;
+}
+
+@media (min-width: 961px) and (max-width: 1299px) {
+	.panel-cover--collapsed {
+		width: 35%;
+		min-width: 335px;
+	}
+	.content-wrapper {
+		width: 65%;
+		margin-left: 35%;
+	}
+}
+@media (min-width: 1300px) {
+	.content-wrapper {
+		max-width: 1000px;
+	}
+}
+@media (max-width: 1299px)  {
+	h1 {
+		font-size: 2.2em;
+	}
+	.content-wrapper__inner {
+		margin: 0 5%;
+        padding: 20px 0;
+	}
+	.panel-main__inner {
+		padding: 0 30px;
+	}
+}
+@media (max-width: 960px) {
+	.content-wrapper {
+		width: 100%;
+	}
 }

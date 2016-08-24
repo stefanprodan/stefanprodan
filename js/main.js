@@ -16,10 +16,12 @@ $(document).ready(function () {
 
   if (window.location.hash && window.location.hash == '#blog') {
     $('.panel-cover').addClass('panel-cover--collapsed')
+	$('.content-wrapper').css("display", "block")
   }
 
   if (window.location.pathname !== '{{ site.baseurl }}' && window.location.pathname !== '{{ site.baseurl }}index.html') {
     $('.panel-cover').addClass('panel-cover--collapsed')
+	$('.content-wrapper').css("display", "block")
   }
 
   $('.btn-mobile-menu').click(function () {
@@ -30,6 +32,7 @@ $(document).ready(function () {
   $('.navigation-wrapper .blog-button').click(function () {
     $('.navigation-wrapper').toggleClass('visible')
     $('.btn-mobile-menu__icon').toggleClass('icon-list icon-x-circle animated fadeIn')
+	$('.content-wrapper').css("display", "block")
   })
 
 })
