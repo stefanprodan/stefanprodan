@@ -1,0 +1,40 @@
+encoding: utf-8
+
+# Site settings
+title: Stefan Prodan
+description: 'Co-Founder of Veritech Solutions. Passionate about software architecture, domain driven design and DevOps. Loves programming in .NET, JS and Go'
+url: 'https://stefanprodan.com'
+baseurl: '/'
+#google_analytics: 'UA-21524511-1'
+#disqus_shortname: 'stefanprodan'
+
+author:
+  name: 'Stefan Prodan'
+  twitter_username: stefanprodan
+  github_username:  stefanprodan
+  linkedin_username:  stefanprodan
+  stackoverflow_username: stefanprodan
+
+defaults:
+  -
+    scope:
+      path: ''
+      type: 'posts'
+    values:
+        layout: 'post'
+
+# Build settings
+destination: _site
+paginate: 10
+permalink: /:year/:title/
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  # use Github Flavored Markdown
+  input: GFM
+  # do not replace newlines by <br>s
+  hard_wrap: false
+
+gems: ['jekyll-paginate']
+exclude: ['README.md', 'Gemfile', 'Gemfile.lock', 'screenshot.png']

@@ -72,10 +72,10 @@ Open a browser and navigate to `http://localhost:8080` to check the cluster stat
 if we run `docker service ls` we should get:
 
 ```
-ID            NAME           REPLICAS  IMAGE             COMMAND
-157bd7yg7d60  rdb-secondary  2/2       rethinkdb:latest  rethinkdb --bind all --no-http-admin --join rdb-primary
-41eloiad4jgp  rdb-primary    2/2       rethinkdb:latest  rethinkdb --bind all --no-http-admin --join rdb-secondary
-67oci5m1wksi  rdb-proxy      1/1       rethinkdb:latest  rethinkdb proxy --bind all --join rdb-primary
+ID            NAME           REPLICAS  IMAGE             
+157bd7yg7d60  rdb-secondary  2/2       rethinkdb:latest  
+41eloiad4jgp  rdb-primary    2/2       rethinkdb:latest  
+67oci5m1wksi  rdb-proxy      1/1       rethinkdb:latest 
 ```
 
 I've compiled all the above commands into a Powershell script that runs the RethinkDB cluster on Docker for Windows. Here is the script:
