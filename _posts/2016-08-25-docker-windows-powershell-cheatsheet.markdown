@@ -58,10 +58,6 @@ $image = "image_name"
 $hostDir = "/c/users/docker/data"
 $serviceDir = "/data"
 docker service create --mount type=bind,src=$hostDir,dst=$serviceDir --name $service $image
-
-# test port
-Start-Sleep -s 5
-Test-NetConnection -ComputerName "10.0.75.2" -Port $hostPort -InformationLevel "Detailed"
 ```
 
 
