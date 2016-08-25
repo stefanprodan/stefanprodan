@@ -12,6 +12,13 @@ layout: default
   <section class="post">
     {{ content }}
   </section>
+  {% if site.author.twitter_username %}
+  <div class="share">
+	<a href="https://twitter.com/share" class="twitter-share-button" data-text="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}" data-via="{{ site.author.twitter_username }}" data-dnt="true" data-show-count="false">Tweet</a>
+	<a href="https://twitter.com/{{ site.author.twitter_username }}" class="twitter-follow-button" data-show-count="false">Follow @{{ site.author.twitter_username }}</a>
+	<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+  </div>
+  {% endif %}
   {% if page.comments != false and site.disqus_shortname %}<section id="disqus_thread"></section><!-- /#disqus_thread -->{% endif %}
 </article>
 {% if page.comments != false %}{% include disqus.html %}{% endif %}

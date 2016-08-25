@@ -65,6 +65,12 @@ pre.highlight code,
   border-radius:100%;
 }
 
+.share {
+  border-bottom: 1px solid #ddd; 
+  border-top: 1px solid #ddd; 
+  padding: 15px 0;
+}
+
 @media (min-width: 961px) and (max-width: 1299px) {
 	.panel-cover--collapsed {
 		width: 35%;
