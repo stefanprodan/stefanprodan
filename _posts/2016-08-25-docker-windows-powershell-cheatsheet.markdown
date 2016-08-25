@@ -25,7 +25,7 @@ $network = "network_name"
 docker network create --driver overlay $network
 ```
 
-Create and start a swarm service using a custom overlay network:
+Create and start a service using a custom overlay network:
 
 ```powershell
 $service = "service_name"
@@ -35,7 +35,7 @@ $replicas = 5
 docker service create --name $service --network $network --replicas $replicas $image
 ```
 
-Start a swarm service and expose a port on the host system:
+Start a service and expose a port on the host system:
 
 ```powershell
 $service = "service_name"
@@ -49,6 +49,21 @@ docker service create --name $service --network $network --publish ${hostPort}:$
 Start-Sleep -s 5
 Test-NetConnection -ComputerName "10.0.75.2" -Port $hostPort -InformationLevel "Detailed"
 ```
+
+Start a service and mount a local system directory:
+
+```powershell
+$service = "service_name"
+$image = "image_name"
+$hostDir = "/c/users/docker/data"
+$serviceDir = "/data"
+docker service create --mount type=bind,src=$hostDir,dst=$serviceDir --name $service $image
+
+# test port
+Start-Sleep -s 5
+Test-NetConnection -ComputerName "10.0.75.2" -Port $hostPort -InformationLevel "Detailed"
+```
+
 
 List all matching services:
 
