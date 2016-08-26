@@ -4,6 +4,8 @@ description: "First release of OpenStack Swift client for DNXCore 5.0"
 date:   2016-01-20 12:00:00
 categories: [Open Source]
 tags: [OpenStack Swift]
+redirect_from:
+  - /2016/01/openstack-swift-client-for-net-core-and-asp-net-5/
 ---
 
 Veritech Solutions is happy to announce [SwiftClient](https://github.com/vtfuture/SwiftClient), an open-source .NET client for OpenStack Swift that covers most of the Swift API, handles authentication and large object streaming.
