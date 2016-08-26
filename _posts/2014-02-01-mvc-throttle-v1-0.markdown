@@ -4,7 +4,11 @@ description: "First release of MvcThrottle  for ASP.NET MVC"
 date:   2014-02-01 12:00:00
 categories: [Open Source]
 tags: [Rate limiting]
+redirect_from:
+  - /2014/02/introducing-asp-net-mvc-throttling-filter/
 ---
+
+### [>> See the full documentation on MvcThrottle repo](https://github.com/stefanprodan/MvcThrottle)
 
 With MvcThrottle you can protect your site from aggressive crawlers, scraping tools or unwanted traffic spikes originated from the same location by limiting the rate of requests that a client from the same IP can make to your site or to specific routes. MvcThrottle is compatible with ASP.NET MVC 5.1 and can be installed via NuGet, the package is available at [nuget.org/packages/MvcThrottle](https://www.nuget.org/packages/MvcThrottle/).
 
