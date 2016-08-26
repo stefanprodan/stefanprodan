@@ -50,13 +50,13 @@ echo "GOPATH set to $GOPATH"
 rm -f $TMPDIR/$GFILE
 ```
 
-You can run the installer in one line using this [Gist](https://gist.githubusercontent.com/stefanprodan/29d738c3049a8714297a9bdd8353f31c) as source:
+You can run the one-line installer using this [gist](https://gist.githubusercontent.com/stefanprodan/29d738c3049a8714297a9bdd8353f31c) as source:
 
 ```bash
 cd $HOME
 curl -s -L <GIST_RAW_URL> | sudo bash
 ``` 
 
-The gist row URL can be found [here](https://gist.githubusercontent.com/stefanprodan/29d738c3049a8714297a9bdd8353f31c/raw/1f3ae2cf97cb2faff52a8a3d98f0b6415d86c810/win10-bash-go-install.sh).
+The gist raw URL can be found [here](https://gist.githubusercontent.com/stefanprodan/29d738c3049a8714297a9bdd8353f31c/raw/1f3ae2cf97cb2faff52a8a3d98f0b6415d86c810/win10-bash-go-install.sh).
 
 After running the script, type `exit` to close the current session. Open a new bash session and run `go env` to verify the installation.   
