@@ -153,3 +153,16 @@ Stop and remove all containers by image name or image ID:
 $image = "image_name"
 docker rm $(docker stop $(docker ps -a -q -f "ancestor=$image"))
 ```
+
+### Monitoring MobyLinuxVM
+
+I use [cAdvisor](https://github.com/google/cadvisor/) to monitor the Docker for Windows VM. 
+
+Run cAdvisor container:
+
+```powershell
+docker run -dp 8090:8080 -v /var/run:/var/run:rw -v /sys:/sys:ro -v /var/lib/docker/:/var/lib/docker:ro --name=cadvisor google/cadvisor:latest
+```
+
+Note that `--volume=/:/rootfs:ro` mount is not available in Docker for Windows VM, that's why I removed it from the run command.
+Access cAdvisor interface on your Windows machine at `http://localhost:8090/`.
