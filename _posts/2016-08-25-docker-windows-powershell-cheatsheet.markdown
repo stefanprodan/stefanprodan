@@ -15,7 +15,9 @@ These scripts are compatible with ***Docker 1.12*** and [Docker for Windows](htt
 Enable swarm mode:
 
 ```powershell
-docker swarm init
+if(!(docker info).contains("Swarm: active")){
+	docker swarm init
+}
 ```
 
 Create a custom overlay network:
