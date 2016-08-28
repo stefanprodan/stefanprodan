@@ -22,7 +22,9 @@ Create a custom overlay network:
 
 ```powershell
 $network = "network_name"
-docker network create --driver overlay $network
+if(!(docker network ls --filter name=$network -q)){
+	docker network create --driver overlay $network
+}
 ```
 
 Create and start a service using a custom overlay network:
