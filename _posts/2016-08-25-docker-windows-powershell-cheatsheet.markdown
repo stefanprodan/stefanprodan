@@ -151,6 +151,15 @@ Remove orphaned volumes:
 docker volume rm $(docker volume ls -q -f "dangling=true")
 ```
 
+### Containers 
+
+Start a Bash session in a running container:
+
+```powershell
+$container = "container_id"
+docker exec -i -t $container /bin/bash
+``` 
+
 Stop and remove all containers by image name or image ID:
 
 ```powershell
@@ -158,11 +167,16 @@ $image = "image_name"
 docker rm $(docker stop $(docker ps -a -q -f "ancestor=$image"))
 ```
 
-### Monitoring MobyLinuxVM
+Connect to a docker server over TCP:
 
-I use [cAdvisor](https://github.com/google/cadvisor/) to monitor the Docker for Windows VM. 
+```
+$env:DOCKER_HOST= "tcp://192.168.1.134:4243"
+docker info
+```
 
-Run cAdvisor container:
+### Monitor MobyLinuxVM
+
+Run [cAdvisor](https://github.com/google/cadvisor/) container:
 
 ```powershell
 docker run -dp 8090:8080 -v /var/run:/var/run:rw -v /sys:/sys:ro -v /var/lib/docker/:/var/lib/docker:ro --name=cadvisor google/cadvisor:latest
