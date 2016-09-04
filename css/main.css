@@ -17,6 +17,7 @@ pre {
 pre.highlight,
 .highlight pre {
   padding: 10px;
+  word-wrap: break-word;
 }
 
 pre.highlight code,
