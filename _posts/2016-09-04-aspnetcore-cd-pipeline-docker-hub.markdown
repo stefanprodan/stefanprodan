@@ -153,4 +153,4 @@ Replace `APP` with your app name.
 
 ![CD Pipeline]({{ "assets/dockerdash-hub-settings.png" | prepend: site.baseurl }})
 
-An working example of this CD pipeline is available on GitHub at [stefanprodan/dockerdash](https://github.com/stefanprodan/dockerdash).
+A working example of this CD pipeline is available on GitHub at [stefanprodan/dockerdash](https://github.com/stefanprodan/dockerdash).
