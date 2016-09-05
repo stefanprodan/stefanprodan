@@ -19,9 +19,9 @@ $(document).ready(function () {
 	$('.content-wrapper').css("display", "block")
   }
 
-  if (window.location.pathname !== '{{ site.baseurl }}' && window.location.pathname !== '{{ site.baseurl }}index.html') {
-    //$('.panel-cover').addClass('panel-cover--collapsed')
-	//$('.content-wrapper').css("display", "block")
+  if (window.location.pathname.indexOf('page') !== -1) {
+    $('.panel-cover').addClass('panel-cover--collapsed')
+	$('.content-wrapper').css("display", "block")
   }
 
   $('.btn-mobile-menu').click(function () {
