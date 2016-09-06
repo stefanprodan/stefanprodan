@@ -31,7 +31,8 @@ markdown: kramdown
 highlighter: rouge
 
 sass:
-    style: compressed
+  sass_dir: _sass
+  style: compressed
 	
 kramdown:
   # use Github Flavored Markdown
