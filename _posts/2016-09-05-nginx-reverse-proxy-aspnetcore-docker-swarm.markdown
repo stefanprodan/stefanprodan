@@ -185,3 +185,5 @@ Flush the DNS cache and then you'll be able to access ***appx.local*** from your
 You can use the NGNIX service to act as reverse proxy for any number of apps running on your Docker Swarm. For each app that you want to expose on the Internet, add a new `server` entry to the nginx.conf and map the domain name and service name like we did with appx.
 
 A working example of this configuration for multiple services is available on GitHub at [stefanprodan/aspnetcore-dockerswarm](https://github.com/stefanprodan/aspnetcore-dockerswarm).
+
+NGINX is powering half of the world’s busiest sites and it's proven to be a very efficient and lightweight web server. If you are going to run ASP.NET Core applications in production, you should consider using NGINX as the internet-facing server.
