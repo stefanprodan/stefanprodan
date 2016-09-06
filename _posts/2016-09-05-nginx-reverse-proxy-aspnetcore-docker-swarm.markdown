@@ -6,7 +6,9 @@ categories: [Guides]
 tags: [.NET Core, Docker]
 ---
 
-In this article we will configure NGINX as a reverse proxy with web sockets support, compression and caching for an ASP.NET Core app. Both the reverse proxy and the web app will run in containers on a Docker Swarm cluster. The NGINX reverse proxy will forward the requests to your app service and Docker Swarm will load balance the requests between your app instances.
+This tutorial shows how you can set up NGINX as a reverse proxy for ASP.NET Core. As you probably know, the Kestrel web server that hosts your ASP.NET Core applications is not meant to be an internet-facing server. By using NGINX in front of Kestrel you can provide SSL termination, compression and caching for your web apps.
+
+You will be running the reverse proxy and web app in containers on a Docker Swarm cluster. The NGINX reverse proxy will forward the requests to your app service and Docker Swarm will load balance the requests between your app instances.
 
 ![NGINX on Docker Swarm]({{ "assets/nginx-proxy-docker-swarm.png" | prepend: site.baseurl }})
 
@@ -18,8 +20,8 @@ Windows 10 prerequisites:
 * [Visual Studio Code](https://www.visualstudio.com/products/code-vs.aspx)
 * [.NET Core SDK](https://www.microsoft.com/net/core#windows)
 
-Let's create an ASP.NET Core app named ***APPX*** and add a Dockerfile in the root directory. 
-If you'll use the [Yeoman generator for ASP.NET](https://github.com/omnisharp/generator-aspnet) the Dockefile will be generated for you.
+Let's start by creating an ASP.NET Core app named ***APPX*** and adding a Dockerfile in the root directory. 
+If you'll use [Yeoman generator for ASP.NET](https://github.com/omnisharp/generator-aspnet) the Dockefile will be generated for you.
 
 ```
 FROM microsoft/dotnet:latest
@@ -66,22 +68,22 @@ if(!(docker network ls --filter name=$network -q)){
 }
 ```
 
-Now that we have our app bundled as a container image, let's run it as a service on Docker Swarm and scale it to 3 replicas.
+Now that you've bundled the app as a container image, let's run it as a service on Docker Swarm and scale it up to 3 replicas:
 
 ```powershell
 docker service create --name appx --network appx-net --replicas 3 appx-img
 ```
 
-Note that I am not exposing the 5000 port, we will use NGNIX as our public-facing web server so we don't want to expose Kestrel on the Internet.
+Note that the appx service doesn't expose any ports on the host machine, we'll use NGNIX as our public-facing web server so we don't want to expose Kestrel to the outside world.
 
-Create a directory named ***nginx*** inside the appx project and add a Dockerfile to it:
+Next you'll set up the NGINX image. Create a directory named ***nginx*** inside the appx project and add a Dockerfile to it:
 
 ```
 FROM nginx
 COPY ./nginx.conf /etc/nginx/nginx.conf
 ```
 
-This Dockerfile will create our NGINX image using the official one and copy our custom nginx.conf. Our configuration enables web sockets, compression, client and server caching of static files for the ***appx.local*** website:
+This Dockerfile will uses the official NGINX image with a copy of you're custom configuration. The configuration enables web sockets, compression, client and server caching of static files for the ***appx.local*** website:
 
 ```bash
 worker_processes 2; # 2 * Number of CPUs
@@ -160,7 +162,7 @@ http {
 
 For a deep dive in NGINX cache policies see this [article](https://serversforhackers.com/nginx-caching).
 
-Now that we have configured NGINX, let's build the image and run the reverse proxy on port 80. If you have IIS installed, stop it before running the NGINX service.
+Now that you've configured NGINX, build the image and run the reverse proxy on port 80. If you have IIS installed, stop it before running the NGINX service.
 
 Open PowerShell, navigate to the nginx directory and run the following commands:
 
@@ -169,9 +171,9 @@ docker build -t nginx-img .
 docker service create --name nginx --mode=global --network appx-net --publish 80:80 nginx-img
 ```
 
-Note that I are creating the nginx service with the `global` flag so Docker Swarm can distribute one copy of a container to every node of a cluster.
+Note that the NGINX service is created with the `global` flag, so Docker Swarm can distribute one copy of nginx container to every node of a cluster.
 
-In order to access the appx cluster we need to map the ***appx.local*** domain to localhost. Open the Windows ***hosts*** file and add this entry:
+In order to access the appx cluster, you need to map the ***appx.local*** domain to localhost. Open the Windows ***hosts*** file and add this entry:
 
 ```
 127.0.0.1 appx.local
