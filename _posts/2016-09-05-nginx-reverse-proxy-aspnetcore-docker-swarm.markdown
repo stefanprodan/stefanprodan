@@ -1,7 +1,7 @@
 ---
 title:  "NGINX reverse proxy for ASP.NET Core apps running on Docker Swarm"
-description: "Configure NGINX as a reverse proxy with web sockets support, compression and caching for ASP.NET Core apps hosted with Docker Swarm Mode"
-date:   2016-09-05 12:00:00
+description: "Configure NGINX as a reverse proxy with web sockets support, compression and caching for ASP.NET Core containers on Docker Swarm Mode"
+date:   2016-09-06 12:00:00
 categories: [Guides]
 tags: [.NET Core, Docker]
 ---
@@ -83,7 +83,7 @@ FROM nginx
 COPY ./nginx.conf /etc/nginx/nginx.conf
 ```
 
-This Dockerfile will uses the official NGINX image with a copy of you're custom configuration. The configuration enables web sockets, compression, client and server caching of static files for the ***appx.local*** website:
+This Dockerfile uses the official NGINX image with a copy of your custom configuration. The configuration enables web sockets, compression, client and server caching of static files for the ***appx.local*** website:
 
 ```bash
 worker_processes 2; # 2 * Number of CPUs
@@ -171,19 +171,19 @@ docker build -t nginx-img .
 docker service create --name nginx --mode=global --network appx-net --publish 80:80 nginx-img
 ```
 
-Note that the NGINX service is created with the `global` flag, so Docker Swarm can distribute one copy of nginx container to every node of a cluster.
+Note that the NGINX service is created with the `global` flag, so Docker Swarm can distribute one copy of the NGINX container to every node in the cluster.
 
-In order to access the appx cluster, you need to map the ***appx.local*** domain to localhost. Open the Windows ***hosts*** file and add this entry:
+In order to access the appx cluster, you need to map the ***appx.local*** domain to localhost. Open the Windows ***hosts*** file and add these entries:
 
 ```
 127.0.0.1 appx.local
 127.0.0.1 www.appx.local
 ```
 
-Flush the DNS cache and then you'll be able to access ***appx.local*** from your browser. On each request, NGNIX forwards the HTTP call to one of the app instances. Docker Swarm built-in load balancer will evenly distribute the requests between the three service instances. You can scale up or down the appx cluster as you wish. 
+Flush the DNS cache and then you’ll be able to access appx.local from your browser. On each request, NGNIX forwards the HTTP call to one of the app instances. Docker Swarm's built-in load balancer will evenly distribute the requests between the three service instances. You can scale the appx cluster up or down as you wish. 
 
-You can use the NGNIX service to act as reverse proxy for any number of apps running on your Docker Swarm. For each app that you want to expose on the Internet, add a new `server` entry to the nginx.conf and map the domain name and service name like we did with appx.
+You can use the NGNIX service to act as reverse proxy for any number of apps running on your Docker Swarm. For each app that you want to expose on the Internet, add a new `server` entry to the nginx.conf and map the domain name and service name like you did with appx.
 
 A working example of this configuration for multiple services is available on GitHub at [stefanprodan/aspnetcore-dockerswarm](https://github.com/stefanprodan/aspnetcore-dockerswarm).
 
-NGINX is powering half of the world’s busiest sites and it's proven to be a very efficient and lightweight web server. If you are going to run ASP.NET Core applications in production, you should consider using NGINX as the internet-facing server.
+NGINX powers half of the world’s busiest sites and has proven itself to be a very efficient and lightweight web server. If you are going to run ASP.NET Core applications in production, you should consider using NGINX as the internet-facing server.
