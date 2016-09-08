@@ -174,9 +174,9 @@ $env:DOCKER_HOST= "tcp://192.168.1.134:4243"
 docker info
 ```
 
-### Monitor MobyLinuxVM
+### Monitoring
 
-Run [cAdvisor](https://github.com/google/cadvisor/) container:
+Monitor MobyLinuxVM with [cAdvisor](https://github.com/google/cadvisor/) container:
 
 ```powershell
 docker run -dp 8090:8080 -v /var/run:/var/run:rw -v /sys:/sys:ro -v /var/lib/docker/:/var/lib/docker:ro --name=cadvisor google/cadvisor:latest
@@ -184,3 +184,16 @@ docker run -dp 8090:8080 -v /var/run:/var/run:rw -v /sys:/sys:ro -v /var/lib/doc
 
 Note that `--volume=/:/rootfs:ro` mount is not available in Docker for Windows VM, that's why I removed it from the run command.
 Access cAdvisor interface on your Windows machine at `http://localhost:8090/`.
+
+Aggregate all containers logs with logspout:
+
+```powershell
+$ docker run -dp 8010:80 --name="logspout" --volume=/var/run/docker.sock:/var/run/docker.sock gliderlabs/logspout
+```
+
+Connect with PowerShell to see your local aggregated logs in realtime:
+
+```
+Invoke-RestMethod http://10.0.75.2:8010/logs
+```
+
