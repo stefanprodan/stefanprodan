@@ -128,7 +128,7 @@ Replace `access_token`, `git_email` and `user.name` with your values. You can ch
 ***Dockerfile example:***
 
 ```
-FROM microsoft/dotnet:1.0.0-core
+FROM microsoft/aspnetcore:1.0.1
 
 # Set ASP.NET Core environment variables
 ENV ASPNETCORE_URLS="http://*:5000"
