@@ -6,7 +6,7 @@ categories: [Guides]
 tags: [Docker]
 ---
 
-This article hows how you can set up a Docker Private Registry with authentication and SSL using Nexus Repository OSS.
+This article shows how you can set up a Docker Private Registry with authentication and SSL using Nexus Repository OSS.
 
 Nexus Repository OSS is a universal repository manager with support for all major package formats and types. It's a free solution for storing and sharing Docker images and other components like NuGet or NPM packages across the deployment pipeline while keeping your proprietary and third-party images private and secure.
 
@@ -154,7 +154,7 @@ Now you can access the Nexus UI by navigation to your nexus sub-domain. The defa
 
 Navigate to the repository administration page and create a new repository by selecting the ***docker (hosted)*** recipe. In the repository connectors section, check ***Create an HTTP connector at specified port*** and insert ***5000*** as the port value. For a detailed walkthrough check the nexus documentation on [Docker Registry](https://books.sonatype.com/nexus-book/3.0/reference/docker.html).  
 
-At this point, the Docker Regitry is up and running, but you can't access it from a docker client because Docker requires the registry to run on SSL. 
+At this point, the Docker Registry is up and running, but you can't access it from a docker client because Docker requires the registry to run on SSL. 
 
 You can use letsencrypt [certbot](https://github.com/certbot/certbot) to generate a certificate for nexus sub-domain or you can use CloudFlare to manage your domain and enable the free Flexible SSL option. Since certbot NGINX plug-in is still experimental I opted for the CloudFlare certificate. 
 
