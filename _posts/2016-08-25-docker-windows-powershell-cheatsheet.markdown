@@ -64,6 +64,18 @@ $serviceDir = "/data"
 docker service create --mount type=bind,src=$hostDir,dst=$serviceDir --name $service $image
 ```
 
+Start a service and mount a local volume:
+
+```powershell
+$volume = "volume_name"
+docker volume create --driver local --name $volume
+
+$service = "service_name"
+$image = "image_name"
+$serviceDir = "/data"
+docker service create --mount type=volume,src=$volume,dst=$serviceDir --name $service $image
+```
+
 
 List all matching services:
 
