@@ -6,7 +6,7 @@ categories: [Guides]
 tags: [Jenkins,Docker]
 ---
 
-This article shows how you can use a Jenkins CI Server running in a Docker container, to do continuous integration and treat build environments as on-demand and disposable entities. You can say goodbye to the dedicated VMs for each build environment. Using containers as building blocks helps you recreate dev, test, QA and production environments in a deployment pipeline with just a few lines of code.  
+This article shows how you can use a Jenkins CI Server running in a Docker container, to do continuous integration and treat build environments as on-demand and disposable entities. Say goodbye to dedicated VMs for each build environment. Using containers as building blocks helps you recreate dev, test, QA and production environments in a deployment pipeline with just a few lines of code.  
 
 ![Jenkins CI disposable containers]({{ "assets/jenkins-disposable-dontainers.png" | prepend: site.baseurl }})
 
@@ -113,6 +113,6 @@ node {
 ``` 
 
 The above pipeline shows how you can run three different build environments (aspnetcore, nodejs and golang) without installing any dependency on your build server. 
-At each stage, Jenkins pulls the specified build environment, runs the build tools then it disposes the containers. The build artifacts are persisted on the Jenkins workspace so you can use them in other stages of your CD workflow. 
+At each stage, Jenkins pulls the specified build environment, runs the build tools, then disposes the containers. The build artifacts are persisted on the Jenkins workspace so you can use them in other stages of your CD workflow. 
 
 The Dockerfile is available on GitHub at [stefanprodan/jenkins](https://github.com/stefanprodan/jenkins). Contributions are more than welcome!
