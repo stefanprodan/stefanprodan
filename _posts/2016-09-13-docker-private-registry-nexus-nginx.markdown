@@ -16,14 +16,14 @@ I am using an Ubuntu Server 16.04 and Docker 1.12 to host the Nexus Repository a
 
 ### Running Nexus Repository container
 
-First you have to build your own Nexus 3 docker image and expose port 8081 and 5000. Nexus management UI will run on 8081 while Docker Registry will run on 5000. The Nexus image setup is an adaptation from [clearent](https://hub.docker.com/r/clearent/nexus/).
+First you have to build your own Nexus 3 docker image and expose port 8081 and 5000. Nexus management UI will run on 8081 while Docker Registry will run on 5000. This Docker image can be found on Docker Hub at [stefanprodan/nexus](https://hub.docker.com/r/stefanprodan/nexus/).
 
 Create a directory named nexus and add a Dockerfile with the following content:
 
 ```sh
 FROM alpine:3.4
 
-ENV NEXUS_VERSION="3.0.1-01" \
+ENV NEXUS_VERSION="3.0.2-02" \
     NEXUS_DATA="/nexus-data" \
     JAVA_MIN_MEM="1200M" \
     JAVA_MAX_MEM="1200M" \
