@@ -48,6 +48,18 @@ docker run -d --name jenkins \
 	stefanprodan/jenkins
 ```
 
+If the host system has an older Docker engine version, you have to specify the host Docker API version in Jenkins run command:
+
+```
+docker run -d --name jenkins \ 
+	-e DOCKER_API_VERSION='1.21' \
+	-p 8080:8080 -p 50000:50000 \ 
+	-v /var/run/docker.sock:/var/run/docker.sock \ 
+	-v /home/$(whoami)/jenkins_home:/var/jenkins_home \ 
+	-v /home/$(whoami)/ansible:/etc/ansible \ 
+	stefanprodan/jenkins
+```
+
 After starting the container, you can access Jenkins at `http://localhost:8080`. Look in the logs for the admin password that Jenkins is generating on first run:
 
 ```
