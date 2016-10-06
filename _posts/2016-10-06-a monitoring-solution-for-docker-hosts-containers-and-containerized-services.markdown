@@ -134,7 +134,7 @@ ALERT monitor_service_down
   LABELS { severity = "critical" }
   ANNOTATIONS {
       summary = "Monitor service non-operational",
-      description = "{{ $labels.instance }} service is down.",
+      description = "{% raw %}{{ $labels.instance }}{% endraw %} service is down.",
   }
 ```
 
@@ -149,7 +149,7 @@ ALERT high_cpu_load
   LABELS { severity = "warning" }
   ANNOTATIONS {
       summary = "Server under high load",
-      description = "Docker host is under high load, the avg load 1m is at {{ $value}}. Reported by instance {{ $labels.instance }} of job {{ $labels.job }}.",
+      description = "Docker host is under high load, the avg load 1m is at {% raw %}{{ $value}}{% endraw %}. Reported by instance {% raw %}{{ $labels.instance }}{% endraw %} of job {% raw %}{{ $labels.job }}{% endraw %}.",
   }
 ```
 
@@ -164,7 +164,7 @@ ALERT high_memory_load
   LABELS { severity = "warning" }
   ANNOTATIONS {
       summary = "Server memory is almost full",
-      description = "Docker host memory usage is {{ humanize $value}}%. Reported by instance {{ $labels.instance }} of job {{ $labels.job }}.",
+      description = "Docker host memory usage is {% raw %}{{ humanize $value}}{% endraw %}%. Reported by instance {% raw %}{{ $labels.instance }}{% endraw %} of job {% raw %}{{ $labels.job }}{% endraw %}.",
   }
 ```
 
@@ -177,7 +177,7 @@ ALERT hight_storage_load
   LABELS { severity = "warning" }
   ANNOTATIONS {
       summary = "Server storage is almost full",
-      description = "Docker host storage usage is {{ humanize $value}}%. Reported by instance {{ $labels.instance }} of job {{ $labels.job }}.",
+      description = "Docker host storage usage is {% raw %}{{ humanize $value}}{% endraw %}%. Reported by instance {% raw %}{{ $labels.instance }}{% endraw %} of job {% raw %}{{ $labels.job }}{% endraw %}.",
   }
 ```
 
@@ -205,7 +205,7 @@ Trigger an alert if a container is using more then 10% of total CPU cores for mo
   LABELS { severity = "warning" }
   ANNOTATIONS {
     summary= "Jenkins high CPU usage",
-    description= "Jenkins CPU usage is {{ humanize $value}}%."
+    description= "Jenkins CPU usage is {% raw %}{{ humanize $value}}{% endraw %}%."
   }
 ```
 
@@ -218,7 +218,7 @@ ALERT jenkins_high_memory
   LABELS { severity = "warning" }
   ANNOTATIONS {
       summary = "Jenkins high memory usage",
-      description = "Jenkins memory consumption is at {{ humanize $value}}.",
+      description = "Jenkins memory consumption is at {% raw %}{{ humanize $value}}{% endraw %}.",
   }
 ```
 
