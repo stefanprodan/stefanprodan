@@ -6,7 +6,7 @@ categories: [Guides]
 tags: [Prometheus,Docker]
 ---
 
-I've been looking for an open source self-hosted monitoring solution that can provide metrics storage, visualization and alerting for physical servers, virtual machines, containers and services that are running inside containers. After trying out Elastic Beats, Graphite and Prometheus I've settled-on Prometheus. The main reason for choosing Prometheus was the support for multi-dimensional metrics and the query language that's easy to grasp. The fact that you can use the same language for graphing and alerting makes the monitoring task a whole lot easier. Prometheus handles blackbox probing as well as whitebox metrics, you can probe your infrastructure but you can also monitor the internal state of your applications.
+I've been looking for an open source self-hosted monitoring solution that can provide metrics storage, visualization and alerting for physical servers, virtual machines, containers and services that are running inside containers. After trying out Elastic Beats, Graphite and Prometheus I've settled-on Prometheus. The main reason for choosing Prometheus was the support for multi-dimensional metrics and the query language that's easy to grasp. The fact that you can use the same language for graphing and alerting makes the monitoring task a whole lot easier. Prometheus handles blackbox probing as well as whitebox metrics meaning you can probe your infrastructure and also monitor the internal state of your applications.
 
 Why choose Prometheus:
 
@@ -16,11 +16,11 @@ Why choose Prometheus:
 * Flexible service discovery (built in support for Kubernetes, Consul, EC2, Azure)
 * Special-purpose exporters for services like HAProxy, MySQL, PostgreSQL, Memcached, Redis and many more
 
-The Prometheus ecosystem is huge, you can find metrics exporters for a wide range of systems: from databases, MQ, HTTP servers to hardware related systems like IoT or IPMI. Whitebox monitoring has a great coverage also, there are Prometheus client libraries for Go, Java, Python, Ruby, .NET, PHP and many more programming languages.
+The Prometheus ecosystem is huge meaning you can find metrics exporters for a wide range of systems: from databases, MQ, HTTP servers to hardware related systems like IoT or IPMI. Whitebox monitoring also has great coverage. There are Prometheus client libraries for Go, Java, Python, Ruby, .NET, PHP and many more programming languages.
 
 ### Getting started with Prometheus and Docker
 
-If you want to try out the Prometheus stack, take a look at the [dockprom](https://github.com/stefanprodan/dockprom) repository on GitHub. You can use ***dockprom*** as a starting point in developing your own monitoring solution. With ***dockprom*** you can run with one command the whole stack: [Prometheus](https://prometheus.io/), [Grafana](http://grafana.org/), [cAdvisor](https://github.com/google/cadvisor), 
+If you want to try out the Prometheus stack, take a look at the [dockprom](https://github.com/stefanprodan/dockprom) repository on GitHub. You can use ***dockprom*** as a starting point in developing your own monitoring solution. With ***dockprom*** you can, run with one command, the whole stack: [Prometheus](https://prometheus.io/), [Grafana](http://grafana.org/), [cAdvisor](https://github.com/google/cadvisor), 
 [NodeExporter](https://github.com/prometheus/node_exporter) and [AlertManager](https://github.com/prometheus/alertmanager).
 
 ![Prometheus]({{ "assets/prometheus-on-docker.png" | prepend: site.baseurl }})
@@ -46,7 +46,7 @@ You can remove the ports mapping from the docker-compose file and use NGINX as a
 
 ### Setup Grafana
 
-Navigate to `http://<host-ip>:3000` and login with user ***admin*** password ***changeme***. You can change the password from Granafa UI or 
+Navigate to `http://<host-ip>:3000` and login with user ***admin*** password ***changeme***. You can change the password from Grafana UI or 
  by modifying the [user.config](https://github.com/stefanprodan/dockprom/blob/master/user.config) file.
 
 From the Grafana menu, choose ***Data Sources*** and click on ***Add Data Source***. 
@@ -78,7 +78,7 @@ The Docker Host Dashboard shows key metrics for monitoring the resource usage of
 
 ![Containers](https://raw.githubusercontent.com/stefanprodan/dockprom/master/screens/Grafana_Docker_Containers.png)
 
-The Docker Containers Dashboard shows key metrics for monitoring running container:
+The Docker Containers Dashboard shows key metrics for monitoring running containers:
 
 * Total containers CPU load, memory and storage usage
 * Running containers graph, system load graph, IO usage graph
@@ -105,7 +105,7 @@ The Monitor Services Dashboard shows key metrics for monitoring the containers t
 * Prometheus HTTP requests graph
 * Prometheus alerts graph
 
-The Prometheus memory usage can be controlled by tunning the local storage memory chunks. 
+Prometheus memory usage can be controlled by adjusting the local storage memory chunks.
 You can modify the max chunks value in [docker-compose.yml](https://github.com/stefanprodan/dockprom/blob/master/docker-compose.yml). 
 I've set the `storage.local.memory-chunks` value to 100000, if you monitor 10 containers, then Prometheus will use around 2GB of RAM.
 
@@ -125,7 +125,7 @@ curl -X POST http://<host-ip>:9090/-/reload
 
 ***Monitoring services alerts***
 
-Trigger an alert if any of the monitoring targets (node-exporter and cAdvisor) are down for more then 30 seconds:
+Trigger an alert if any of the monitoring targets (node-exporter and cAdvisor) are down for more than 30 seconds:
 
 ```yaml
 ALERT monitor_service_down
@@ -140,7 +140,7 @@ ALERT monitor_service_down
 
 ***Docker Host alerts***
 
-Trigger an alert if the Docker host CPU is under hight load for more then 30 seconds:
+Trigger an alert if the Docker host CPU is under hight load for more than 30 seconds:
 
 ```yaml
 ALERT high_cpu_load
@@ -183,7 +183,7 @@ ALERT hight_storage_load
 
 ***Docker Containers alerts***
 
-Trigger an alert if a container is down for more then 30 seconds:
+Trigger an alert if a container is down for more than 30 seconds:
 
 ```yaml
 ALERT jenkins_down
@@ -196,7 +196,7 @@ ALERT jenkins_down
   }
 ```
 
-Trigger an alert if a container is using more then 10% of total CPU cores for more then 30 seconds:
+Trigger an alert if a container is using more then 10% of total CPU cores for more than 30 seconds:
 
 ```yaml
  ALERT jenkins_high_cpu
@@ -209,7 +209,7 @@ Trigger an alert if a container is using more then 10% of total CPU cores for mo
   }
 ```
 
-Trigger an alert if a container is using more then 1,2GB of RAM for more then 30 seconds:
+Trigger an alert if a container is using more than 1,2GB of RAM for more than 30 seconds:
 
 ```yaml
 ALERT jenkins_high_memory
@@ -226,7 +226,7 @@ ALERT jenkins_high_memory
 
 The AlertManager service is responsible for handling alerts sent by Prometheus server. 
 AlertManager can send notifications via email, Pushover, Slack, HipChat or any other system that exposes a webhook interface. 
-A compleat list of integrations can be found [here](https://prometheus.io/docs/alerting/configuration).
+A complete list of integrations can be found [here](https://prometheus.io/docs/alerting/configuration).
 
 You can view and silence notifications by accessing `http://<host-ip>:9093`.
 
