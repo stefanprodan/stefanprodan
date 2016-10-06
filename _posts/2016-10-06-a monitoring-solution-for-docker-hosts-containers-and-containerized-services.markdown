@@ -196,7 +196,7 @@ ALERT jenkins_down
   }
 ```
 
-Trigger an alert if a container is using more then 10% of total CPU cores for more than 30 seconds:
+Trigger an alert if a container is using more than 10% of total CPU cores for more than 30 seconds:
 
 ```yaml
  ALERT jenkins_high_cpu
