@@ -58,8 +58,9 @@ docker run -d -p 9200:9200 -p 9300:9300 \
 	--name es-t0 \
 	--network es-net \
 	-v "$PWD/storage":/usr/share/elasticsearch/data \
-	--cap-add=IPC_LOCK --ulimit memlock=-1:-1 \
-	--memory="2g" -e ES_HEAP_SIZE="1g" \
+	--cap-add=IPC_LOCK --ulimit nofile=65536:65536 --ulimit memlock=-1:-1 \
+	--memory="2g" --memory-swap="2g" --memory-swappiness=0 \
+	-e ES_HEAP_SIZE="1g" \
 	es-t \
 	-Des.bootstrap.mlockall=true \
 	-Des.network.host=_eth0_ \
@@ -67,9 +68,22 @@ docker run -d -p 9200:9200 -p 9300:9300 \
 	-Des.discovery.zen.ping.multicast.enabled=false
 ```
 
-With `--ulimit memlock=-1:-1` and `-Des.bootstrap.mlockall=true` I instruct the ES node not to swap its memory.
-
 With `--memory="2g"` and `-e ES_HEAP_SIZE="1g"` I limit the container memory to 2GB and the JVM heap size to 1GB.
+
+***Prevent Elasticsearch from swapping***
+
+In order to instruct the ES node not to swap its memory you need to enable memory and swap accounting on your system.
+
+On Ubuntu you have to edit `/etc/default/grub` file and add this line:
+
+```
+GRUB_CMDLINE_LINUX="cgroup_enable=memory swapaccount=1"
+```
+
+Then run `sudo update-grub` and reboot the server.
+
+Now that your server supports swap limit capabilities you can use `--memory-swappiness=0` and set `--memory-swap` equal to `--memory`. 
+You also need to set `-Des.bootstrap.mlockall=true`.
 
 ### Running a two node cluster
 
@@ -81,8 +95,9 @@ docker run -d -p 9201:9200 -p 9301:9301 \
 	--name es-t1 \
 	--network es-net \
 	-v "$PWD/storage":/usr/share/elasticsearch/data \
-	--cap-add=IPC_LOCK --ulimit memlock=-1:-1 \
-	--memory="2g" -e ES_HEAP_SIZE="1g" \
+	--cap-add=IPC_LOCK --ulimit nofile=65536:65536 --ulimit memlock=-1:-1 \
+	--memory="2g" --memory-swap="2g" --memory-swappiness=0 \
+	-e ES_HEAP_SIZE="1g" \
 	es-t \
 	-Des.bootstrap.mlockall=true \
 	-Des.network.host=_eth0_ \
@@ -151,7 +166,8 @@ for ((i=0; i<$cluster_size; i++)); do
         -v "$storage":/usr/share/elasticsearch/data \
         -v "$PWD/config/elasticsearch.yml":/usr/share/elasticsearch/config/elasticsearch.yml \
         --cap-add=IPC_LOCK --ulimit nofile=65536:65536 --ulimit memlock=-1:-1 \
-        --memory="${memory}m" -e ES_HEAP_SIZE="${heap}m" \
+        --memory="${memory}m" --memory-swap="${memory}m" --memory-swappiness=0 \
+		-e ES_HEAP_SIZE="${heap}m" \
         -e ES_JAVA_OPTS="-Dmapper.allow_dots_in_name=true" \
         --restart unless-stopped \
         $image \
