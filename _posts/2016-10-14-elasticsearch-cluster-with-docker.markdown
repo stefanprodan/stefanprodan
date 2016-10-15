@@ -25,7 +25,7 @@ RUN chmod +x /usr/local/bin/docker-healthcheck
 HEALTHCHECK CMD ["docker-healthcheck"]
 ```
 
-I've built my image and I've creates a bridge network for the ES cluster:
+I've built my image and I've created a bridge network for the ES cluster:
 
 ```bash
 docker build -t es-t .
@@ -150,7 +150,7 @@ for ((i=0; i<$cluster_size; i++)); do
         --network "$network" \
         -v "$storage":/usr/share/elasticsearch/data \
         -v "$PWD/config/elasticsearch.yml":/usr/share/elasticsearch/config/elasticsearch.yml \
-        --cap-add=IPC_LOCK --ulimit memlock=-1:-1 \
+        --cap-add=IPC_LOCK --ulimit nofile=65536:65536 --ulimit memlock=-1:-1 \
         --memory="${memory}m" -e ES_HEAP_SIZE="${heap}m" \
         -e ES_JAVA_OPTS="-Dmapper.allow_dots_in_name=true" \
         --restart unless-stopped \
