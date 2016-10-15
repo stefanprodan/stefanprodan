@@ -32,7 +32,7 @@ docker build -t es-t .
 docker network create es-net
 ```
 
-In order to test my image I've started a single ES instance with the following command:
+Next I've started an Elasticseach node with the following command:
 
 ```bash
 docker run -d -p 9200:9200 \
@@ -48,7 +48,7 @@ docker run -d -p 9200:9200 \
 	-Des.discovery.zen.ping.multicast.enabled=false
 ```
 
-With `--memory="2g"` and `-e ES_HEAP_SIZE="1g"` I limit the container memory to 2GB and the JVM heap size to 1GB.
+With `--memory="2g"` and `-e ES_HEAP_SIZE="1g"` I limit the container memory to 2GB and the ES heap size to 1GB.
 
 ***Prevent Elasticsearch from swapping***
 
@@ -70,7 +70,7 @@ You also need to set `-Des.bootstrap.mlockall=true`.
 For a second node to join the cluster I need to tell it how to find the first node. 
 By starting the second node on the ***es-net*** network I can use the other node's host name instead of its IP to point the second node to its master.
 
-```
+```bash
 docker run -d -p 9201:9200 \
 	--name es-t1 \
 	--network es-net \
