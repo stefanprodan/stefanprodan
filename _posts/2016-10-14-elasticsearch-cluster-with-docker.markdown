@@ -85,7 +85,8 @@ docker run -d -p 9201:9200 \
 	-Des.discovery.zen.ping.unicast.hosts="es-t0" 
 ```
 
-Since the first node is using the 9200 port I need to map different ports for the second node to accessible from outside.
+Since the first node is using the 9200 port I need to map different port for the second node to be accessible from outside. 
+Note that I'm not exposing the transport port 7300 on the host. This port is accessible only from the ***es-net*** network.
 
 With `-Des.discovery.zen.ping.unicast.hosts="es-t0"` I point `es-t1` to `es-t0` address.
 
