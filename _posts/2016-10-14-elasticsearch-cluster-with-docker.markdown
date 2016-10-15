@@ -35,26 +35,7 @@ docker network create es-net
 In order to test my image I've started a single ES instance with the following command:
 
 ```bash
-docker run -d -p 9200:9200 -p 9300:9300 \
-	--name es-t0 \
-	--network es-net \
-	-v "$PWD/storage":/usr/share/elasticsearch/data \
-	es-t \
-	-Des.network.host=_eth0_ \
-	-Des.network.publish_host="192.168.3.35" \
-	-Des.discovery.zen.ping.multicast.enabled=false 
-```
-
-There are sever issues with the above command, I had to hard code my server external IP and the ES instance has no memory limit.
-
-I can easily find the eth0 IP address with bash and I can also limit the memory using the following commands:
-
-```bash
-# get host IP
-publish_host="$(ifconfig eth0 | sed -En 's/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
-
-# limit memory
-docker run -d -p 9200:9200 -p 9300:9300 \
+docker run -d -p 9200:9200 \
 	--name es-t0 \
 	--network es-net \
 	-v "$PWD/storage":/usr/share/elasticsearch/data \
@@ -64,7 +45,6 @@ docker run -d -p 9200:9200 -p 9300:9300 \
 	es-t \
 	-Des.bootstrap.mlockall=true \
 	-Des.network.host=_eth0_ \
-	-Des.network.publish_host="$publish_host" \
 	-Des.discovery.zen.ping.multicast.enabled=false
 ```
 
@@ -91,7 +71,7 @@ For a second node to join the cluster I need to tell it how to find the first no
 By starting the second node on the ***es-net*** network I can use the other node's host name instead of its IP to point the second node to its master.
 
 ```
-docker run -d -p 9201:9200 -p 9301:9301 \
+docker run -d -p 9201:9200 \
 	--name es-t1 \
 	--network es-net \
 	-v "$PWD/storage":/usr/share/elasticsearch/data \
@@ -101,15 +81,13 @@ docker run -d -p 9201:9200 -p 9301:9301 \
 	es-t \
 	-Des.bootstrap.mlockall=true \
 	-Des.network.host=_eth0_ \
-	-Des.network.publish_host="$publish_host" \
 	-Des.discovery.zen.ping.multicast.enabled=false \
-	-Des.discovery.zen.ping.unicast.hosts="es-t0:9300" \
-	-Des.transport.tcp.port=9301
+	-Des.discovery.zen.ping.unicast.hosts="es-t0" 
 ```
 
-Since the first node is using the 9200 and 9300 ports I need to map different ports for the second node to be accessible. With `-Des.transport.tcp.port=9301` I instruct ES to use 9301 as the transport port.
+Since the first node is using the 9200 port I need to map different ports for the second node to accessible from outside.
 
-With `-Des.discovery.zen.ping.unicast.hosts="es-t0:9300"` I point `es-t1` to `es-t0` address.
+With `-Des.discovery.zen.ping.unicast.hosts="es-t0"` I point `es-t1` to `es-t0` address.
 
 The problem with this approach is that the `es-t0` node doesn't know the address of `es-t1` so I need to recreate `es-t0` with `-Des.discovery.zen.ping.unicast.hosts="es-t1:9301"`. 
 Running multiple nodes in this manner seems like a daunting task. 
@@ -138,18 +116,15 @@ if [ ! "$(docker images -q  $image)" ];then
     docker build -t $image .
 fi
 
-# create network
+# create bridge network
 if [ ! "$(docker network ls --filter name=$network -q)" ];then
     docker network create $network
 fi
 
-# get host IP
-publish_host="$(ifconfig eth0 | sed -En 's/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
-
 # concat all nodes addresses
 hosts=""
 for ((i=0; i<$cluster_size; i++)); do
-    hosts+="$image$i:930$i"
+    hosts+="$image$i"
 	[ $i != $(($cluster_size-1)) ] && hosts+=","
 done
 
@@ -157,10 +132,7 @@ done
 for ((i=0; i<$cluster_size; i++)); do
     echo "Starting node $i"
 
-    publish_port=920$i
-    transport_port=930$i
-
-    docker run -d -p 920$i:9200 -p 930$i:930$i \
+    docker run -d -p 920$i:9200 \
         --name "$image$i" \
         --network "$network" \
         -v "$storage":/usr/share/elasticsearch/data \
@@ -174,10 +146,8 @@ for ((i=0; i<$cluster_size; i++)); do
         -Des.node.name="$image$i" \
         -Des.cluster.name="$cluster" \
         -Des.network.host=_eth0_ \
-        -Des.network.publish_host="$publish_host" \
         -Des.discovery.zen.ping.multicast.enabled=false \
         -Des.discovery.zen.ping.unicast.hosts="$hosts" \
-        -Des.transport.tcp.port=930$i \
         -Des.cluster.routing.allocation.awareness.attributes=disk_type \
         -Des.node.rack=dc1-r1 \
         -Des.node.disk_type=spinning \
@@ -189,7 +159,11 @@ done
 echo "waiting 15s for cluster to form"
 sleep 15
 
-status="$(curl -fsSL "http://${publish_host}:9200/_cat/health?h=status")"
+# find host IP
+host="$(ifconfig eth0 | sed -En 's/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p')"
+
+# get cluster status
+status="$(curl -fsSL "http://${host}:9200/_cat/health?h=status")"
 echo "cluster health status is $status"
 ```
 
@@ -223,8 +197,8 @@ cluster health status is green
 You can now access HQ or KOPF to check your cluster status.
 
 ```
-http://localhost:9200/_plugin/hq/#cluster
-http://localhost:9200/_plugin/kopf/#!/cluster
+http://<HOST-IP>:9200/_plugin/hq/#cluster
+http://<HOST-IP>:9200/_plugin/kopf/#!/cluster
 ```
 
 ![kopf]({{ "assets/kopf-es.png" | prepend: site.baseurl }})
