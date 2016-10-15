@@ -7,7 +7,7 @@ tags: [Elasticsearch,Docker]
 ---
 
 I was looking for a way to run an Elasticsearch cluster for testing purposes by emulating a multi-node production setup on a single server. 
-Instead of setting up multiple virtual machines on my test server, I decided to use Docker. With Docker resources limits options and the bridge network driver, I can build a test environment and run my tests way faster then using VMs.
+Instead of setting up multiple virtual machines on my test server, I decided to use Docker. With the resource limiting options in Docker and the bridge network driver, I can build a test environment and run my tests way faster than using VMs.
 
 ### Running a single instance
 
@@ -25,7 +25,7 @@ RUN chmod +x /usr/local/bin/docker-healthcheck
 HEALTHCHECK CMD ["docker-healthcheck"]
 ```
 
-I've built my image and I've created a bridge network for the ES cluster:
+I’ve built my image and created a bridge network for the ES cluster:
 
 ```bash
 docker build -t es-t .
@@ -67,14 +67,14 @@ docker run -d -p 9200:9200 -p 9300:9300 \
 	-Des.discovery.zen.ping.multicast.enabled=false
 ```
 
-With `--ulimit memlock=-1:-1` and `-Des.bootstrap.mlockall=true` we instruct the ES node not to swap its memory.
+With `--ulimit memlock=-1:-1` and `-Des.bootstrap.mlockall=true` I instruct the ES node not to swap its memory.
 
-With `--memory="2g"` and `-e ES_HEAP_SIZE="1g"` we limit the container memory to 2GB and the JVM heap size to 1GB.
+With `--memory="2g"` and `-e ES_HEAP_SIZE="1g"` I limit the container memory to 2GB and the JVM heap size to 1GB.
 
-### Running a two nodes cluster
+### Running a two node cluster
 
-For a second node to join the cluster we need to tell it how to find the first node. 
-By starting the second node on the ***es-net*** network you can use the other node host name instead of it's IP to point the second node to it's master.
+For a second node to join the cluster I need to tell it how to find the first node. 
+By starting the second node on the ***es-net*** network I can use the other node's host name instead of its IP to point the second node to its master.
 
 ```
 docker run -d -p 9201:9200 -p 9301:9301 \
@@ -92,11 +92,11 @@ docker run -d -p 9201:9200 -p 9301:9301 \
 	-Des.transport.tcp.port=9301
 ```
 
-Since the first node is using the 9200 and 9300 ports you need to map different ports for the second node to be accessible. With `-Des.transport.tcp.port=9301` we instruct ES to use 9301 as the transport port.
+Since the first node is using the 9200 and 9300 ports I need to map different ports for the second node to be accessible. With `-Des.transport.tcp.port=9301` I instruct ES to use 9301 as the transport port.
 
-With `-Des.discovery.zen.ping.unicast.hosts="es-t0:9300"` we point `es-t1` to `es-t0` address.
+With `-Des.discovery.zen.ping.unicast.hosts="es-t0:9300"` I point `es-t1` to `es-t0` address.
 
-The problem with this approach is that the `es-t0` node doesn't know the address of `es-t1` so we need to recreate `es-t0` with `-Des.discovery.zen.ping.unicast.hosts="es-t1:9301"`. 
+The problem with this approach is that the `es-t0` node doesn't know the address of `es-t1` so I need to recreate `es-t0` with `-Des.discovery.zen.ping.unicast.hosts="es-t1:9301"`. 
 Running multiple nodes in this manner seems like a daunting task. 
 
 ### Provisioning and running a multi-node cluster
