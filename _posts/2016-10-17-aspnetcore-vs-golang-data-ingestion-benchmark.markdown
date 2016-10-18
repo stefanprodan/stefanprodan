@@ -220,7 +220,7 @@ Go back-end        3.86%   6.72MB    3.36MB
 
 ### Improving ASP.NET Core HTTP client code
 
-Instead of creating a HTTP client on each call I changed the code and used a static client and switch to async:
+Instead of creating a HTTP client on each call I changed the code and used a static client and switched to async:
 
 ```cs
 private static HttpClient client = new HttpClient();
