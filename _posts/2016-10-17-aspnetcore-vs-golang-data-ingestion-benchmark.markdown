@@ -226,12 +226,8 @@ Instead of creating a HTTP client on each call I changed the code and used a sta
 private static HttpClient client = new HttpClient();
 
 [HttpPost]
-private static HttpClient client = new HttpClient();
-
-[HttpPost]
 public async Task<IActionResult> Event([FromBody]Payload payload)
 {
-
     if (!string.IsNullOrEmpty(_settings.ProxyFor))
     {
         var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
