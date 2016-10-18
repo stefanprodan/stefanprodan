@@ -218,6 +218,56 @@ Go front-end       10.95%  9.13MB    4.40MB
 Go back-end        3.86%   6.72MB    3.36MB
 ```
 
+### Improving ASP.NET Core HTTP client code
+
+Instead of creating a HTTP client on each call I changed the code and used a static client and switch to async:
+
+```cs
+[HttpPost]
+public async Task<IActionResult> Event([FromBody]Payload payload)
+{
+    if (!string.IsNullOrEmpty(payload.Data))
+    {
+        var data = JsonConvert.DeserializeObject<dynamic>(payload.Data);
+
+        if (!string.IsNullOrEmpty(_settings.ProxyFor))
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
+            var result = await client.PostAsync(_settings.ProxyFor + "/ingest/data", content);
+            result.RequestMessage.Dispose();
+            result.Dispose();
+        }
+    }
+    return new EmptyResult();
+}
+```
+
+The results improved a lot. ApacheBench reported that the ***ASP.NET Core*** front-end service has processed ***10K*** request in ***10*** seconds at a rate of ***936*** request per second:
+
+```
+Concurrency Level:      50
+Time taken for tests:   10.674 seconds
+Complete requests:      10000
+Failed requests:        0
+Keep-Alive requests:    10000
+Total transferred:      1160000 bytes
+Total body sent:        2950000
+HTML transferred:       0 bytes
+Requests per second:    936.87 [#/sec] (mean)
+Time per request:       53.369 [ms] (mean)
+Time per request:       1.067 [ms] (mean, across all concurrent requests)
+Transfer rate:          106.13 [Kbytes/sec] received
+                        269.90 kb/s sent
+                        376.03 kb/s total
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0    0   0.4      0      10
+Processing:     5   53  11.3     51     235
+Waiting:        5   53  11.3     51     235
+Total:          5   53  11.4     51     239
+```
+
 ### Scale up with Docker Swarm
 
 My goal is to make the system take 1K req/sec, so I decided to run the containers on Docker Swarm and scale the front-end service to x3.
@@ -292,11 +342,11 @@ Benchmark results:
 ```
      	        REQ/sec   TIME     REQ     Memory
 -------------------------------------------------
-ASP.NET Core    319       31 sec   10000   224MB
+ASP.NET Core    936       10 sec   10000   224MB
 Go              3213      3 sec    10000   9MB
 ```
 
-For my use case, the load tests showed that the Go HTTP stack is ten times faster then ASP.NET Core. Scaling the front-end service to x3 made the ASP.NET Core reach my 1K req/s goal, but the memory usage is very high compared to Go.
+For my use case, the load tests showed that the Go HTTP stack is way faster then ASP.NET Core. Scaling the front-end service to x3 made the ASP.NET Core reach my 1K req/s goal, but the memory usage is very high compared to Go.
 
 I know that ASP.NET Core is for all intents and purposes a brand new platform. However, running the load test on the back-end service resulted in 4K req/s which leads me to believe that, while Kestrel is very fast, there may be a bottleneck when sending HTTP requests. The .NET Core team has made some huge improvements on the Kestrel server performance this year. In terms of serving data, Kestrel has hit [1M req/sec](https://github.com/aspnet/benchmarks), so I expect the data ingestion rate to improve in the future.
 
