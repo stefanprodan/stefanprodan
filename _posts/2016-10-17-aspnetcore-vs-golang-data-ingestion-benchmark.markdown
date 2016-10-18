@@ -13,7 +13,7 @@ This system is composed of two types of services that are communicating over HTT
 * a front-end service (Web API) that receives various payloads in JSON format, validates them, does data transformation and aggregation then sends the data to the back-end service
 * a back-end service (Web API) that receives data from the front-end services and based on the payload type it persists it to various storages (PG, ES, Redis, OpenStack Swift)
 
-On peak hours the current system has an ingestion rate of 1000 payloads per second and it's using about 4GB RAM.
+At peak hours the current system has an ingestion rate of 1000 payloads per second and it's using about 4GB RAM.
 Before porting it to a different technology, I have to make sure that the new tech can handle this kind of load and I also want a smaller memory footprint. 
 Since I enjoy writing APIs with C# and Go, I decided to code a basic data flow in both technologies and run some tests on a staging server that has similar specs with the production ones.
 
@@ -23,17 +23,17 @@ The prototype is composed of two web apps that are running in Docker containers.
 
 Front-end:
 
-* exposes a HTTP POST endpoint on witch receives a JSON payload from a caller
-* on receive it deserialize the payload in an object
-* it serialize the object back to JSON
-* it instantiate a HTTP client and makes a HTTP POST request to the back-end service
+* exposes a HTTP POST endpoint on which it receives a JSON payload from a caller
+* on receive it deserializes the payload into an object
+* serializes the object back to JSON
+* instantiates an HTTP client and makes an HTTP POST request to the back-end service
 * waits for the back-end service to process the payload
 * disposes the HTTP client and returns a HTTP 200 Code to the caller
 
 Back-end:
 
-* exposes a HTTP POST endpoint on witch receives a JSON payload from the front-end service
-* on receive it deserialize the payload in an object
+* exposes an HTTP POST endpoint on which it receives a JSON payload from the front-end service
+* on receive it deserializes the payload into an object
 * returns a HTTP 200 Code to the front-end service
 
 Both services are instrumented with Prometheus. Prometheus collects the following metrics: rate of HTTP requests per second, HTTP requests latency, CPU, RAM, NET and IO usage of each container.
@@ -207,7 +207,7 @@ Waiting:        4   15  15.9     13     380
 Total:          4   15  16.3     13     385
 ```
 
-Prometheus reported the following resources usage:
+Prometheus reported the following resource usage:
 
 ```
 Service	           CPU     RAM       RAM (after test)
@@ -278,7 +278,7 @@ Total:          4   11   7.8     10     435
 
 ### Observations
 
-By default the ASP.NET Core garbage collector `System.GC.Server` mode is enabled, this works well on Windows but on Linux made the front-end service go up to 2GB of memory. After it reaches 2GB, the HTTP client started to crash on every request. If you are deploying ASP.NET Core with Docker then you should set `"System.GC.Server": false` in project.json.
+By default the ASP.NET Core garbage collector `System.GC.Server` mode is enabled, this works well on Windows but on Linux made the front-end service go up to 2GB of memory. After it reached 2GB, the HTTP client started to crash on every request. If you are deploying ASP.NET Core with Docker then you should set `"System.GC.Server": false` in project.json.
 
 I've run this test for 6 hours every 10 minutes, while the Go performance was consistent on every run, the ASP.NET Core fluctuated a lot. I've seen ASP.NET Core jump to 20% CPU and drop to 200 req/s some times. 
 
@@ -298,6 +298,6 @@ Go              3213      3 sec    10000   9MB
 
 For my use case, the load tests showed that the Go HTTP stack is ten times faster then ASP.NET Core. Scaling the front-end service to x3 made the ASP.NET Core reach my 1K req/s goal, but the memory usage is very high compared to Go.
 
-I know that ASP.NET Core is a very young platform and I suspect that the HTTP client (*nix implementation) is the main bottleneck. The .NET Core team has made some huge improvements on the Kestrel server performance this year. In terms of serving data, Kestrel has hit [1M req/sec](https://github.com/aspnet/benchmarks), so I expect the data ingestion rate to improve in the future.
+I know that ASP.NET Core is for all intents and purposes a brand new platform. However, running the load test on the back-end service resulted in 4K req/s which leads me to believe that, while Kestrel is very fast, there may be a bottleneck when sending HTTP requests. The .NET Core team has made some huge improvements on the Kestrel server performance this year. In terms of serving data, Kestrel has hit [1M req/sec](https://github.com/aspnet/benchmarks), so I expect the data ingestion rate to improve in the future.
 
 If you wish to run the tests yourself, the ASP.NET Core repo is on GitHub [here](https://github.com/stefanprodan/prometheus.aspnetcore) and the Go repo [here](https://github.com/stefanprodan/gomicro).
