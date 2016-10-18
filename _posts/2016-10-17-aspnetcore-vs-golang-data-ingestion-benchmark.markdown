@@ -223,13 +223,13 @@ Go back-end        3.86%   6.72MB    3.36MB
 Instead of creating a HTTP client on each call I changed the code and used a static client and switch to async:
 
 ```cs
+private static HttpClient client = new HttpClient();
+
 [HttpPost]
 public async Task<IActionResult> Event([FromBody]Payload payload)
 {
     if (!string.IsNullOrEmpty(payload.Data))
     {
-        var data = JsonConvert.DeserializeObject<dynamic>(payload.Data);
-
         if (!string.IsNullOrEmpty(_settings.ProxyFor))
         {
             var content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8, "application/json");
