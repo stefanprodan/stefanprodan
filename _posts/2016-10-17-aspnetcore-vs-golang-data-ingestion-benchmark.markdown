@@ -337,10 +337,12 @@ In Golang I could fix this by disabling KeepAlive and setting the `MaxIdleConnsP
 Benchmark results:
 
 ```
-     	        REQ/sec   TIME     REQ     Memory
--------------------------------------------------
-ASP.NET Core    936       10 sec   10000   224MB
-Go              3213      3 sec    10000   9MB
+     	        REQ/sec   TIME     REQ    Concurrency  Memory
+-------------------------------------------------------------
+ASP.NET Core    936       10sec    10K    50           224MB
+Go              3213      3sec     10K    50           9MB
+ASP.NET Core    1324      75sec    100K   300          235MB
+Go              6051      16sec    100K   300          12MB
 ```
 
 For my use case, the load tests showed that the Go HTTP stack is way faster then ASP.NET Core. Scaling the front-end service to x3 made the ASP.NET Core reach my 1K req/s goal, but the memory usage is very high compared to Go.
