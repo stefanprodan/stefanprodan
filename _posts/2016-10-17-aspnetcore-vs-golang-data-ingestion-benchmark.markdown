@@ -269,33 +269,33 @@ Total:          5   53  11.4     51     239
 
 My goal is to make the system take 1K req/sec, so I decided to run the containers on Docker Swarm and scale the front-end service to x3.
 
-ApacheBench reported that the ***ASP.NET Core*** front-end service ***x3*** has processed ***10K*** request in ***8*** seconds at a rate of ***1223*** request per second:
+ApacheBench reported that the ***ASP.NET Core*** front-end service ***x3*** has processed ***10K*** request in ***6*** seconds at a rate of ***1615*** request per second:
 
 ```
-Concurrency Level:      50
-Time taken for tests:   8.176 seconds
+Concurrency Level:      100
+Time taken for tests:   6.190 seconds
 Complete requests:      10000
 Failed requests:        0
 Keep-Alive requests:    10000
 Total transferred:      1160000 bytes
 Total body sent:        2950000
 HTML transferred:       0 bytes
-Requests per second:    1223.11 [#/sec] (mean)
-Time per request:       40.880 [ms] (mean)
-Time per request:       0.818 [ms] (mean, across all concurrent requests)
-Transfer rate:          138.56 [Kbytes/sec] received
-                        352.36 kb/s sent
-                        490.91 kb/s total
+Requests per second:    1615.48 [#/sec] (mean)
+Time per request:       61.901 [ms] (mean)
+Time per request:       0.619 [ms] (mean, across all concurrent requests)
+Transfer rate:          183.00 [Kbytes/sec] received
+                        465.40 kb/s sent
+                        648.40 kb/s total
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
-Connect:        0    0   0.3      0       9
-Processing:     5   40  24.8     35     198
-Waiting:        5   40  24.8     35     198
-Total:          5   40  24.9     35     200
+Connect:        0    0   0.5      0      16
+Processing:     5   60  28.2     53     415
+Waiting:        5   59  28.2     53     415
+Total:          5   60  28.4     53     419
 ```
 
-As expected, Docker Swarm balanced the load between the front-end instances and I could reach over 1K req/sec. The back-end service didn't need to be scaled at this load.
+As expected, Docker Swarm balanced the load between the front-end instances and I could reach over 1K req/sec. The back-end service didn't need to be scaled at this load. I did a load test on the back-end service (single instance) and it got up to 4K req/sec.
 
 For the Go app I've raised the stakes to 100K requests at a concurrency level of 100. ApacheBench reported that the ***Go*** front-end service ***x3*** has processed ***100K*** request in ***11*** seconds at a rate of ***9017*** request per second:
 
