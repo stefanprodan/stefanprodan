@@ -21,7 +21,7 @@ The main reason I've started working on this is that I've wanted to have a backu
 * http file server for local backups and logs
 * distributed as an Alpine Docker image
 
-#### Install
+### Install
 
 ```bash
 docker run -dp 8090:8090 --name mgob \
@@ -32,7 +32,7 @@ docker run -dp 8090:8090 --name mgob \
     -LogLevel=info
 ```
 
-#### Configure
+### Configure
 
 Define a backup plan (yaml format) for each database you want to backup inside the `config` dir. 
 The yaml file name is being used as the backup plan ID, no white spaces or special characters are allowed. 
@@ -64,6 +64,7 @@ s3:
   accessKey: "Q3AM3UQ867SPQQA43P2F"
   secretKey: "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"
   api: "S3v4"
+# SFTP upload (optional)
 sftp:
   host: sftp.company.com
   port: 2022
@@ -88,14 +89,14 @@ slack:
   username: mgob
 ```
 
-#### Web API
+### Web API
 
 * `mgob-host:8090/` file server
 * `mgob-host:8090/status` backup jobs status
 * `mgob-host:8090/metrics` Prometheus endpoint
 * `mgob-host:8090/version` mgob version and runtime info
 
-#### Logs
+### Logs
 
 View scheduler logs with `docker logs mgob`:
 
@@ -122,7 +123,7 @@ total 4160
 -rw-r--r--  1 aleph  staff   1.5K May  3 17:47 mongo-dev-1493822820.log
 ```
 
-#### Metrics
+### Metrics
 
 Successful backups counter
 
@@ -150,7 +151,7 @@ mgob_scheduler_backup_latency_sum{plan="mongo-test",status="500"} 9.679809477
 mgob_scheduler_backup_latency_count{plan="mongo-test",status="500"} 4
 ```
 
-#### Restore
+### Restore
 
 In order to restore from a local backup you have two options:
 
