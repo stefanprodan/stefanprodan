@@ -15,6 +15,7 @@ The main reason I've started working on this is that I've wanted to have a backu
 * schedule backups
 * local backups retention
 * upload to S3 Object Storage (Minio, AWS, Google Cloud)
+* upload to SFTP
 * notifications (Email, Slack)
 * instrumentation with Prometheus
 * http file server for local backups and logs
@@ -63,6 +64,13 @@ s3:
   accessKey: "Q3AM3UQ867SPQQA43P2F"
   secretKey: "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"
   api: "S3v4"
+sftp:
+  host: sftp.company.com
+  port: 2022
+  username: user
+  password: secret
+  # dir must exist on the SFTP server
+  dir: backup
 # Email notifications (optional)
 smtp:
   server: smtp.company.com
@@ -140,6 +148,27 @@ mgob_scheduler_backup_latency{plan="mongo-test",status="500",quantile="0.9"} 2.4
 mgob_scheduler_backup_latency{plan="mongo-test",status="500",quantile="0.99"} 2.438254775
 mgob_scheduler_backup_latency_sum{plan="mongo-test",status="500"} 9.679809477
 mgob_scheduler_backup_latency_count{plan="mongo-test",status="500"} 4
+```
+
+#### Restore
+
+In order to restore from a local backup you have two options:
+
+Browse `mgob-host:8090/` to identify the backup you want to restore. 
+Login to your MongoDB server and download the archive using `curl` and restore the backup with `mongorestore` command line.
+
+```bash
+curl -o /tmp/mongo-test-1494056760.gz http://mgob-host:8090/mongo-test/mongo-test-1494056760.gz
+mongorestore --gzip --archive=/tmp/mongo-test-1494056760.gz --db test
+```
+
+You can also restore a backup from within mgob container. 
+Exec into mgob, identify the backup you want to restore and use `mongorestore` to connect to your MongoDB server.
+
+```bash
+docker exec -it mgob sh
+ls /storage/mongo-test
+mongorestore --gzip --archive=/storage/mongo-test/mongo-test-1494056760.gz --host mongohost:27017 --db test
 ```
 
 If you have any suggestion on improving MGOB please submit an issue or PR on [GitHub](https://github.com/stefanprodan/mgob). Contributions are more than welcome!
