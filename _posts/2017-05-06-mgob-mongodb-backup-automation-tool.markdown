@@ -8,20 +8,29 @@ tags: [GoLang,MongoDB]
 
 MGOB is an open source MongoDB backup automation tool built with golang. It's MIT licensed and hosted on GitHub at [github.com/stefanprodan/mgob](https://github.com/stefanprodan/mgob).
 
-The main reason I've started working on this is that I've wanted to have a backup agent instrumentation with Prometheus that I can run inside a container and target various MongoDB servers that are only accessible from within a Docker/Kubernetes network. In the next versions I plan to extend MGOB with on demand backup/restore capabilities (via web API) so it could be easily integrated into a CI/CD pipeline.
+The main reason I've started working on this is that I've wanted to have a backup agent instrumentation with Prometheus that I can run inside a container and target various MongoDB servers that are only accessible from within a Docker/Kubernetes network. In the next versions I plan to extend MGOB with on demand restore capabilities (via web API) so it could be easily integrated into a CI/CD pipeline.
 
 #### Features
 
 * schedule backups
 * local backups retention
-* upload to S3 Object Storage (Minio, AWS, Google Cloud)
-* upload to SFTP
+* upload to SFTP and S3 Object Storage (Minio, AWS, Google Cloud)
+* on demand backup via web API
 * notifications (Email, Slack)
 * instrumentation with Prometheus
 * http file server for local backups and logs
 * distributed as an Alpine Docker image
 
 ### Install
+
+MGOB is available on Docker Hub at [stefanprodan/mgob](https://hub.docker.com/r/stefanprodan/mgob/). 
+
+Supported tags:
+
+* `stefanprodan/mgob:latest` stable [release](https://github.com/stefanprodan/mgob/releases)
+* `stefanprodan/mgob:edge` master branch [build](https://travis-ci.org/stefanprodan/mgob)
+
+Run:
 
 ```bash
 docker run -dp 8090:8090 --name mgob \
@@ -91,10 +100,28 @@ slack:
 
 ### Web API
 
-* `mgob-host:8090/` file server
+* `mgob-host:8090/storage` file server
 * `mgob-host:8090/status` backup jobs status
 * `mgob-host:8090/metrics` Prometheus endpoint
 * `mgob-host:8090/version` mgob version and runtime info
+
+On demand backup:
+
+* HTTP POST `mgob-host:8090/backup/:planID`
+
+```bash
+curl -X POST http://mgob-host:8090/backup/mongo-debug
+```
+
+```json
+{
+  "plan": "mongo-debug",
+  "file": "mongo-debug-1494256295.gz",
+  "duration": "3.635186255s",
+  "size": "455 kB",
+  "timestamp": "2017-05-08T15:11:35.940141701Z"
+}
+```
 
 ### Logs
 
