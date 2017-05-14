@@ -37,11 +37,12 @@ docker run -dp 8090:8090 --name mgob \
     -v "/mogb/config:/config" \
     -v "/mogb/storage:/storage" \
     -v "/mgob/tmp:/tmp" \
+    -v "/mgob/data:/data" \
     stefanprodan/mgob \
     -LogLevel=info
 ```
 
-### Configure
+#### Configure
 
 Define a backup plan (yaml format) for each database you want to backup inside the `config` dir. 
 The yaml file name is being used as the backup plan ID, no white spaces or special characters are allowed. 
@@ -87,7 +88,7 @@ smtp:
   port: 465
   username: user
   password: secret
-  from: mgod@company.com
+  from: mgob@company.com
   to:
     - devops@company.com
     - alerts@company.com
@@ -98,12 +99,13 @@ slack:
   username: mgob
 ```
 
-### Web API
+#### Web API
 
 * `mgob-host:8090/storage` file server
 * `mgob-host:8090/status` backup jobs status
 * `mgob-host:8090/metrics` Prometheus endpoint
 * `mgob-host:8090/version` mgob version and runtime info
+* `mgob-host:8090/debug` pprof endpoint
 
 On demand backup:
 
@@ -120,6 +122,25 @@ curl -X POST http://mgob-host:8090/backup/mongo-debug
   "duration": "3.635186255s",
   "size": "455 kB",
   "timestamp": "2017-05-08T15:11:35.940141701Z"
+}
+```
+
+Scheduler status:
+
+* HTTP GET `mgob-host:8090/status`
+* HTTP GET `mgob-host:8090/status/:planID`
+
+```bash
+curl -X GET http://mgob-host:8090/status/mongo-debug
+```
+
+```json
+{
+  "plan": "mongo-debug",
+  "next_run": "2017-05-13T14:32:00+03:00",
+  "last_run": "2017-05-13T11:31:00.000622589Z",
+  "last_run_status": "200",
+  "last_run_log": "Backup finished in 2.339055539s archive mongo-debug-1494675060.gz size 527 kB"
 }
 ```
 
