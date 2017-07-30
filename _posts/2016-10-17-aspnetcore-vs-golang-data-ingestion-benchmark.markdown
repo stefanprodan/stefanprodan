@@ -38,7 +38,7 @@ Back-end:
 
 Both services are instrumented with Prometheus. Prometheus collects the following metrics: rate of HTTP requests per second, HTTP requests latency, CPU, RAM, NET and IO usage of each container.
 
-![data flow]({{ "assets/benchmark-system-data-flow.png" | prepend: site.baseurl }})
+![data flow]({{ "assets/benchmark-system-data-flow.png" | relative_url }})
 
 The front-end data ingestion handler in ASP.NET Core looks like this:
 

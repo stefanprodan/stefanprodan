@@ -35,7 +35,7 @@ The logging stack:
 
 ***Flow*** : container -> docker gelf -> logstash shipper -> redis broker -> logstash indexer -> elasticsearch ingester -> elasticsearch data cluster -> elasticsearch coordinator -> kibana
 
-![Flow]({{ "assets/dockelk.png" | prepend: site.baseurl }})
+![Flow]({{ "assets/dockelk.png" | relative_url }})
 
 Starting with the Redis node and down you can horizontally scale any node. You will need a NGINX reverse proxy if you want to have multiple Kibana nodes. 
 
@@ -481,7 +481,7 @@ Note that GELF will set the `level` field to `6` when the input comes from `STDO
 
 Using the above filter will result in the following Kibana view:
 
-![Kibana]({{ "assets/nginx-logs-kibana.png" | prepend: site.baseurl }})
+![Kibana]({{ "assets/nginx-logs-kibana.png" | relative_url }})
 
 The Logstash Grok filter parses the NGINX access log and extracts the http version, http verb, request path, referrer, response http code, bytes, client IP, device, browser and OS details. 
 With these fields you can turn Kibana into a versatile traffic analytics tool. 

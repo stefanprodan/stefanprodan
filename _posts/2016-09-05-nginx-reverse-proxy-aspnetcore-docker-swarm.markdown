@@ -10,7 +10,7 @@ This tutorial shows how you can set up NGINX as a reverse proxy for ASP.NET Core
 
 You will be running the reverse proxy and web app in containers on a Docker Swarm cluster. The NGINX reverse proxy will forward the requests to your app service and Docker Swarm will load balance the requests between your app instances.
 
-![NGINX on Docker Swarm]({{ "assets/nginx-proxy-docker-swarm.png" | prepend: site.baseurl }})
+![NGINX on Docker Swarm]({{ "assets/nginx-proxy-docker-swarm.png" | relative_url }})
 
 I'm using a Windows 10 machine for development but you can follow this tutorial on a Mac or Linux device using Visual Studio Code and Docker.
 

@@ -8,7 +8,7 @@ tags: [Jenkins,Docker]
 
 This article shows how you can use a Jenkins CI Server running in a Docker container, to do continuous integration and treat build environments as on-demand and disposable entities. Say goodbye to dedicated VMs for each build environment. Using containers as building blocks helps you recreate dev, test, QA and production environments in a deployment pipeline with just a few lines of code.  
 
-![Jenkins CI disposable containers]({{ "assets/jenkins-disposable-dontainers.png" | prepend: site.baseurl }})
+![Jenkins CI disposable containers]({{ "assets/jenkins-disposable-dontainers.png" | relative_url }})
 
 
 ### Jenkins Docker image

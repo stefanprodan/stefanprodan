@@ -25,6 +25,6 @@ Lets assume you have an ASP.NET 5 MVC app that needs to manage documents, photos
 
 The same architecture can be applied to the storage with Swift. You'll need to set up a minimum of two swift servers, each containing a proxy and a storage node. Ideally these servers or VMs should be hosted in different regions/datacenters. Adding both swift proxy endpoints to SwfitClient config will ensure that any app instance will share the same storage and if a swift node becomes unreachable due to a restart or network failure all app instances will silently fail-over to the 2nd node.
 
-![Swift Cluster]({{ "assets/swift-cluster.png" | prepend: site.baseurl }})
+![Swift Cluster]({{ "assets/swift-cluster.png" | relative_url }})
 
 You can read more on OpenStack Swift architecture on our [wiki](https://github.com/vtfuture/SwiftClient/wiki).

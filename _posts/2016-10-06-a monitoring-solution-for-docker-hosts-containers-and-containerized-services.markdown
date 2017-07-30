@@ -23,7 +23,7 @@ The Prometheus ecosystem is huge meaning you can find metrics exporters for a wi
 If you want to try out the Prometheus stack, take a look at the [dockprom](https://github.com/stefanprodan/dockprom) repository on GitHub. You can use ***dockprom*** as a starting point in developing your own monitoring solution. With ***dockprom*** you can, run with one command, the whole stack: [Prometheus](https://prometheus.io/), [Grafana](http://grafana.org/), [cAdvisor](https://github.com/google/cadvisor), 
 [NodeExporter](https://github.com/prometheus/node_exporter) and [AlertManager](https://github.com/prometheus/alertmanager).
 
-![Prometheus]({{ "assets/prometheus-on-docker.png" | prepend: site.baseurl }})
+![Prometheus]({{ "assets/prometheus-on-docker.png" | relative_url }})
 
 ### Install
 

@@ -202,7 +202,7 @@ http://<HOST-IP>:9200/_plugin/hq/#cluster
 http://<HOST-IP>:9200/_plugin/kopf/#!/cluster
 ```
 
-![kopf]({{ "assets/kopf-es.png" | prepend: site.baseurl }})
+![kopf]({{ "assets/kopf-es.png" | relative_url }})
 
 I've made a teardown script so you can easily remove the cluster and the ES image:
 

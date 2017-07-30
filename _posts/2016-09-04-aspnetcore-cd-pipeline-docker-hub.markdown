@@ -15,7 +15,7 @@ The problem with this approach is that the dotnet onbuild image is very large, i
 
 Docker Hub can't compile your app outside of a container, for that you need a build server. You can use AppVeyor build server, it has a free subscription plan for open source project and it can build, test and deploy .NET Core apps. But you can't build and push a docker image with AppVeyor, only .net code. My solution is to get the build artifacts out of AppVeyor and back on GitHub on a different branch using AppVeyor git push. Docker Hub will detect a commit on that branch, where the artifacts are, and use them to build the image.
 
-![CD Pipeline]({{ "assets/aspnetcore-cd-dockerhub.png" | prepend: site.baseurl }})
+![CD Pipeline]({{ "assets/aspnetcore-cd-dockerhub.png" | relative_url }})
 
 ***Continuous deployment pipeline:***
 
@@ -151,6 +151,6 @@ Replace `APP` with your app name.
 
 ***Docker Hub build settings example:***
 
-![CD Pipeline]({{ "assets/dockerdash-hub-settings.png" | prepend: site.baseurl }})
+![CD Pipeline]({{ "assets/dockerdash-hub-settings.png" | relative_url }})
 
 A working example of this CD pipeline is available on GitHub at [stefanprodan/dockerdash](https://github.com/stefanprodan/dockerdash).

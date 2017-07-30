@@ -10,7 +10,7 @@ This article shows how you can set up a Docker Private Registry with authenticat
 
 Nexus Repository OSS is a universal repository manager with support for all major package formats and types. It's a free solution for storing and sharing Docker images and other components like NuGet or NPM packages across the deployment pipeline while keeping your proprietary and third-party images private and secure.
 
-![Nexus Docker Registry]({{ "assets/nexus-docker.png" | prepend: site.baseurl }})
+![Nexus Docker Registry]({{ "assets/nexus-docker.png" | relative_url }})
 
 I am using an Ubuntu Server 16.04 and Docker 1.12 to host the Nexus Repository and NGINX containers.
 
