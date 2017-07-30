@@ -10,7 +10,7 @@
 
     <div class="panel-main__inner panel-inverted">
     <div class="panel-main__content">
-        <a href="{{ absolute_url }}" title="link to home of {{ site.title }}">
+        <a href="{{ relative_url }}" title="link to home of {{ site.title }}">
           <img src="{{ "images/profile.jpg" | relative_url }}" class="user-image" alt="My Profile Photo">
           <h1 class="panel-cover__title panel-title">{{ site.title }}</h1>
         </a>
@@ -22,7 +22,7 @@
 
           <nav class="cover-navigation cover-navigation--primary">
             <ul class="navigation">
-              <li class="navigation__item"><a href="{{ absolute_url }}#blog" title="link to {{ site.title }} blog" class="blog-button">Blog</a></li>
+              <li class="navigation__item"><a href="{{ relative_url }}#blog" title="link to {{ site.title }} blog" class="blog-button">Blog</a></li>
             </ul>
           </nav>
 
