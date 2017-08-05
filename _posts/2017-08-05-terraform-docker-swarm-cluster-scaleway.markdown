@@ -114,7 +114,7 @@ terraform apply -var docker_api_ip="0.0.0.0"
 If you chose to do so, you should allow access to the API only from your IP. 
 You'll have to add a security group rule for ports 2375 and 9323 to the managers and workers groups.
 
-```tf
+```js
 resource "scaleway_security_group_rule" "docker_api_accept" {
   security_group = "${scaleway_security_group.swarm_managers.id}"
 
@@ -141,7 +141,7 @@ And last you can tear down the whole infrastructure with `terraform destroy -for
 The first step in creating the Swarm cluster is to define the Scaleway provider, base image and boot script. 
 You'll have to use Racher boot script since Scaleway's custom Xenial kernel is missing IPVS_NFCT and IPVS_RR.
 
-```tf
+```js
 provider "scaleway" {
   region = "${var.region}"
 }
@@ -161,7 +161,7 @@ As you can see, the Scaleway region is loaded from the region variables. This al
 when running Terraform apply. Besides the region there are more variables defined, 
 all located in the `variables.tf` file.
 
-```tf
+```js
 variable "region" {
   default = "ams1"
 }
@@ -190,7 +190,7 @@ variable "docker_api_ip" {
 In order to create the Swarm manager, first you need to reserve a public IP for it. Terraform provisioners 
 will use this IP to run commands on the manager node via SSH.
 
-```tf
+```js
 resource "scaleway_ip" "swarm_manager_ip" {
   count = 1
 }
@@ -199,7 +199,7 @@ resource "scaleway_ip" "swarm_manager_ip" {
 Having the public IP resource ready, the Scalewaly image and boot script you can define a server that will 
 act as the Swarm manager.
 
-```tf
+```js
 resource "scaleway_server" "swarm_manager" {
   count          = 1
   name           = "${terraform.workspace}-manager-${count.index + 1}"
@@ -261,7 +261,7 @@ I'm using a template, so that at runtime you can change the IP variable in order
 metrics endpoint on the internet. The default value of the IP is 127.0.0.1 so the API is only accessible from localhost. 
 The template resource is defined as:
 
-```tf
+```js
 data "template_file" "docker_conf" {
   template = "${file("conf/docker.tpl")}"
 
@@ -298,7 +298,7 @@ jq -n --arg manager "$MANAGER" --arg worker "$WORKER" \
 The above script extracts the host argument from the input JSON, connects to the manager node and returns 
 the two tokens as a JSON object. Using this script you can define an external data source like this:
 
-```tf
+```js
 data "external" "swarm_tokens" {
   program = ["./scripts/fetch-tokens.sh"]
 
@@ -318,7 +318,7 @@ Having the join token, you can proceed with the Swarm workers provision. The wor
 similar to the manager with some additions. After installing Docker CE, using the worker token and the manager's 
 private IP these servers will join the Swarm as worker nodes.
 
-```tf
+```js
 resource "scaleway_ip" "swarm_worker_ip" {
   count = "${var.worker_instance_count}"
 }
@@ -350,7 +350,7 @@ If the number of worker nodes is decreased, you need to make sure they also get 
 Terraform lets you react to destroy actions, so you can create a provisioner that will connect to the manager node 
 and issue a remove command. You can also drain the node and make him leave the cluster before it gets destroyed. 
 
-```tf
+```js
   provisioner "remote-exec" {
     when = "destroy"
 
@@ -406,5 +406,3 @@ achieved with 200 code lines.
 
 If you have any questions or suggestions, please leave a comment here or on GitHub at 
 [stefanprodan/scaleway-swarm-terraform](https://github.com/stefanprodan/scaleway-swarm-terraform).
-
-
