@@ -4,3 +4,5 @@ _site
 *.sublime-project
 *.sublime-workspace
 .DS_Store
+.idea/
+.vscode/

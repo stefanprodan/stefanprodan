@@ -473,7 +473,7 @@ $ curl $(terraform output swarm_manager_public_ip)
 
 Now if you login into Weave Cloud, in the explore section you'll be able to see the Docker Swarm cluster nodes and running containers. 
 
-![Flow]({{ "assets/weave-cloud-swarm-scope-tf.png" | relative_url }})
+![Flow]({{ "assets/weave-cloud-scope-tf.png" | relative_url }})
 
 That's it! Due to Terraform awesomeness and Docker Swarm simplicity, automating cluster operations 
 achieved with 200 code lines.
