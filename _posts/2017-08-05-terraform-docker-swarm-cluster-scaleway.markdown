@@ -400,6 +400,80 @@ so you need to make rules for each opened port on your server. If you need more 
 any worker node as manager, just make sure you always have an odd number of manager or you'll run into 
 split brain scenarios if a network split happens.
 
+### Cluster monitoring with Weave Cloud Scope
+
+With [Weave Cloud](https://www.weave.works/product/cloud/) Scope you can see your Docker hosts, containers and services in real-time. 
+You can view metrics, tags and metadata of the running processes, containers or hosts. 
+It's the idea tool to visualize your Docker Swarm clusters and troubleshoot problems that may arise. 
+Scope offers remote access to the Swarm's nods and containers making it easy to diagnose issues in real-time. 
+
+If you don't have a Weave Cloud account, you can apply for a free trial on Weaveworks [website](https://www.weave.works/). 
+
+In order to deploy a Docker Swarm cluster integrated with Weave Cloud you'll need to use the [weave](https://github.com/stefanprodan/scaleway-swarm-terraform/tree/weave) branch:
+
+```bash
+$ git checkout -b weave
+```
+
+Login into Wave Cloud and create a new instance, copy the service token and add the following environment variable:
+
+```bash
+$ export TF_VAR_weave_cloud_token="<SERVICE-TOKEN>"
+```
+
+Now you can run the Terraform project:
+
+```bash
+terraform workspace new weave
+
+terraform apply \
+-var docker_version=17.06.0~ce-0~ubuntu \
+-var region=ams1 \
+-var manager_instance_type=VC1S \
+-var worker_instance_type=VC1S \
+-var worker_instance_count=2 \
+-var docker_api_ip=0.0.0.0 \
+-var docker_api_ip_allow=86.124.244.168
+```
+
+Like before this will setup a three nodes Docker Swarm cluster and will deploy the Scope service on each node. 
+
+Let's take a look at the provisioner code for the manager node:
+
+```js
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x /tmp/install-docker-ce.sh",
+      "/tmp/install-docker-ce.sh ${var.docker_version}",
+      "docker swarm init --advertise-addr ${self.private_ip}",
+      "curl -sSL git.io/scope -o /usr/local/bin/scope",
+      "chmod a+x /usr/local/bin/scope",
+      "WEAVESCOPE_DOCKER_ARGS='--restart unless-stopped' scope launch --service-token=${var.weave_cloud_token}",
+      "iptables -A INPUT -p tcp --dport 2375 -s ${var.docker_api_ip_allow} -j ACCEPT",
+      "iptables -A INPUT -p tcp --dport 2375 -j DROP"
+    ]
+  }
+```
+
+After installing Docker CE and initializing the Swarm manager, it deploys the Scope container using the Weave Cloud service token. 
+It also grants access to the Docker remote API only to your IP.
+
+Using the remote API you can deploy services from your machine:
+
+```bash
+$ export DOCKER_HOST=$(terraform output swarm_manager_public_ip)
+
+$ docker service create \
+    --name nginx -dp 80:80 \
+    --replicas 6 \
+    --constraint 'node.role == worker' nginx
+
+$ curl $(terraform output swarm_manager_public_ip)
+```
+
+Now if you login into Weave Cloud, in the explore section you'll be able to see the Docker Swarm cluster nodes and running containers. 
+
+![Flow]({{ "assets/weave-cloud-swarm-scope-tf.png" | relative_url }})
 
 That's it! Due to Terraform awesomeness and Docker Swarm simplicity, automating cluster operations 
 achieved with 200 code lines.
