@@ -59,6 +59,32 @@ The caddy-dockerd will run on every node and will expose the Docker remote API o
 You can restrict access by proving multiple IPv4 or IPv6 or ranges of IPs. 
 For more details see the Caddy ipfilter middleware [documentation](https://github.com/pyed/ipfilter/blob/master/README.md). 
 
+### Run Caddy with Docker unix socket 
+
+If you don't wish to expose the Docker remote API with TCP on localhost, you can mount the unix socket inside the Caddy container.
+
+```bash
+docker service create -d -e IP=188.27.83.136 \
+    --network=host \
+    --name=caddy-dockerd \
+    --mode global \
+    --mount type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock \
+    stefanprodan/caddy-dockerd:sock
+```
+
+If you opt for the Docker socket reverse proxy you need to use `caddy-dockerd:sock`.
+
+This will also work without Docker Swarm:
+
+```bash
+docker run -d -e IP=86.124.244.168 \
+    --net=host \
+    --name=caddy-dockerd \
+    --restart=always \
+    -v /var/run/docker.sock:/var/run/docker.sock \
+    stefanprodan/caddy-dockerd:sock
+```
+
 ### Use Docker remote API
 
 On your local machine you can setup the remote access like this:
