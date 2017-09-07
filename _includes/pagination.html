@@ -10,6 +10,6 @@
   <span class="pagination__page-number">Page {{ paginator.page}} of {{ paginator.total_pages}}</span>
 
   {% if paginator.next_page %}
-    <a rel="next" class="posts older btn small" href="{{ site.baseurl }}page{{ paginator.next_page }}/">Older Posts →</a>
+    <a rel="next" class="posts older btn small" href="{{ site.url }}/page{{ paginator.next_page }}/">Older Posts →</a>
   {% endif %}
 </nav>
