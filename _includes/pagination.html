@@ -3,7 +3,7 @@
     {% if paginator.previous_page == 1 %}
       <a rel="prev" class="posts newer btn small" href="{{ "#blog" | relative_url }}" title="Previous Page">← Newer Posts</a>
     {% else %}
-      <a rel="prev" class="posts newer btn small" href="{{ site.baseurl }}page{{ paginator.previous_page }}/">← Newer Posts</a>
+      <a rel="prev" class="posts newer btn small" href="{{ site.url }}/page{{ paginator.previous_page }}/">← Newer Posts</a>
     {% endif %}
   {% endif %}
 
