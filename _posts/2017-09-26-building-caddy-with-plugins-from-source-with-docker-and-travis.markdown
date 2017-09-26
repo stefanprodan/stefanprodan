@@ -10,7 +10,7 @@ I am a big fan of Caddy and I use it often in POCs and personal projects.
 I stand by the Caddy team decision to offer the official binary distribution as a payed service and I hope 
 it will help the project evolve and make Caddy even better.
 
-In order to keep using the open source Apache 2.0 licensed version, I've made a project 
+In order to keep using the open source Apache 2.0 licensed version, I've made a [project](https://github.com/stefanprodan/caddy-builder) 
 to automate the build process of Caddy with plugins from source using Docker multi-build and Travis CI.
 
 ### Usage
