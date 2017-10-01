@@ -29,9 +29,12 @@ If you want to try out the Prometheus stack, take a look at the [dockprom](https
 
 Clone [dockprom](https://github.com/stefanprodan/dockprom) repository on your Docker host, cd into dockprom directory and run compose up:
 
-* `$ git clone https://github.com/stefanprodan/dockprom` 
-* `$ cd dockprom`
-* `$ docker-compose up -d`
+```bash
+git clone https://github.com/stefanprodan/dockprom
+cd dockprom
+
+ADMIN_USER=admin ADMIN_PASSWORD=admin docker-compose up -d
+```
 
 Containers:
 
@@ -40,14 +43,11 @@ Containers:
 * Grafana (visualize metrics) `http://<host-ip>:3000`
 * NodeExporter (host metrics collector)
 * cAdvisor (containers metrics collector)
-
-While Grafana supports authentication, the Prometheus and AlertManager services have no such feature. 
-You can remove the ports mapping from the docker-compose file and use NGINX as a reverse proxy providing basic authentication for Prometheus and AlertManager.
+* Caddy (reverse proxy and basic auth provider for prometheus and alertmanager) 
 
 ### Setup Grafana
 
-Navigate to `http://<host-ip>:3000` and login with user ***admin*** password ***changeme***. You can change the password from Grafana UI or 
- by modifying the [user.config](https://github.com/stefanprodan/dockprom/blob/master/user.config) file.
+Navigate to `http://<host-ip>:3000` and login with user ***admin*** password ***changeme***. You can change the credentials in the compose file or by supplying the `ADMIN_USER` and `ADMIN_PASSWORD` environment variables on compose up.
 
 From the Grafana menu, choose ***Data Sources*** and click on ***Add Data Source***. 
 Use the following values to add the Prometheus container as data source:
@@ -105,16 +105,24 @@ The Monitor Services Dashboard shows key metrics for monitoring the containers t
 * Prometheus HTTP requests graph
 * Prometheus alerts graph
 
-Prometheus memory usage can be controlled by adjusting the local storage memory chunks.
-You can modify the max chunks value in [docker-compose.yml](https://github.com/stefanprodan/dockprom/blob/master/docker-compose.yml). 
-I've set the `storage.local.memory-chunks` value to 100000, if you monitor 10 containers, then Prometheus will use around 2GB of RAM.
+I've set the Prometheus retention period to 200h and the heap size to 1GB, you can change these values in the compose file.
+
+```yaml
+  prometheus:
+    image: prom/prometheus
+    command:
+      - '-storage.local.target-heap-size=1073741824'
+      - '-storage.local.retention=24h'
+```
+
+Make sure you set the heap size to a maximum of 50% of the total physical memory. 
 
 ### Define alerts
 
 I've setup three alerts configuration files:
 
 * Monitoring services alerts [targets.rules](https://github.com/stefanprodan/dockprom/blob/master/prometheus/targets.rules)
-* Docker Host alerts [hosts.rules](https://github.com/stefanprodan/dockprom/blob/master/prometheus/hosts.rules)
+* Docker Host alerts [host.rules](https://github.com/stefanprodan/dockprom/blob/master/prometheus/host.rules)
 * Docker Containers alerts [containers.rules](https://github.com/stefanprodan/dockprom/blob/master/prometheus/containers.rules)
 
 You can modify the alert rules and reload them by making a HTTP POST call to Prometheus:
