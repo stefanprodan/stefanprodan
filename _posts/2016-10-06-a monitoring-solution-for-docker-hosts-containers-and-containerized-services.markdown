@@ -25,6 +25,8 @@ If you want to try out the Prometheus stack, take a look at the [dockprom](https
 
 ![Prometheus]({{ "assets/prometheus-on-docker.png" | relative_url }})
 
+***If you're looking for the Docker Swarm version see the [swarmprom](https://stefanprodan.com/2017/docker-swarm-instrumentation-with-prometheus/) blog post.***
+
 ### Install
 
 Clone [dockprom](https://github.com/stefanprodan/dockprom) repository on your Docker host, cd into dockprom directory and run compose up:
@@ -49,16 +51,12 @@ Containers:
 
 Navigate to `http://<host-ip>:3000` and login with user ***admin*** password ***admin***. You can change the credentials in the compose file or by supplying the `ADMIN_USER` and `ADMIN_PASSWORD` environment variables on compose up.
 
-From the Grafana menu, choose ***Data Sources*** and click on ***Add Data Source***. 
-Use the following values to add the Prometheus container as data source:
+Grafana is preconfigured with dashboards and Prometheus as the default data source:
 
 * Name: Prometheus
 * Type: Prometheus
 * Url: http://prometheus:9090
 * Access: proxy
-
-Now you can import the dashboard temples from the [grafana](https://github.com/stefanprodan/dockprom/tree/master/grafana) directory. 
-From the Grafana menu, choose ***Dashboards*** and click on ***Import***.
 
 ***Docker Host Dashboard***
 
