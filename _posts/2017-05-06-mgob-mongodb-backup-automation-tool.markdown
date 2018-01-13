@@ -8,14 +8,15 @@ tags: [GoLang,MongoDB]
 
 MGOB is an open source MongoDB backup automation tool built with golang. It's MIT licensed and hosted on GitHub at [github.com/stefanprodan/mgob](https://github.com/stefanprodan/mgob).
 
-The main reason I've started working on this is that I've wanted to have a backup agent instrumentation with Prometheus that I can run inside a container and target various MongoDB servers that are only accessible from within a Docker/Kubernetes network. In the next versions I plan to extend MGOB with on demand restore capabilities (via web API) so it could be easily integrated into a CI/CD pipeline.
+The main reason I've started working on this is that I've wanted to have a backup agent instrumentation with Prometheus that I can run inside a container and target various MongoDB servers that are only accessible from within a Docker/Kubernetes network.
 
 #### Features
 
 * schedule backups
 * local backups retention
-* upload to SFTP and S3 Object Storage (Minio, AWS, Google Cloud)
-* on demand backup via web API
+* upload to S3 Object Storage (Minio, AWS)
+* upload to gcloud storage
+* upload to SFTP
 * notifications (Email, Slack)
 * instrumentation with Prometheus
 * http file server for local backups and logs
@@ -30,7 +31,7 @@ Supported tags:
 * `stefanprodan/mgob:latest` stable [release](https://github.com/stefanprodan/mgob/releases)
 * `stefanprodan/mgob:edge` master branch [build](https://travis-ci.org/stefanprodan/mgob)
 
-Run:
+Docker:
 
 ```bash
 docker run -dp 8090:8090 --name mgob \
@@ -41,6 +42,10 @@ docker run -dp 8090:8090 --name mgob \
     stefanprodan/mgob \
     -LogLevel=info
 ```
+
+Kubernetes:
+
+A step by step guide on running MGOB as a StatefulSet with PersistentVolumeClaims can be found [here](https://stefanprodan.com/2018/mgob-kubernetes-gke-guide/).
 
 #### Configure
 
@@ -58,15 +63,17 @@ scheduler:
   # backup operation timeout in minutes
   timeout: 60
 target:
-  # mongodb IP or host name
+  # mongod IP or host name
   host: "172.18.7.21"
   # mongodb port
   port: 27017
-  # mongodb database name
+  # mongodb database name, leave blank to backup all databases
   database: "test"
   # leave blank if auth is not enabled
   username: "admin"
   password: "secret"
+  # add custom params to mongodump (eg. Auth or SSL support), leave blank if not needed
+  params: "--ssl --authenticationDatabase admin"
 # S3 upload (optional)
 s3:
   url: "https://play.minio.io:9000"
@@ -74,6 +81,10 @@ s3:
   accessKey: "Q3AM3UQ867SPQQA43P2F"
   secretKey: "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG"
   api: "S3v4"
+# GCloud upload (optional)
+gcloud:
+  bucket: "backup"
+  keyFilePath: /path/to/service-account.json
 # SFTP upload (optional)
 sftp:
   host: sftp.company.com
@@ -97,6 +108,8 @@ slack:
   url: https://hooks.slack.com/services/xxxx/xxx/xx
   channel: devops-alerts
   username: mgob
+  # 'true' to notify only on failures 
+  warnOnly: false
 ```
 
 #### Web API
