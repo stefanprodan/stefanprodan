@@ -1,7 +1,7 @@
 ---
 title:  "MGOB v0.9 - MongoDB backup automation for Kubernetes"
 description: "Setting up MGOB on GKE with StatefulSets, PersistentVolumeClaims and Google Bucket Storage"
-date:   2017-01-13 00:00:00
+date:   2018-01-13 00:00:00
 categories: [Open Source]
 tags: [MongoDB,Kubernetes]
 ---
