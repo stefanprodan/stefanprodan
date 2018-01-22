@@ -1,7 +1,7 @@
 ---
 title:  "Installing Kubernetes on bare-metal with Terraform Scaleway provider and kubeadm"
 description: "Setting up a Kubernetes cluster with Terraform, kubeadm and Weave Net on Scaleway ARM and AMD64 bare-metal servers"
-date:   2018-01-13 00:00:00
+date:   2018-01-22 00:00:00
 categories: [Open Source]
 tags: [Kubernetes,Terraform]
 ---
