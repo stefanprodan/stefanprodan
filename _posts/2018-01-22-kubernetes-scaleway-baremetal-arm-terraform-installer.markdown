@@ -61,8 +61,7 @@ This will do the following:
 Scale up by increasing the number of nodes:
 
 ```bash
-$ terraform apply \
- -var nodes=3 
+$ terraform apply -var nodes=3 
 ```
 
 Tear down the whole infrastructure with:
@@ -96,8 +95,7 @@ In order to run `kubectl` commands against the Scaleway cluster you can use the 
 Check if Heapster works: 
 
 ```bash
-$ kubectl --kubeconfig ./$(terraform output kubectl_config) \
-  top nodes
+$ kubectl --kubeconfig ./$(terraform output kubectl_config) top nodes
 
 NAME           CPU(cores)   CPU%      MEMORY(bytes)   MEMORY%   
 arm-master-1   655m         16%       873Mi           45%       
