@@ -198,6 +198,33 @@ externalIP:
   IPv4: 163.172.139.112
 ```
 
+### OpenFaaS
+
+You can deploy OpenFaaS on Kubernetes with Helm or by using the YAML files form the [faas-netes](https://github.com/openfaas/faas-netes) repository.
+
+Clone the faas-netes repo:
+
+```bash
+git clone https://github.com/openfaas/faas-netes
+cd faas-netes
+```
+
+Deploy OpenFaaS for ARM:
+
+```bash
+$ kubectl --kubeconfig ./$(terraform output kubectl_config) \
+  apply -f ./namespaces.yml,./yaml_armhf
+```
+
+Deploy OpenFaaS for AMD64:
+
+```bash
+$ kubectl --kubeconfig ./$(terraform output kubectl_config) \
+  apply -f ./namespaces.yml,./yaml
+```
+
+You can access the OpenFaaS gateway at `http://<MASTER_PUBLIC_IP>:31112`.
+
 ### Horizontal Pod Autoscaling
 
 Starting from Kubernetes 1.9 `kube-controller-manager` is configured by default with
