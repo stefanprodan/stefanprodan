@@ -6,7 +6,7 @@ categories: [Open Source]
 tags: [Kubernetes,Terraform]
 ---
 
-This is a step by step guide on setting up Kubernetes on Scaleway bare-metal ARM and x86-64. The main reason I've been working on this project is that I wanted to automate the creation of test environments for OpenFaaS on ARM and I was looking for a cheap solution to run integration tests. Scaleway is a french cloud provider that offers bare-metal ARM and x86-64 servers at a low price. Using Terraform Scaleway provider along with kubeadm you can have a fully functional Kubernetes cluster in ten minutes.
+This is a step by step guide on setting up Kubernetes on Scaleway bare-metal ARM and x86-64. The main reason I've been working on this project is that I wanted to automate the creation of test environments for [OpenFaaS](https://www.openfaas.com/) and [Weave Net](https://www.weave.works/oss/net/) on ARM. I was looking for a cheap solution to run integration tests and after trying out several cloud providers I've settled on [Scaleway](https://www.scaleway.com/). Scaleway is a french cloud provider that offers bare-metal ARM and x86-64 servers at affordable prices. Using Terraform Scaleway provider along with kubeadm you can have a fully functional Kubernetes cluster in ten minutes.
 
 
 ### Initial setup
