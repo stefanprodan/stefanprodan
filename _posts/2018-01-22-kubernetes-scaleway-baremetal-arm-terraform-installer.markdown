@@ -1,12 +1,13 @@
 ---
 title:  "Installing Kubernetes on bare-metal with Terraform Scaleway provider and kubeadm"
-description: "Setting up a Kubernetes cluster with Terraform, kubeadm and Weave Net on Scaleway ARM and AMD64 bare-metal servers"
+description: "Setting up a Kubernetes cluster with Terraform, kubeadm and Weave Net on Scaleway ARM and x86-64 bare-metal servers"
 date:   2018-01-22 00:00:00
 categories: [Open Source]
 tags: [Kubernetes,Terraform]
 ---
 
-This is a step by step guide on installing Kubernetes on Scaleway bare-metal ARM and AMD64.
+This is a step by step guide on setting up Kubernetes on Scaleway bare-metal ARM and x86-64. The main reason I've been working on this project is that I wanted to automate the creation of test environments for OpenFaaS on ARM and I was looking for a cheap solution to run integration tests. Scaleway is a french cloud provider that offers bare-metal ARM and x86-64 servers at a low price. Using Terraform Scaleway provider along with kubeadm you can have a fully functional Kubernetes cluster in ten minutes.
+
 
 ### Initial setup
 
@@ -342,4 +343,7 @@ Events:
   Normal  SuccessfulRescale  6m    horizontal-pod-autoscaler  New size: 2; reason: All metrics below target
 ```
 
- If you have any suggestion on improving this guide please submit an issue or PR on GitHub at [stefanprodan/k8s-scw-baremetal](https://github.com/stefanprodan/k8s-scw-baremetal). Contributions are more than welcome!
+### Conclusions
+
+Thanks to kubeadm and Terraform, bootstrapping a Kubernetes cluster on bare-metal can be done with a single command and it takes just ten minutes to have a fully functional setup.
+If you have any suggestion on improving this guide please submit an issue or PR on GitHub at [stefanprodan/k8s-scw-baremetal](https://github.com/stefanprodan/k8s-scw-baremetal). Contributions are more than welcome!
