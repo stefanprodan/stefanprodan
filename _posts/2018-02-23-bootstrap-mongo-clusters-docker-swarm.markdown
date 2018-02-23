@@ -53,7 +53,7 @@ docker node update --label-add mongo.role=mongos2 prod-mongos-2
 
 ### Deploy
 
-Clone this repository and run the bootstrap script on a Docker Swarm manager node:
+Clone the [mongo-swarm](https://github.com/stefanprodan/mongo-swarm) repository and run the bootstrap script on a Docker Swarm manager node:
 
 ```bash
 git clone https://github.com/stefanprodan/mongo-swarm
