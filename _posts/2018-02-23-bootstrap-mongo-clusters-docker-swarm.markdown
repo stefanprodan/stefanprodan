@@ -155,7 +155,7 @@ cluster as followers.
 
 You can check the cluster state by doing an HTTP GET on mongo-bootstrap port 9090.
 
-```json
+```bash
 docker run --rm --network mongo tutum/curl:alpine curl bootstrap:9090
 ```
 
@@ -248,7 +248,7 @@ what's the failover impact.
 
 Running the load test with a single loadtest instance:
 
-```bash
+```
 Summary:
   Total:	58.3945 secs
   Slowest:	2.5077 secs
@@ -268,7 +268,7 @@ Response time histogram:
 
 Running the load test with 3 loadtest instances:
 
-```bash
+```
 Summary:
   Total:	35.5129 secs
   Slowest:	1.9471 secs
