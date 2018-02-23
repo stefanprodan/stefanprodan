@@ -56,10 +56,10 @@ docker node update --label-add mongo.role=mongos2 prod-mongos-2
 Clone this repository and run the bootstrap script on a Docker Swarm manager node:
 
 ```bash
-$ git clone https://github.com/stefanprodan/mongo-swarm
-$ cd mongo-swarm
+git clone https://github.com/stefanprodan/mongo-swarm
+cd mongo-swarm
 
-$ ./bootstrap.sh
+./bootstrap.sh
 ```
 
 The bootstrap.sh script creates two overlay networks and deploys the mongo stack:
@@ -99,7 +99,7 @@ After the stack has been deploy the mongo-bootstrap container will do the follow
 You can monitor the bootstrap process by watching the mongo-bootstrap service logs:
 
 ```bash
-$ docker service logs -f mongo_bootstrap
+docker service logs -f mongo_bootstrap
 
 msg="Bootstrap started for data cluster datars members [data1:27017 data2:27017 data3:27017]"
 msg="datars member data1:27017 is online"
@@ -164,7 +164,7 @@ docker run --rm --network mongo tutum/curl:alpine curl bootstrap:9090
 To test the Mongos connectivity you can run an interactive mongo container attached to the mongos network:
 
 ```bash
-$ docker run --network mongos -it mongo:3.4 mongo mongos1:27017 
+docker run --network mongos -it mongo:3.4 mongo mongos1:27017 
 
 mongos> use test
 switched to db test
@@ -311,7 +311,7 @@ If you want to run the MongoDB cluster on a single Docker machine without Docker
 the local compose file. I use it for debugging on Docker for Mac.
 
 ```bash
-$ docker-compose -f local-compose.yml up -d
+docker-compose -f local-compose.yml up -d
 ``` 
 
 This will start all the MongoDB services and mongo-bootstrap on the bridge network without persistent storage. 
