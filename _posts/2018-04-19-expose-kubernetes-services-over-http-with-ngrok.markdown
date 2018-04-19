@@ -125,7 +125,7 @@ curl -d '{"message": "testing ngrok"}' https://122261e6.ngrok.io/echo
 
 On the status page you should see that the total number of connections has increased.
 
-![Ngrok Status](screens/ngrok-status.png)
+![Ngrok Status](https://github.com/stefanprodan/k8s-podinfo/raw/master/docs/screens/ngrok-status.png)
 
 ### Setup GitHub webhook
 
@@ -133,7 +133,7 @@ Go to GitHub and create a new repository or use one that you already have.
 On your repo page go to _Settings -> Webhooks -> Add Webhook_ and enter the Ngrok HTTPS URL adding 
 `/echo` at the end:
 
-![GitHub Webhook](screens/github-webhook.png)
+![GitHub Webhook](https://github.com/stefanprodan/k8s-podinfo/raw/master/docs/screens/github-webhook.png)
 
 For Content-type select _application/json_, check _Send me everything_ and click on _Add webhook_.
 
@@ -141,7 +141,7 @@ Once you hit the add button GitHub will make a call to the `/echo` URL. Using Ng
 inspect the GitHub payload. Navigate to `http://<KUBE-IP>:<NGROK-PORT>/inspect/http` and you 
 should see the request body:
 
-![Ngrok Inspect](screens/ngrok-inspect.png)
+![Ngrok Inspect](https://github.com/stefanprodan/k8s-podinfo/raw/master/docs/screens/ngrok-inspect.png)
 
 Ngrok not only makes it very easy to expose Kubernetes services on the internet 
 but also gives a powerful tool to inspect the traffic to your applications. 
