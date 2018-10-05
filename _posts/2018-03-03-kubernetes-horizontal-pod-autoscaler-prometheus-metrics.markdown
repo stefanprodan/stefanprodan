@@ -26,7 +26,7 @@ like Prometheus to expose application-specific metrics to the HPA controller.
 The Horizontal Pod Autoscaler is implemented as a control loop that periodically queries 
 the Resource Metrics API for core metrics like CPU/memory and the Custom Metrics API for application-specific metrics.  
 
-![Overview](https://raw.githubusercontent.com/stefanprodan/k8s-prom-hpa/blob/master/diagrams/k8s-hpa.png)
+![Overview](https://raw.githubusercontent.com/stefanprodan/k8s-prom-hpa/master/diagrams/k8s-hpa.png)
 
 What follows is a step-by-step guide on configuring HPA v2 for Kubernetes 1.9 or later. 
 You will install the Metrics Server add-on that supplies the core metrics and then you'll use a demo 
