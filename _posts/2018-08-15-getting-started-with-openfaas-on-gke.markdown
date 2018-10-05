@@ -1,5 +1,5 @@
 ---
-title:  "Getting started with OpenFaaS on GKE"
+title:  "Running OpenFaaS on GKE with preemptible node pools"
 description: "OpenFaaS operator instalation guide for Google Cloud managed Kubernetes service"
 date:   2018-08-15 00:00:00
 categories: [Open Source]
@@ -78,18 +78,7 @@ When a VM is preempted it gets logged here:
 gcloud compute operations list | grep compute.instances.preempted
 ```
 
-The above setup along with a GCP load balancer forwarding rule and a 30GB ingress traffic per month will yell the following costs:
-
-| Role | Type | Usage | Price per month |
-|------|------|-------|-----------------|
-| 2 x OpenFaaS Core Services | n1-standard-1 | 1460 total hours per month | $62.55 | 
-| 2 x OpenFaaS Functions | n1-highcpu-4 | 1460 total hours per month | $53.44 | 
-| Persistent disk | Storage | 120 GB | $5.76 | 
-| Container Registry | Cloud Storage | 300 GB | $6.90 | 
-| Forwarding rules | Forwarding rules | 1 | $21.90 |
-| Load Balancer ingress | Ingress | 30 GB | $0.30 |
-| Total |  |  | $150.84 |
-
+The above setup along with a GCP load balancer forwarding rule and a 30GB ingress traffic will cost you $150 per month.
 The cost estimation was generated with the [Google Cloud pricing calculator](https://cloud.google.com/products/calculator/) on 31 July 2018 and could change any time. 
 
 ### GKE addons setup 
