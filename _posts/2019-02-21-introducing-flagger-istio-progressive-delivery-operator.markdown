@@ -247,7 +247,7 @@ prod        backend   Failed        0        2019-01-14T17:05:07Z
 
 During the analysis the canary’s progress can be monitored with Grafana:
 
-![Grafana canary dashbaord](https://raw.githubusercontent.com/stefanprodan/flagger/docs/screens/flagger-grafana-dashboard.png)
+![Grafana canary dashboard](https://raw.githubusercontent.com/stefanprodan/flagger/master/docs/screens/flagger-grafana-dashboard.png)
 
 If you’ve enabled the Slack notifications, you should receive the following messages:
 
