@@ -2,7 +2,7 @@ encoding: utf-8
 
 # Site settings
 title: Stefan Prodan
-description: 'DevOps Consultant. DX at Weaveworks. Passionate about Cloud Native tech. Loves programming in Go and building Kubernetes operators.'
+description: 'Principal Engineer at Weaveworks. Passionate about OSS, Cloud Native and Kubernetes. Core maintainer of CNCF projects: Flux, Flagger and the GitOps Toolkit.'
 url: 'https://stefanprodan.com'
 baseurl: '/'
 google_analytics: 'UA-21524511-1'
