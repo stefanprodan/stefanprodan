@@ -1,0 +1,82 @@
+site_name: Stefan Prodan's Blog
+site_description: |
+  Stefan Prodan's open source portfolio and tech blog.
+site_author: Stefan Prodan
+site_url: https://stefanprodan.com
+edit_uri: ""
+copyright: Copyright © 2014-2023 Stefan Prodan
+
+home:
+  image: images/stefan.jpeg
+  tagline: Stefan Prodan
+  description: |
+    Principal Engineer at Weaveworks. Passionate about OSS, Cloud Native and Kubernetes.
+    Core maintainer of CNCF projects: Flux, Flagger and the GitOps Toolkit.
+
+theme:
+  name: material
+  logo: images/logo.svg
+  favicon: images/favicon.png
+  language: en
+  custom_dir: docs/theme/
+  palette:
+    scheme: slate
+    primary: black
+    accent: indigo
+  features:
+    - content.code.copy
+    - navigation.sections
+    - navigation.top
+    - navigation.tabs
+    - navigation.indexes
+
+extra:
+  social:
+    - icon: fontawesome/brands/slack
+      link: https://cloud-native.slack.com/team/ULPRMFH38
+    - icon: fontawesome/brands/square-x-twitter
+      link: https://x.com/stefanprodan
+    - icon: fontawesome/brands/linkedin
+      link: https://linkedin.com/in/stefanprodan
+    - icon: fontawesome/brands/github
+      link: https://github.com/stefanprodan
+
+docs_dir: docs
+
+plugins:
+  - blog:
+      post_excerpt: required
+      post_url_date_format: yyyy
+      archive_url_format: "{date}"
+      pagination_per_page: 5
+
+markdown_extensions:
+  - attr_list
+  - md_in_html
+  - admonition
+  - meta
+  - codehilite
+  - pymdownx.tilde
+  - pymdownx.progressbar
+  - pymdownx.tasklist
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+nav:
+  - Home: index.md
+  - Portfolio:
+      - Open Source Projects: portfolio/open-source.md
+      - Past Contributions: portfolio/open-source-history.md
+      - About me:
+          - Biography: portfolio/biography.md
+  - Blog:
+      - blog/index.md
