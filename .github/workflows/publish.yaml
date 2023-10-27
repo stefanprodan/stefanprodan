@@ -3,7 +3,7 @@ name: publish
 on:
   workflow_dispatch:
   push:
-    branches: [ 'main', 'blog*' ]
+    branches: [ 'main', 'master', 'blog*' ]
     tags: [ 'v*' ]
 
 permissions:
@@ -23,3 +23,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CUSTOM_DOMAIN: stefanprodan.com
           CONFIG_FILE: mkdocs.yml
+          REQUIREMENTS: .github/requirements.txt
