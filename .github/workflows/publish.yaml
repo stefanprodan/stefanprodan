@@ -1,0 +1,25 @@
+name: publish
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ 'main', 'blog*' ]
+    tags: [ 'v*' ]
+
+permissions:
+  contents: read
+
+jobs:
+  mkdocs:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+      - name: Build and Push to GH Pages
+        uses: mhausenblas/mkdocs-deploy-gh-pages@e55ecab6718b449a90ebd4313f1320f9327f1386 # master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CUSTOM_DOMAIN: stefanprodan.com
+          CONFIG_FILE: mkdocs.yml
