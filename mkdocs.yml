@@ -44,6 +44,7 @@ extra:
 docs_dir: docs
 
 plugins:
+  - glightbox
   - blog:
       post_excerpt: required
       post_url_date_format: yyyy
