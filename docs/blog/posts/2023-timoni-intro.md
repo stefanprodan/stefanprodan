@@ -5,8 +5,6 @@ description: >
   Distribution and Lifecycle Management for Cloud-Native Applications
 categories:
   - Timoni
-hide:
-  - toc
 ---
 
 # Introducing Timoni - Next-Gen Package Manager for Kubernetes
@@ -146,20 +144,22 @@ Resources:
 
 ## How to contribute to Timoni?
 
-Timoni is made open source under the Apache 2.0 license and accepts docs and code contributions via GitHub Pull Requests.
+Timoni is made open source under the Apache 2.0 license and accepts docs and code
+contributions via GitHub Pull Requests. For more information, please see the
+[contributing guide](https://github.com/stefanprodan/timoni/blob/main/CONTRIBUTING.md) and the
+[code of conduct](https://github.com/stefanprodan/timoni/blob/main/CODE_OF_CONDUCT.md).
 
 Everyone is welcomed to contribute - from providing feedback to sharing your own modules to docs & code 
 contributions - no matter how small every contribution matters and is highly appreciated.
 
-For more information, please see the
-[contributing guide](https://github.com/stefanprodan/timoni/blob/main/CONTRIBUTING.md) and the
-[code of conduct](https://github.com/stefanprodan/timoni/blob/main/CODE_OF_CONDUCT.md).
-
 ## How can you help?
 
-If Timoni feels interesting to you, please [give it a start](https://github.com/stefanprodan/timoni)
+If Timoni feels interesting to you, please [give it a star](https://github.com/stefanprodan/timoni)
 on GitHub to show your support!
 
 If you are using Timoni in any capacity, on your home cluster or at work,
 it would be really great if you could let me now in a
 [comment on GitHub](https://github.com/stefanprodan/timoni/issues/245).
+
+Any feedback is appreciated, feel free to
+[contact me on Slack or social media](https://stefanprodan.com/portfolio/biography/).
