@@ -15,9 +15,46 @@ of offering a better experience for creating, packaging and delivering apps to K
 
 <!-- more -->
 
-## Who is Timoni for?
+Timoni was born out of frustration from crafting Kubernetes YAMLs and especially Helm charts.
+I’ve been a [Flux](https://fluxcd.io) maintainer for six years now, and while I enjoy building
+software on top of Kubernetes, writing complex deployments using Helm templating never felt good.
 
-![Who is Timoni for](presentations/2023-timoni/timoni-2.png)
+In my quest to write less YAML, I’ve discovered [CUE](https://cuelang.org/), a brand-new language
+with the promise of reducing boilerplate, while offering type checking and
+validation for any kind of configuration.
+
+I briefly looked at CUE in 2021, back then, their docs looked like an academic paper, and it threw me off.
+Then in 2022, I was in Valencia at KubeCon talking to Flux users at the CNCF projects pavilion,
+when someone mentioned how they migrated all their app definitions from Helm templates and Kustomize overlays to CUE. 
+I’ve returned home and I started using CUE in anger, reading bits of their source code, unit tests,
+issues and the tutorials created by [Tony](https://github.com/verdverm).
+
+After some time, CUE really grew on me. I ended up creating a new
+[Flux distribution](https://github.com/stefanprodan/flux-aio) with it,
+and the whole experience was so much better than doing it with Helm templates.
+But still, lots of things were missing, I could not share my CUE code with others,
+unless they would fork my repo and make changes on their own.
+Deploying the CUE generated objects required piping to kubectl in stages.
+Validating Flux custom resources was less than ideal, the CUE schemas generated from the
+Flux Go API packages where missing the kubebuilder constraints.
+Despite all these limitations, I really enjoyed CUE’s expressiveness and guardrails.
+
+Fast-forward to February 2023, I come up with a plan on how to overcome the usability
+issues I faced while building the experimental Flux distribution. The plan was to develop
+a tool with similar features to Helm, but with CUE as the templating engine,
+OCI artifacts as the distribution method and with Kubernetes server-side apply
+as the deployment engine. And so Timoni was born.
+
+![Timoni](presentations/2023-timoni/timoni-0.png)
+
+After nine months of working on the project in my spare time and with help
+from other CUE enthusiasts, Timoni has become a feature-rich package manager,
+capable of orchestrating the distribution and delivery of complex
+applications across clusters and environments.
+
+What follows is an overview of Timoni’s core concepts and features.
+
+## Who is Timoni for?
 
 **Software Makers** - Vendors, OSS maintainers and platform engineers who want to distribute cloud-native application to 
 end-users.
@@ -26,8 +63,6 @@ end-users.
 services to clusters.
 
 ## What is Timoni?
-
-![Timoni](presentations/2023-timoni/timoni-0.png)
 
 Timoni is a package manager solution made as a command line tool, built with Go for macOS, Linux and Windows.
 
