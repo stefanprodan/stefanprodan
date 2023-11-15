@@ -30,3 +30,4 @@ and he enjoys programming in Go and given talks about distributed systems.
 
 :fontawesome-brands-github: [@stefanprodan](https://github.com/stefanpordan)
 
+:fontawesome-solid-rss: [stefanprodan.substack.com](https://stefanprodan.substack.com/)
