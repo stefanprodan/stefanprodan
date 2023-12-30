@@ -5,16 +5,20 @@ hide:
 
 # Biography
 
-![stefanprodan](biography/stefan.jpeg){ align=right width="200" }
+![stefanprodan](biography/stefan.jpeg){ align=right width="250" }
 
-Stefan is a Principal Engineer at Weaveworks and
+Stefan is an independent Software Engineer and
 an open source contributor to cloud-native projects.
 He is the creator of Flagger the progressive delivery
 operator for Kubernetes, and a core maintainer
 of the CNCF's Flux project.
 
-He worked as a software architect and a DevOps consultant,
-helping companies embrace DevOps and the SRE movement.
+In the last six years Stefan worked as a Principal Engineer at Weaveworks,
+where he was responsible for architecting and maintaining
+Flux, Flagger and the GitOps Toolkit.
+
+Previously he worked as a software architect
+and a DevOps consultant, helping companies embrace DevOps and the SRE movement.
 Stefan has over 15 years of experience with software development,
 and he enjoys programming in Go and given talks about distributed systems.
 

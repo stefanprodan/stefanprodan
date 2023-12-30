@@ -2,6 +2,11 @@
 
 Open source projects that I currently maintain and I deeply care about.
 
+If you or your company uses the projects I'm contributing to,
+or you like what I’m doing in the GitOps & Continuous Delivery space,
+please consider [sponsoring me on GitHub](https://github.com/sponsors/stefanprodan),
+so I can continue maintaining and evolving these tools.
+
 ## Timoni
 
 :fontawesome-solid-user-graduate: creator & maintainer
