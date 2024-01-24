@@ -10,7 +10,7 @@ home:
   image: images/stefan.jpeg
   tagline: Stefan Prodan
   description: |
-    Independent Software Engineer. Passionate about OSS, Cloud Native and Kubernetes.
+    Principal Consultant at ControlPlane. Passionate about OSS, Cloud Native and Kubernetes.
     Core maintainer of CNCF projects: Flux, Flagger and the GitOps Toolkit.
 
 theme:
