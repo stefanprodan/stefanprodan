@@ -1,0 +1,130 @@
+{% extends "main.html" %}
+{% block tabs %}
+{{ super() }}
+
+<style>
+    .md-header {
+        position: initial
+    }
+
+    .md-main__inner {
+        margin: 0
+    }
+
+    .md-main {
+        display: none;
+    }
+
+    .md-content {
+        display: none
+    }
+
+    .md-sidebar--secondary {
+        display: none !important;
+    }
+
+
+    .container-hero {
+        padding-top: .0rem;
+        background: linear-gradient(to bottom, var(--md-primary-fg-color), hsl(187, 69%, 42%) 99%);
+        flex-grow: 2
+    }
+
+    .tx-hero {
+        margin: 32px 2.8rem;
+        color: var(--md-primary-bg-color);
+        justify-content: center;
+    }
+
+    .tx-hero h1 {
+        margin-bottom: 1rem;
+        color: currentColor;
+        font-weight: 700
+    }
+
+    .tx-hero__content {
+        padding-bottom: 1rem;
+        margin: 0 auto;
+    }
+
+    .tx-hero__image {
+        width: 17rem;
+        height: 17rem;
+        order: 1;
+        padding-right: 2.5rem;
+    }
+
+    .avatar {
+        border-radius: 50%;
+    }
+
+    .tx-hero .md-button {
+        margin-top: .5rem;
+        margin-right: .5rem;
+        color: var(--md-primary-bg-color);
+        border-color: transparent
+    }
+
+    .tx-hero .md-button--primary {
+        background-color: var(--md-primary-bg-color);
+        color: hsl(0, 2%, 19%);
+        border-color: var(--md-primary-bg-color)
+    }
+
+    .tx-hero .md-button:focus,
+    .tx-hero .md-button:hover {
+        background-color: #000000;
+        color: #ffffff;
+        border-color: #000000
+    }
+
+    @media screen and (min-width: 60em) {
+        .tx-hero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tx-hero__content {
+            max-width: 22rem;
+            margin: 3.5rem 4.0rem 3.5rem 1.0rem;
+            align-items: center;
+        }
+    }
+
+    @media screen and (min-width: 76.25em) {
+        .md-sidebar--primary {
+            display: none
+        }
+    }
+
+</style>
+
+<section class="tx-container container-hero">
+    <div class="md-grid md-typeset">
+        <div class="tx-hero">
+            <div class="tx-hero__image">
+                <img src="{{ config.home.image }}" class="avatar" draggable="false" alt="Timoni">
+            </div>
+            <div class="tx-hero__content">
+                <h1>{{ config.home.tagline }}</h1>
+                <p>{{ config.home.description }}</p>
+                <a href="blog/" title="Blog" class="md-button md-button--primary">
+                    Blog
+                </a>
+                <a href="portfolio/open-source/" title="Portfolio" class="md-button">
+                    Portfolio
+                </a>
+<!--                <a href="https://github.com/sponsors/stefanprodan" title="OSS Sponsor" class="md-button">-->
+<!--                    Sponsor my OSS work-->
+<!--                </a>-->
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+{% block content %}{% endblock %}
+{% block footer %}
+{{ super() }}
+{% endblock %}
