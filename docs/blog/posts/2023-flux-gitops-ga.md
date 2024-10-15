@@ -42,6 +42,4 @@ For more information about Flux GA, please see the following articles:
 
 - [Flux Announces GA of v2 - cncf.io](https://www.cncf.io/blog/2023/07/20/flux-announces-ga-of-v2/)
 - [Announcing Flux 2.0 GA - fluxcd.io](https://fluxcd.io/blog/2023/07/flux-ga/)
-- [What Flux CD GA Means For You & Your Organization - weave.works](https://www.weave.works/blog/flux-cd-ga)
-
 
