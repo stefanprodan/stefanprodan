@@ -16,9 +16,9 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        uses: actions/checkout@eef61447b9ff4aafe5dcd4e0bbf5d482be7e7871 # v4.2.1
       - name: Build and Push to GH Pages
-        uses: mhausenblas/mkdocs-deploy-gh-pages@55d676092a2f2a3bf0420a1e2ac070868e29f5bc # master
+        uses: mhausenblas/mkdocs-deploy-gh-pages@a31c6b13a80e4a4fbb525eeb7a2a78253bb15fa5 # master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CUSTOM_DOMAIN: stefanprodan.com
