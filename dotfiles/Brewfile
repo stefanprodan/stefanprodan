@@ -1,0 +1,64 @@
+# Terminal
+cask "ghostty"
+brew "bash"
+brew "bash-completion"
+brew "mcfly"
+
+# Tools
+brew "bat"
+brew "curl"
+brew "coreutils"
+brew "gnu-sed"
+brew "gnu-tar"
+brew "jq"
+brew "hey"
+brew "pv"
+brew "tree"
+brew "yq"
+brew "watch"
+
+# Git
+brew "git"
+brew "gh"
+brew "stgit"
+
+# Security
+brew "age"
+brew "gnupg"
+brew "pinentry-mac"
+brew "sops"
+brew "step"
+
+# Languages
+brew "cue"
+brew "go"
+brew "python"
+brew "node"
+brew "make"
+brew "cmake"
+
+# Kubernetes
+brew "kubectl"
+brew "kind"
+brew "kubeconform"
+brew "kustomize"
+brew "helm"
+brew "helm-docs"
+tap "fluxcd/tap"
+brew "fluxcd/tap/flux"
+tap "stefanprodan/tap"
+brew "stefanprodan/tap/timoni"
+
+# OCI
+brew "crane"
+brew "cosign"
+brew "trivy"
+
+# Cloud
+brew "awscli"
+brew "aws-google-auth"
+brew "eksctl"
+tap "hashicorp/tap"
+brew "hashicorp/tap/terraform"
+tap "replicatedhq/replicated"
+brew "replicatedhq/replicated/cli"
