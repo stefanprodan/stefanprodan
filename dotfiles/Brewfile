@@ -56,8 +56,8 @@ brew "trivy"
 
 # Cloud
 brew "awscli"
-brew "aws-google-auth"
 brew "eksctl"
+brew "minio-mc"
 tap "hashicorp/tap"
 brew "hashicorp/tap/terraform"
 tap "replicatedhq/replicated"
