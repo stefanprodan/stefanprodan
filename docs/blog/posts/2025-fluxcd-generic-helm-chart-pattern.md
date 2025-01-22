@@ -13,6 +13,8 @@ categories:
 In this guide we will explore how Flux can be used to standardize the lifecycle management
 of applications by leveraging the Generic Helm Chart pattern.
 
+<!-- more -->
+
 The big promise of this pattern is that it should reduce the cognitive load on developers,
 as they only need to focus on the service-specific configuration,
 while the Generic Helm Chart shields them from the complexity of the Kubernetes API.
