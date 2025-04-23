@@ -16,6 +16,7 @@ brew "pv"
 brew "tree"
 brew "yq"
 brew "watch"
+brew "goreleaser"
 
 # Git
 brew "git"
@@ -24,6 +25,7 @@ brew "stgit"
 
 # Security
 brew "age"
+brew "cfssl"
 brew "gnupg"
 brew "pinentry-mac"
 brew "sops"
