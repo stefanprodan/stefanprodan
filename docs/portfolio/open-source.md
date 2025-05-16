@@ -2,6 +2,21 @@
 
 Open source projects that I currently maintain and I deeply care about.
 
+## Flux Operator MCP Server
+
+:fontawesome-solid-user-graduate: creator & maintainer
+:fontawesome-solid-calendar-days: 2025-present
+
+The [Flux MCP Server](https://github.com/controlplaneio-fluxcd/flux-operator/tree/main/cmd/mcp)
+connects AI assistants to Kubernetes clusters running Flux Operator, enabling seamless interaction
+through natural language. It serves as a bridge between AI tools and GitOps pipelines,
+allowing you to analyze deployment across environments, troubleshoot issues,
+and perform operations using conversational prompts.
+
+:fontawesome-brands-git-alt: [controlplaneio-fluxcd/flux-operator](https://github.com/controlplaneio-fluxcd/flux-operator)
+
+:fontawesome-solid-code: `golang`, `kubernetes`
+
 ## Timoni
 
 :fontawesome-solid-user-graduate: creator & maintainer
