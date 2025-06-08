@@ -5,7 +5,7 @@ hide:
 
 # Biography
 
-![stefanprodan](biography/stefan.jpeg){ align=right width="250" }
+![stefanprodan](biography/stefanprodan.jpeg){ align=right width="250" }
 
 Stefan is a Software Engineer and
 an open source contributor to cloud-native projects.
