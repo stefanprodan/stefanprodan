@@ -64,3 +64,6 @@ tap "hashicorp/tap"
 brew "hashicorp/tap/terraform"
 tap "replicatedhq/replicated"
 brew "replicatedhq/replicated/cli"
+
+# AI
+cask "block-goose"
