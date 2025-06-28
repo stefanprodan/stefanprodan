@@ -1,0 +1,13 @@
+# About Stefan Prodan
+
+Stefan Prodan is a Principal Engineer and an open source contributor to cloud-native projects.
+Stefan is a core maintainer of the CNCF Flux CD project and the GitOps Toolkit.
+Stefan is the creator of open source projects: Flux Operator, Flux MCP Server, Flagger and Timoni.
+Stefan is an experienced public speaker, having given talks at various conferences such as KubeCon, CloudNativeCon, AWS Container Days and Kubernetes Community Days.
+Stefan has over 20 years of experience with software development, and he enjoys programming in Go and writing about distributed systems.
+Stefan Prodan was born in Bucharest, Romania, on the 20th of May 1982.
+
+## Portfolio
+
+- [Biography](https://raw.githubusercontent.com/stefanprodan/stefanprodan/refs/heads/main/docs/portfolio/biography.md)
+- [Open Source Projects](https://raw.githubusercontent.com/stefanprodan/stefanprodan/refs/heads/main/docs/portfolio/open-source.md)
