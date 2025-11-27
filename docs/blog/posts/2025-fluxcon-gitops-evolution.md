@@ -12,8 +12,8 @@ hide:
 
 # FluxCon EU 2025 - GitOps Evolution
 
-View the recording of my GitOps Evolution Through the Lens of a Flux Maintainer talks
-from FluxCon Atlanta.
+View the recording of my "GitOps Evolution Through the Lens of a Flux Maintainer"
+talk from FluxCon Atlanta.
 
 <!-- more -->
 
