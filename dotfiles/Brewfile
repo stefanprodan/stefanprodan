@@ -41,6 +41,7 @@ brew "make"
 brew "cmake"
 
 # Kubernetes
+cask "docker"
 brew "kubectl"
 brew "kind"
 brew "kubeconform"
@@ -49,6 +50,9 @@ brew "helm"
 brew "helm-docs"
 tap "fluxcd/tap"
 brew "fluxcd/tap/flux"
+tap "controlplaneio-fluxcd/tap"
+brew "controlplaneio-fluxcd/tap/flux-operator"
+brew "controlplaneio-fluxcd/tap/flux-operator-mcp"
 tap "stefanprodan/tap"
 brew "stefanprodan/tap/timoni"
 
@@ -60,11 +64,12 @@ brew "trivy"
 # Cloud
 brew "awscli"
 brew "eksctl"
-brew "minio-mc"
 tap "hashicorp/tap"
 brew "hashicorp/tap/terraform"
 tap "replicatedhq/replicated"
 brew "replicatedhq/replicated/cli"
 
 # AI
+cask "claude-code"
 cask "block-goose"
+brew "gemini-cli"

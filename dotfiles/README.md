@@ -27,3 +27,13 @@ brew bundle --file=dotfiles/Brewfile
 - [Keybase](https://keybase.io/)
 - [Adobe Acrobat Reader](https://get.adobe.com/reader/)
 - [SafeNet Authentication Client](https://www.certsign.ro/en/support/safenet-installing-the-device-on-macos/)
+
+## Troubleshooting
+
+Reinstalling Docker Desktop:
+
+```bash
+brew uninstall --cask docker --force
+brew uninstall --formula docker --force
+brew install --cask docker
+```
