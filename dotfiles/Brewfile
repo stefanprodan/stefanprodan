@@ -35,6 +35,7 @@ brew "step"
 # Languages
 brew "cue"
 brew "go"
+brew "gopls"
 brew "python"
 brew "node"
 brew "make"
