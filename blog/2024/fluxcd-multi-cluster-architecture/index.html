@@ -1,0 +1,1503 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A comprehensive overview of Flux CD architectures for multi-cluster continuous deliver.
+">
+      
+      
+        <meta name="author" content="Stefan Prodan">
+      
+      
+        <link rel="canonical" href="https://stefanprodan.com/blog/2024/fluxcd-multi-cluster-architecture/">
+      
+      
+        <link rel="prev" href="../kcd-romania-2024---introducing-timoni/">
+      
+      
+        <link rel="next" href="../flux-operator/">
+      
+      
+      <link rel="icon" href="../../../images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>Flux Multi-cluster Architecture - Stefan Prodan's Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.bcfcd587.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+<meta property="og:url" content="https://stefanprodan.com/blog/2024/fluxcd-multi-cluster-architecture/">
+<meta property="og:image" content="https://stefanprodan.com/images/favicon.png">
+<meta property="og:image:alt" content="stefanprodan.com">
+<meta property="og:image:type" content="image/png">
+
+<meta property="og:title" content="Flux Multi-cluster Architecture">
+<meta property="og:description" content="Stefan Prodan's Blog">
+
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@stefanprodan">
+<meta name="twitter:creator" content="@stefanprodan">
+<meta name="twitter:image" content="https://stefanprodan.com/images/favicon.png">
+<meta name="twitter:image:alt" content="stefanprodan.com">
+
+<meta property="twitter:title" content="Flux Multi-cluster Architecture">
+<meta property="twitter:description" content="Stefan Prodan's Blog">
+
+
+
+  <link href="../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#flux-multi-cluster-architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Stefan Prodan's Blog" class="md-header__button md-logo" aria-label="Stefan Prodan's Blog" data-md-component="logo">
+      
+  <img src="../../../images/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Stefan Prodan's Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Flux Multi-cluster Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../portfolio/open-source/" class="md-tabs__link">
+          
+  
+    
+  
+  Portfolio
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+    
+  
+  Blog
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" hidden>
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Stefan Prodan's Blog" class="md-nav__button md-logo" aria-label="Stefan Prodan's Blog" data-md-component="logo">
+      
+  <img src="../../../images/logo.svg" alt="logo">
+
+    </a>
+    Stefan Prodan's Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Portfolio
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Portfolio
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../portfolio/open-source/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Open Source Projects
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../portfolio/open-source-history/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Past Contributions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3">
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    About me
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            About me
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../portfolio/biography/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Biography
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Blog
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2">
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Archive
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Archive
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2025/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2025
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2024
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2023/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2023
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2022/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2022
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2021/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2021
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2020/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2020
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2019/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2019
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2018/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2018
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2017/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2017
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../2016/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2016
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3">
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Categories
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Categories
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/flagger/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flagger
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/flux/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Flux
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/kubernetes/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/prometheus/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Prometheus
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/timoni/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Timoni
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+    
+  
+  
+    <li class="md-nav__item">
+      <a href="../../category/video/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Video
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+                
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#flux-components" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flux components
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flux-bootstrap" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flux bootstrap
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flux-multi-cluster-deployment-strategies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Flux multi-cluster deployment strategies
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Flux multi-cluster deployment strategies">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#standalone" class="md-nav__link">
+    <span class="md-ellipsis">
+      Standalone
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hub-and-spoke" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hub and Spoke
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hub-sharding-and-horizontal-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hub sharding and horizontal scaling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conclusions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conclusions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+  <div class="md-content md-content--post" data-md-component="content">
+    <div class="md-sidebar md-sidebar--post" data-md-component="sidebar" data-md-type="navigation">
+      <div class="md-sidebar__scrollwrap">
+        <div class="md-sidebar__inner md-post">
+          <nav class="md-nav md-nav--primary">
+            <div class="md-post__back">
+              <div class="md-nav__title md-nav__container">
+                <a href="../../" class="md-nav__link">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"></path></svg>
+                  <span class="md-ellipsis">
+                    Back to index
+                  </span>
+                </a>
+              </div>
+            </div>
+            
+              <div class="md-post__authors md-typeset">
+                
+                  <div class="md-profile md-post__profile">
+                    <span class="md-author md-author--long">
+                      <img src="https://avatars.githubusercontent.com/u/3797675" alt="Stefan Prodan">
+                    </span>
+                    <span class="md-profile__description">
+                      <strong>
+                        
+                          Stefan Prodan
+                        
+                      </strong>
+                      <br>
+                      Author
+                    </span>
+                  </div>
+                
+              </div>
+            
+            <ul class="md-post__meta md-nav__list">
+              <li class="md-nav__item md-nav__item--section">
+                <div class="md-post__title">
+                  <span class="md-ellipsis">
+                    Metadata
+                  </span>
+                </div>
+                <nav class="md-nav">
+                  <ul class="md-nav__list">
+                    <li class="md-nav__item">
+                      <div class="md-nav__link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5v-5Z"></path></svg>
+                        <time datetime="2024-05-06 00:00:00" class="md-ellipsis">May 6, 2024</time>
+                      </div>
+                    </li>
+                    
+                    
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9 3v15h3V3H9m3 2 4 13 3-1-4-13-3 1M5 5v13h3V5H5M3 19v2h18v-2H3Z"></path></svg>
+                          <span class="md-ellipsis">
+                            in
+                            
+                              <a href="../../category/flux/">Flux</a></span>
+                        </div>
+                      </li>
+                    
+                    
+                      
+                      <li class="md-nav__item">
+                        <div class="md-nav__link">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7h1.5Z"></path></svg>
+                          <span class="md-ellipsis">
+                            
+                              7 min read
+                            
+                          </span>
+                        </div>
+                      </li>
+                    
+                  </ul>
+                </nav>
+              </li>
+            </ul>
+          </nav>
+          
+        </div>
+      </div>
+    </div>
+    <article class="md-content__inner md-typeset">
+      
+        
+
+
+<h1 id="flux-multi-cluster-architecture">Flux Multi-cluster Architecture</h1>
+<p>In this article we will explore the architecture of <strong>Flux CD</strong>, and we will compare the deployment strategies
+of the Flux components when implementing GitOps for multi-cluster continuous delivery.</p>
+<!-- more -->
+
+<h2 id="flux-components">Flux components</h2>
+<p>Flux is powered by the <a href="https://fluxcd.io/flux/components/">GitOps Toolkit</a>, a set of
+composable APIs and specialized tools that enable a wide range of continuous delivery
+use-cases, from simple Kubernetes deployment pipelines to multi-tenant/multi-env
+progressive delivery rollouts.</p>
+<p>The Flux project is made out of the following components:</p>
+<ul>
+<li><strong>Flux CLI</strong> - a command-line tool for installing, upgrading, operating, monitoring and debugging the Flux controllers running on Kubernetes clusters.</li>
+<li><strong>Flux Terraform Provider</strong> - a provider for bootstrapping Flux with Terraform and OpenTofu.</li>
+<li><strong>Flux APIs</strong> - a set of Kubernetes CRDs that allow defining continuous delivery workflows in a declarative manner.</li>
+<li><strong>Flux controllers</strong> - a set of Kubernetes controllers that automate all aspects of continuous delivery based on the declarative workflows defined with the Flux APIs.</li>
+</ul>
+<p>The Flux controllers currently available are:</p>
+<ul>
+<li><strong>source-controller</strong> - a controller specialised in artifacts acquisition from external sources such as Git, OCI, Helm repositories and S3-compatible buckets.</li>
+<li><strong>kustomize-controller</strong> - a controller specialized in running continuous delivery pipelines for infrastructure and workloads defined with Kubernetes manifests and assembled with Kustomize.</li>
+<li><strong>helm-controller</strong> - a controller specialized in managing the lifecycle of applications packaged as Helm charts.</li>
+<li><strong>notification-controller</strong> - a controller specialized in sending and receiving continuous delivery events to/from external services.</li>
+<li><strong>image-reflector-controller</strong> - a controller specialized in scanning container registries for new image versions and OCI artifacts revisions.</li>
+<li><strong>image-automation-controller</strong> - a controller specialized in automating the update of container images and OCI artifacts to Git.</li>
+</ul>
+<p>Unlike most CI/CD systems, Flux does not rely on 3rd-party tools to perform its operations
+and can't be used to execute arbitrary scripts or commands on the cluster.
+From a security perspective, Flux execution is limited to the operations defined in the
+Flux APIs and the controllers are designed for multi-tenancy, using Kubernetes impersonation
+when deploying applications on behalf of tenants.</p>
+<p>To extend Flux beyond its built-in functions, custom controllers can be developed using the
+<a href="https://github.com/fluxcd/pkg/tree/main/runtime">Flux controller SDK</a>.
+For example, <a href="https://github.com/flux-iac/tofu-controller">tofu-controller</a>
+is a Flux controller for reconciling Terraform and OpenTofu modules.</p>
+<h2 id="flux-bootstrap">Flux bootstrap</h2>
+<p>Bootstrap is the process of deploying the Flux controllers on a Kubernetes cluster
+and configuring them to watch a Git repository for changes. The bootstrap repository
+can contain references to other Git repos, OCI repos, Helm charts, S3-compatible buckets;
+together all these sources form the desired state of the cluster. </p>
+<p>With Flux running on the cluster, all changes to the desired state are automatically
+reconciled, including the self-update of the Flux controllers. If the cluster state
+drifts from the desired state, Flux will automatically correct it, effectively
+undoing any changes made to the cluster outside of the GitOps workflow.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/diag-fluxcd-bootstrap.png" data-desc-position="bottom"><img alt="bootstrap" src="../../assets/diag-fluxcd-bootstrap.png"></a></p>
+<p>A bootstrap repository can serve multiple clusters &amp; tenants, and can contain
+delivery pipelines that span across multiple environments.
+A typical repository structure used by platform teams to manage multiple
+clusters and tenants looks like this:</p>
+<div class="highlight"><pre><span></span><code>├──<span class="w"> </span>clusters
+│<span class="w">   </span>├──<span class="w"> </span>prod1
+│<span class="w">   </span>├──<span class="w"> </span>prod2
+│<span class="w">   </span>├──<span class="w"> </span>staging
+├──<span class="w"> </span>infrastructure
+│<span class="w">   </span>├──<span class="w"> </span>base
+│<span class="w">   </span>├──<span class="w"> </span>production
+│<span class="w">   </span>└──<span class="w"> </span>staging
+└──<span class="w"> </span>tenants
+<span class="w">    </span>├──<span class="w"> </span>team1
+<span class="w">    </span>└──<span class="w"> </span>team2
+</code></pre></div>
+<p>The platform team can segregate the clusters add-ons from the tenants' applications.
+The cluster add-ons defined in the infrastructure directory, such as admission controllers,
+ingress, monitoring, logging, security policies, etc. are deployed by Flux under the
+cluster admin role. The platform team can define the reconciliation order and dependencies
+between the infrastructure components and the tenants' applications using the Flux <code>dependsOn</code>
+feature.</p>
+<p>The applications deployed on the clusters as Helm releases can be managed by various dev
+teams in their own repositories. The platform team can reference these repositories in the
+bootstrap repo and apply policies that enforce security, compliance, and best practices.</p>
+<h2 id="flux-multi-cluster-deployment-strategies">Flux multi-cluster deployment strategies</h2>
+<p>When managing a fleet of Kubernetes clusters with Flux, the platform team can
+choose between two deployment strategies:</p>
+<ul>
+<li><strong>Standalone</strong> - Flux is bootstrapped on each Kubernetes cluster.</li>
+<li><strong>Hub and Spoke</strong> - Flux is bootstrapped on a central cluster, acting as a GitOps hub.</li>
+</ul>
+<h3 id="standalone">Standalone</h3>
+<p>In the standalone mode, each Kubernetes cluster runs its own Flux controllers.
+This mode is suitable for most use-cases, where the clusters are reconciled independently,
+from the same or different bootstrap repositories.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/diag-fluxcd-standalone.png" data-desc-position="bottom"><img alt="standalone" src="../../assets/diag-fluxcd-standalone.png"></a></p>
+<p><strong>Pros</strong>:</p>
+<ul>
+<li>Reduced attack surface, the API server of each cluster doesn't need to be exposed to external systems.</li>
+<li>Reduced blast radius, each cluster is self-sufficient and can operate independently.</li>
+<li>Suitable for hard multi-tenancy and air-gapped environments where clusters can't communicate with each other.</li>
+</ul>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>Operational overhead, each cluster needs to be bootstrapped with Flux separately.</li>
+<li>Maintenance overhead, each Flux instance needs to be updated independently.</li>
+<li>Monitoring and observability overhead, each Flux instance needs to be monitored separately, the collected metrics and events need to be aggregated.</li>
+</ul>
+<p>To improve the observability of standalone instances, the platform team can
+configure the Flux notification-controller on each cluster to send all the
+continuous delivery events to a <a href="https://fluxcd.io/flux/monitoring/alerts/">central alerting system</a>.</p>
+<p>To reduce the operational overhead, the platform team can integrate the
+<a href="https://github.com/fluxcd/terraform-provider-flux">Flux Terraform provider</a>
+with the cluster provisioning process, ensuring that each cluster is bootstrapped with Flux
+as part of the cluster creation workflow.</p>
+<p>To reduce the maintenance burden of standalone instances,
+the platform team can automate the Flux self-update process
+using <a href="https://fluxcd.io/flux/flux-gh-action/#automate-flux-updates">GitHub Actions</a>
+or <a href="https://docs.renovatebot.com/modules/manager/flux/">Renovate bot</a>.</p>
+<p>In standalone mode, the Git server hosting the bootstrap repository is a Single point of failure (SPOF). 
+The SPOF is mitigated by Flux source-controller which maintains a local cache of all
+external sources and can ensure that the cluster state drift detection and correction
+can continue even if the Git server suffers an outage.</p>
+<p>For more information on how to configure Flux for standalone mode, see the
+<a href="https://github.com/fluxcd/flux2-kustomize-helm-example">flux2-kustomize-helm-example</a>
+and the <a href="https://github.com/fluxcd/flux2-multi-tenancy">flux2-multi-tenancy</a> repositories.</p>
+<h3 id="hub-and-spoke">Hub and Spoke</h3>
+<p>In the Hub and Spoke mode, a central cluster acts as a GitOps hub, managing the
+continuous delivery for multiple Kubernetes clusters. The hub cluster
+runs the Flux controllers from where it reconciles the spoke clusters
+by connecting to their Kubernetes API servers.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/diag-fluxcd-hub-and-spoke.png" data-desc-position="bottom"><img alt="hub-and-spoke" src="../../assets/diag-fluxcd-hub-and-spoke.png"></a></p>
+<p><strong>Pros</strong>:</p>
+<ul>
+<li>Reduced operational and maintenance overhead, bootstrapping and updating Flux is done once on the hub cluster.</li>
+<li>Single pane of glass, the platform team can monitor and observe the continuous delivery for all clusters using the Flux metrics and events from the hub instance.</li>
+<li>Suitable for when clusters are provisioned with <a href="https://cluster-api.sigs.k8s.io/">Kubernetes Cluster API</a>, where the hub cluster acts as a management cluster.</li>
+</ul>
+<p><strong>Cons</strong>:</p>
+<ul>
+<li>Single point of failure, the hub cluster is a SPOF for the continuous delivery for all clusters.</li>
+<li>Security concerns, if the hub cluster is compromised the attacker can gain access to all spoke clusters.</li>
+<li>Operational complexity, the platform team needs to manage the network connectivity between the hub and spoke clusters API servers.</li>
+</ul>
+<p>For more information on how to configure Flux for Hub and Spoke mode, see the
+<a href="https://github.com/fluxcd/flux2-hub-spoke-example">flux2-hub-spoke-example</a> repository.</p>
+<h3 id="hub-sharding-and-horizontal-scaling">Hub sharding and horizontal scaling</h3>
+<p>When managing a large number of spoke clusters, the hub cluster can be sharded
+to distribute the reconciliation load across multiple Flux instances.</p>
+<p><a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="../../assets/diag-fluxcd-hub-sharding.png" data-desc-position="bottom"><img alt="hub-sharding" src="../../assets/diag-fluxcd-hub-sharding.png"></a></p>
+<p>The primary Flux instance is responsible for deploying the Flux shard instances
+on the hub cluster and for distributing the reconciliation tasks across the shards.
+The bootstrap repository contains the sharding configuration, allowing the platform team
+to define the shard-to-cluster mapping and the reconciliation order in a declarative manner.</p>
+<p>For more information on how to assign Flux instances to specific clusters,
+see the <a href="https://fluxcd.io/flux/installation/configuration/sharding/">Flux sharding and horizontal scaling guide</a>.</p>
+<h2 id="conclusions">Conclusions</h2>
+<p>Running Flux in the <a href="#standalone">standalone</a> mode offers a higher degree of security
+and autonomy for the clusters at the expense of operational overhead when it comes to
+bootstrapping and monitoring the Flux instances.</p>
+<p>The <a href="#hub-and-spoke">hub and spoke</a> mode reduces the operational and maintenance overhead
+by centralizing the continuous delivery tooling on a single cluster, but introduces a single
+point of failure and networking complexity that can be challenging from a security perspective.</p>
+<p>In the standalone mode, Flux <a href="https://fluxcd.io/flux/installation/configuration/vertical-scaling/">vertical scaling</a>
+would suffice to handle the reconciliation load of thousands of applications,
+while in the hub and spoke mode, Flux <a href="https://fluxcd.io/flux/installation/configuration/sharding/">horizontal scaling</a>
+is required due to the increased latency and network overhead when managing a large number of clusters.</p>
+<p>Depending on the size and security constrains of the Kubernetes fleet, the platform team can choose
+a mix of standalone and hub-spoke modes. For example, using a hub cluster for managing
+the dev &amp; ephemeral test environments and standalone instances for the production clusters.</p>
+<p>If your organization is looking for guidance on how to deploy Flux at scale,
+<a href="https://control-plane.io">ControlPlane</a> employs a team of experts and Flux core maintainers
+that can help you design and implement secure and scalable GitOps workflows.
+For organization running Kubernetes in highly regulated environments, ControlPlane offers
+a <a href="https://control-plane.io/enterprise-for-flux-cd/">FIPS-compliant enterprise edition</a>
+of Flux CD backed by 24/7 support.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+  
+
+
+
+      
+    </article>
+  </div>
+
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright © 2014-2023 Stefan Prodan
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://cloud-native.slack.com/team/ULPRMFH38" target="_blank" rel="noopener" title="cloud-native.slack.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M94.12 315.1c0 25.9-21.16 47.06-47.06 47.06S0 341 0 315.1c0-25.9 21.16-47.06 47.06-47.06h47.06v47.06zm23.72 0c0-25.9 21.16-47.06 47.06-47.06s47.06 21.16 47.06 47.06v117.84c0 25.9-21.16 47.06-47.06 47.06s-47.06-21.16-47.06-47.06V315.1zm47.06-188.98c-25.9 0-47.06-21.16-47.06-47.06S139 32 164.9 32s47.06 21.16 47.06 47.06v47.06H164.9zm0 23.72c25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06H47.06C21.16 243.96 0 222.8 0 196.9s21.16-47.06 47.06-47.06H164.9zm188.98 47.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06s-21.16 47.06-47.06 47.06h-47.06V196.9zm-23.72 0c0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06V79.06c0-25.9 21.16-47.06 47.06-47.06 25.9 0 47.06 21.16 47.06 47.06V196.9zM283.1 385.88c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06-25.9 0-47.06-21.16-47.06-47.06v-47.06h47.06zm0-23.72c-25.9 0-47.06-21.16-47.06-47.06 0-25.9 21.16-47.06 47.06-47.06h117.84c25.9 0 47.06 21.16 47.06 47.06 0 25.9-21.16 47.06-47.06 47.06H283.1z"></path></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/stefanprodan" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M64 32C28.7 32 0 60.7 0 96v320c0 35.3 28.7 64 64 64h320c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm297.1 84L257.3 234.6 379.4 396h-95.6L209 298.1 123.3 396H75.8l111-126.9L69.7 116h98l67.7 89.5 78.2-89.5h47.5zm-37.8 251.6L153.4 142.9h-28.3l171.8 224.7h26.3z"></path></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://linkedin.com/in/stefanprodan" target="_blank" rel="noopener" title="linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"></path></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/stefanprodan" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["content.code.copy", "navigation.sections", "navigation.top", "navigation.tabs", "navigation.indexes"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
