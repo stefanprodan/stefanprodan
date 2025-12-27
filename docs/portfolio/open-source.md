@@ -2,12 +2,26 @@
 
 Open source projects that I currently maintain and I deeply care about.
 
+## Flux Operator Web UI
+
+:fontawesome-solid-user-graduate: creator & maintainer
+:fontawesome-solid-calendar-days: 2026-present
+
+The [Flux Web UI](https://fluxoperator.dev/web-ui/)
+is a lightweight, mobile-friendly web interface providing real-time visibility into the Flux-managed GitOps pipelines.
+Designed for DevOps engineers and platform teams, the Flux Web UI offers direct insight
+and advanced management capabilities for the application delivery process on Kubernetes clusters.
+
+:fontawesome-brands-git-alt: [controlplaneio-fluxcd/flux-operator](https://github.com/controlplaneio-fluxcd/flux-operator)
+
+:fontawesome-solid-code: `javascript`, `golang`, `kubernetes`
+
 ## Flux Operator MCP Server
 
 :fontawesome-solid-user-graduate: creator & maintainer
 :fontawesome-solid-calendar-days: 2025-present
 
-The [Flux MCP Server](https://github.com/controlplaneio-fluxcd/flux-operator/tree/main/cmd/mcp)
+The [Flux MCP Server](https://fluxoperator.dev/mcp-server/)
 connects AI assistants to Kubernetes clusters running Flux Operator, enabling seamless interaction
 through natural language. It serves as a bridge between AI tools and GitOps pipelines,
 allowing you to analyze deployment across environments, troubleshoot issues,
@@ -79,6 +93,8 @@ joining the ranks of Kubernetes, Prometheus, Envoy and others in this category.
 :fontawesome-brands-git-alt: [github.com/fluxcd/flux2](https://github.com/fluxcd/flux2)
 
 :fontawesome-brands-git-alt: [github.com/fluxcd/source-controller](https://github.com/fluxcd/source-controller)
+
+:fontawesome-brands-git-alt: [github.com/fluxcd/source-watcher](https://github.com/fluxcd/source-watcher)
 
 :fontawesome-brands-git-alt: [github.com/fluxcd/kustomize-controller](https://github.com/fluxcd/kustomize-controller)
 
