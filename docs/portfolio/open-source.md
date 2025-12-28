@@ -31,6 +31,21 @@ and perform operations using conversational prompts.
 
 :fontawesome-solid-code: `golang`, `kubernetes`
 
+## Flux Operator
+
+:fontawesome-solid-user-graduate: creator & maintainer
+:fontawesome-solid-calendar-days: 2024-present
+
+The [Flux Operator](https://fluxoperator.dev) simplifies
+the installation, configuration, and management of CNCF Flux and its components.
+The operator extends Flux with high-level APIs for app delivery with
+self-service capabilities, deployment windows,
+and preview environments for pull requests testing.
+
+:fontawesome-brands-git-alt: [controlplaneio-fluxcd/flux-operator](https://github.com/controlplaneio-fluxcd/flux-operator)
+
+:fontawesome-solid-code: `golang`, `kubernetes`
+
 ## Timoni
 
 :fontawesome-solid-user-graduate: creator & maintainer
