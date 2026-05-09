@@ -1,7 +1,7 @@
 # Terminal
 cask "ghostty"
 brew "bash"
-brew "bash-completion"
+brew "bash-completion@2"
 brew "mcfly"
 
 # Git
@@ -23,6 +23,7 @@ brew "tokei"
 brew "tree"
 brew "yq"
 brew "watch"
+brew "micro"
 
 # Security
 brew "age"
@@ -36,13 +37,14 @@ brew "step"
 brew "cue"
 brew "go"
 brew "gopls"
+brew "golangci-lint"
+brew "goreleaser"
 brew "python"
 brew "node"
 brew "make"
 brew "cmake"
 
 # Kubernetes
-cask "docker"
 brew "kubectl"
 brew "kind"
 brew "kubeconform"
@@ -71,11 +73,5 @@ tap "replicatedhq/replicated"
 brew "replicatedhq/replicated/cli"
 
 # AI
-cask "claude-code"
-cask "block-goose"
 brew "gemini-cli"
-brew "repomix"
-
-# Release Tools
-brew "goreleaser"
-brew "create-dmg"
+cask "copilot-cli"

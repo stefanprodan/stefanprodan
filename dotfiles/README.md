@@ -23,10 +23,10 @@ brew bundle --file=dotfiles/Brewfile
 - [Slack](https://slack.com/)
 - [Zulip](https://zulip.com/apps/mac)
 - [Zoom](https://zoom.us/)
+- [Teams](https://www.microsoft.com/en-us/microsoft-teams/download-app)
 - [Tailscale](https://tailscale.com/)
 - [Keybase](https://keybase.io/)
 - [Adobe Acrobat Reader](https://get.adobe.com/reader/)
-- [SafeNet Authentication Client](https://www.certsign.ro/en/support/safenet-installing-the-device-on-macos/)
 
 ## Troubleshooting
 
