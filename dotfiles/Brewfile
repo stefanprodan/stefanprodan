@@ -26,6 +26,7 @@ brew "watch"
 brew "micro"
 
 # Security
+brew "1password-cli"
 brew "age"
 brew "cfssl"
 brew "gnupg"
