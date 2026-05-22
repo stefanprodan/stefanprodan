@@ -31,6 +31,7 @@ brew "age"
 brew "cfssl"
 brew "gnupg"
 brew "pinentry-mac"
+brew "trufflehog"
 brew "sops"
 brew "step"
 
