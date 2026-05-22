@@ -158,9 +158,10 @@ same as the git and docker helpers.
 If you prefer to use IntelliJ, GoLand, or any other JetBrains IDE to push commits,
 enable the "Use credential helper" option in "Settings > Version Control > Git".
 
-Every push invokes the `git-credential-1password-github` script and triggers a
-1Password Touch ID prompt — unlike a shell, where authorization persists for the
-lifetime of the session, the IDE re-prompts on each push.
+The first push from each IDE session invokes the `git-credential-1password-github`
+script and triggers a 1Password Touch ID prompt. Subsequent pushes from the same
+IDE process run silently until the 1Password session times out or the app is locked,
+at which point the next push re-prompts.
 
 ## Docker setup (ghcr.io)
 
