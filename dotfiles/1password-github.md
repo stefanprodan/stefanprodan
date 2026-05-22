@@ -2,7 +2,8 @@
 
 Use the [1Password CLI](https://developer.1password.com/docs/cli) as the
 credential helper for both `git` (github.com) and `docker` (ghcr.io), so
-GitHub PATs are never written to the macOS keychain or to disk.
+GitHub PATs are fetched per-session, gated by Touch ID,
+and never persisted in the macOS keychain or to disk.
 
 ## Threat model
 
@@ -10,8 +11,8 @@ Both Git and Docker on macOS default to credential helpers that cache
 tokens in the login keychain. The keychain ACL on those entries grants
 silent read access to the helper binaries.
 
-Infostealer embedded in npm post-install scripts or
-compromised IDE plugins can read the keychain entries and extract the tokens with:
+Infostealers embedded in compromised AI agent skills, npm post-install scripts,
+or IDE plugins can read the keychain entries and extract the GitHub PATs with:
 
 ```bash
 # Git
@@ -31,9 +32,6 @@ trufflehog filesystem --only-verified --no-update \
     ~/.bash_profile ~/.bashrc ~/.bash_history ~/.npmrc \
     ~/.gitconfig ~/.docker/config.json ~/.config ~/.ssh
 ```
-
-With 1Password as the helper, tokens are fetched per-operation, gated by 1Password's biometric session,
-and never persisted in the keychain, shell history, or disk.
 
 ## Git setup (github.com)
 
@@ -97,31 +95,17 @@ continue to use whatever helper the inherited config specifies.
 printf 'protocol=https\nhost=github.com\n\n' | git credential-osxkeychain erase
 ```
 
-Verify nothing comes back:
-
-```bash
-printf 'protocol=https\nhost=github.com\n\n' | git credential-osxkeychain get
-# (empty)
-```
-
 ### 5. Verify the helper
 
 ```bash
-printf 'protocol=https\nhost=github.com\n\n' | git credential fill
-# protocol=https
-# host=github.com
-# username=x-access-token
-# password=<token from 1Password>
+git clone https://github.com/org/private-repo
 ```
 
-The first time `op read` is invoked from this script, 1Password shows a Touch ID prompt.
-
-Running `git push` from a new shell will trigger the Touch ID prompt
-again, even while the 1Password app remains unlocked. The desktop app
-authorizes `op` calls per parent process, so every new shell needs a
-fresh approval the first time it invokes the helper. After that, all
-git operations in that shell run silently until the 1Password session
-times out or the app is locked.
+Running `git clone/pull/push` from a new shell will trigger the Touch ID prompt,
+even while the 1Password is unlocked. The desktop app authorizes `op` calls
+per parent process, so every new shell needs a fresh approval the first time
+it invokes the helper. After that, all git operations in that shell run
+silently until the 1Password session times out or the app is locked.
 
 ### 6. GitHub CLI
 
@@ -146,12 +130,10 @@ Verify:
 
 ```bash
 gh auth status
-# github.com
-#   ✓ Logged in to github.com account <you>
 ```
 
 The first `gh` call in a new shell triggers a 1Password Touch ID prompt,
-same as the git and docker helpers.
+same as the git helper.
 
 ### 7. IDE integration
 
@@ -249,21 +231,35 @@ echo 'https://ghcr.io' | docker-credential-desktop get
 
 ### 5. Verify the helper
 
-As with the git helper, the first invocation triggers a 1Password Touch ID prompt.
-Approve it once per session.
-
 ```bash
-echo 'https://ghcr.io' | docker-credential-1password-ghcr get
-# {"ServerURL":"https://ghcr.io","Username":"x-access-token","Secret":"<token>"}
+docker pull ghcr.io/stefanprodan/podinfo
 ```
 
-End-to-end: `docker pull ghcr.io/<owner>/<private-image>` should succeed
-without ever calling `docker login`.
+As with the git helper, the first invocation triggers a 1Password Touch ID prompt.
+Approve it once per shell session.
 
-## Day-to-day operations
+## Limitations
 
-- `git push` / `fetch` / `pull` to github.com, and `docker pull` / `push`
-  against ghcr.io → small pause while `op read` runs. Biometric prompt only
-  after the 1Password session times out or the app is locked.
-- If the 1Password desktop app is closed, `op read` fails and the
-  underlying tool reports an auth error.
+This setup raises the bar for credential theft but does not eliminate it.
+Once a shell session is authorized (by `git push`, `docker push`, or any
+other invocation of `op read`), the helper runs silently for the rest of
+the 1Password unlock window. Any process inside that shell can fetch the
+PAT from the vault without a Touch ID prompt:
+
+```bash
+printf 'protocol=https\nhost=github.com\n\n' | git credential fill
+```
+
+That window is the weak link:
+
+- An infostealer that lands in an authorized shell inherits the same
+  access the helper has and can exfiltrate the PAT directly.
+- AI coding agents running as subprocesses of an authorized shell
+  inherit that authorization too. Treat them as untrusted: do not run
+  `git push` or `docker push` from inside an agent session, and do not
+  let an agent invoke `op read` on your behalf.
+
+**Recommendation**: keep a dedicated terminal window for `git push` and
+`docker push`, and run nothing else in it: no AI agents, no npm commands,
+no third-party scripts. Anything running in that shell after authorization
+has silent read access to the PAT until the 1Password session times out.
