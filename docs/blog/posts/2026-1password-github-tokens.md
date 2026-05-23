@@ -1,9 +1,23 @@
-# GitHub and GHCR authentication via 1Password
+---
+date: 2026-05-22
+authors: [stefanprodan]
+description: >
+  A minimal-disruption macOS setup that fetches GitHub PATs from 1Password,
+  gated by Touch ID, instead of caching them in the keychain.
+categories:
+  - Security
+---
 
-Use the [1Password CLI](https://developer.1password.com/docs/cli) as the
-credential helper for both `git` (github.com) and `docker` (ghcr.io), so
-GitHub PATs are fetched per-session, gated by Touch ID,
-and never persisted in the macOS keychain or to disk.
+# Locking GitHub PATs behind Touch ID with 1Password
+
+A macOS setup recipe for routing GitHub authentication through the
+1Password CLI instead of the login keychain.
+It covers `git` against github.com and `docker` against ghcr.io.
+
+<!-- more -->
+
+With this configuration, GitHub PATs live only in the 1Password vault and
+are fetched per shell session, gated by macOS Touch ID.
 
 ## Threat model
 
@@ -33,9 +47,9 @@ trufflehog filesystem --only-verified --no-update \
     ~/.gitconfig ~/.docker/config.json ~/.config ~/.ssh
 ```
 
-## Git setup (github.com)
+## Prerequisites
 
-Prerequisite: 1Password desktop app installed, with the **Connect with
+1Password desktop app installed, with the **Connect with
 1Password CLI** integration enabled (Settings → Developer).
 
 Install the `op` CLI with Homebrew:
@@ -43,6 +57,15 @@ Install the `op` CLI with Homebrew:
 ```sh
 brew install 1password-cli
 ```
+
+This doc assumes a 1Password vault named `dev` for storing GitHub PATs.
+Substitute another name in the `op://` references below if you use one.
+
+## Git setup (github.com)
+
+Git's credential helper config supports per-host scoping, so we point
+`https://github.com` at a custom helper that reads from 1Password, while
+leaving other HTTPS hosts (GitLab, Bitbucket, etc.) unaffected.
 
 ### 1. Store a GitHub PAT in 1Password
 
@@ -59,13 +82,13 @@ set -euo pipefail
 
 [ "${1:-}" = "get" ] || exit 0
 
-token=$(/opt/homebrew/bin/op read op://<vault>/github-pat/credential)
+token=$(/opt/homebrew/bin/op read op://dev/github-pat/credential)
 
 printf 'username=x-access-token\n'
 printf 'password=%s\n' "$token"
 ```
 
-Replace `<vault>` with the actual value.
+Make it executable:
 
 ```bash
 chmod +x ~/.local/bin/git-credential-1password-github
@@ -107,35 +130,7 @@ per parent process, so every new shell needs a fresh approval the first time
 it invokes the helper. After that, all git operations in that shell run
 silently until the 1Password session times out or the app is locked.
 
-### 6. GitHub CLI
-
-For `gh` use the official [1Password shell plugin](https://developer.1password.com/docs/cli/shell-plugins/github/).
-It wraps each `gh` invocation with `op run`, injecting the PAT
-into `GITHUB_TOKEN` per command, so nothing is ever written to
-`~/.config/gh/hosts.yml` nor the keychain.
-
-```bash
-op plugin init gh
-```
-
-Pick the same PAT item from step 1. `op` writes a shim to
-`~/.config/op/plugins.sh`; source it from your shell config:
-
-```bash
-# in ~/.bash_profile (or ~/.zshrc)
-source ~/.config/op/plugins.sh
-```
-
-Verify:
-
-```bash
-gh auth status
-```
-
-The first `gh` call in a new shell triggers a 1Password Touch ID prompt,
-same as the git helper.
-
-### 7. IDE integration
+### 6. JetBrains IDEs
 
 If you prefer to use IntelliJ, GoLand, or any other JetBrains IDE to push commits,
 enable the "Use credential helper" option in "Settings > Version Control > Git".
@@ -165,7 +160,7 @@ Create a classic PAT on GitHub by navigating to https://github.com/settings/toke
 set -euo pipefail
 
 OP=/opt/homebrew/bin/op
-OP_REF=op://<vault>/ghcr-pat/credential
+OP_REF=op://dev/ghcr-pat/credential
 USERNAME=x-access-token
 
 case "${1:-}" in
@@ -194,7 +189,7 @@ case "${1:-}" in
 esac
 ```
 
-Replace `<vault>` with the actual value.
+Make it executable:
 
 ```bash
 chmod +x ~/.local/bin/docker-credential-1password-ghcr
@@ -238,6 +233,35 @@ docker pull ghcr.io/stefanprodan/podinfo
 As with the git helper, the first invocation triggers a 1Password Touch ID prompt.
 Approve it once per shell session.
 
+## GitHub CLI
+
+For `gh` use the official [1Password shell plugin](https://developer.1password.com/docs/cli/shell-plugins/github/).
+It wraps each `gh` invocation with `op run`, injecting the PAT
+into `GITHUB_TOKEN` per command, so nothing is ever written to
+`~/.config/gh/hosts.yml` nor the keychain.
+
+```bash
+op plugin init gh
+```
+
+It is recommended to generate a dedicated fine-grained PAT for the GitHub CLI.
+
+`op` writes a shim to `~/.config/op/plugins.sh`; source it from your shell config:
+
+```bash
+# in ~/.bash_profile (or ~/.zprofile)
+source ~/.config/op/plugins.sh
+```
+
+Verify:
+
+```bash
+gh auth status
+```
+
+The first `gh` call in a new shell triggers a 1Password Touch ID prompt,
+same as the git helper.
+
 ## Limitations
 
 This setup raises the bar for credential theft but does not eliminate it.
@@ -263,3 +287,4 @@ That window is the weak link:
 `docker push`, and run nothing else in it: no AI agents, no npm commands,
 no third-party scripts. Anything running in that shell after authorization
 has silent read access to the PAT until the 1Password session times out.
+
