@@ -10,15 +10,13 @@ categories:
 
 # Locking GitHub PATs behind Touch ID with 1Password
 
-A macOS setup recipe for routing GitHub authentication through the
-1Password CLI instead of the login keychain.
-It covers `git` and JetBrains IDEs against github.com, the `gh` CLI, and
-`docker` against ghcr.io.
+A macOS setup recipe for routing GitHub authentication through the 1Password CLI instead of the login keychain.
+It covers `git` against _github.com_, the `gh` CLI, and `docker` against _ghcr.io_.
 
 <!-- more -->
 
 With this configuration, GitHub PATs live only in the 1Password vault and
-are fetched per shell session, gated by macOS Touch ID.
+are fetched per terminal session, gated by macOS Touch ID.
 
 ## Threat model
 
@@ -61,6 +59,9 @@ brew install 1password-cli
 
 This doc assumes a 1Password vault named `dev` for storing GitHub PATs.
 Substitute another name in the `op://` references below if you use one.
+
+If you are migrating from the osxkeychain to 1Password, it is recommended
+to rotate all existing PATs on GitHub.
 
 ## Git setup (github.com)
 
@@ -179,9 +180,14 @@ Make it executable:
 chmod +x ~/.local/bin/docker-credential-1password-ghcr
 ```
 
-Docker looks for `docker-credential-<name>` on `$PATH`, so the file name
-suffix (`1password-ghcr`) is what you reference from config. Update
-`~/.docker/config.json` to route ghcr.io specifically:
+Before changing the Docker config, purge any existing ghcr.io credential from
+Docker Desktop's store and from the macOS keychain.
+
+```bash
+docker logout ghcr.io
+```
+
+Now update `~/.docker/config.json` to route ghcr.io to the new helper:
 
 ```json
 {
@@ -192,14 +198,9 @@ suffix (`1password-ghcr`) is what you reference from config. Update
 }
 ```
 
-Keep `credsStore` for everything else; `credHelpers` overrides only for
-ghcr.io.
-
-Purge the cached credential:
-
-```bash
-docker logout ghcr.io
-```
+Docker looks for `docker-credential-<name>` on `$PATH`, so the file name
+suffix (`1password-ghcr`) is what you reference from config.
+We keep `credsStore` for everything else; `credHelpers` overrides only for ghcr.io.
 
 Verify the new helper:
 
@@ -208,7 +209,7 @@ docker pull ghcr.io/stefanprodan/podinfo
 ```
 
 As with the git helper, the first invocation triggers a 1Password Touch ID
-prompt. Approve it once per shell session.
+prompt. Approve it once per terminal session.
 
 ## JetBrains IDEs
 
@@ -255,7 +256,7 @@ same as the git helper.
 ## Limitations
 
 This setup raises the bar for credential theft but does not eliminate it.
-Once a shell session is authorized (by `git push`, `docker push`, or any
+Once a terminal session is authorized (by `git push`, `docker push`, or any
 other invocation of `op read`), the helper runs silently for the rest of
 the 1Password unlock window. Any process inside that shell can fetch the
 PAT from the vault without a Touch ID prompt:
