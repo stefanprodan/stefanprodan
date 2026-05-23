@@ -12,7 +12,8 @@ categories:
 
 A macOS setup recipe for routing GitHub authentication through the
 1Password CLI instead of the login keychain.
-It covers `git` against github.com and `docker` against ghcr.io.
+It covers `git` and JetBrains IDEs against github.com, the `gh` CLI, and
+`docker` against ghcr.io.
 
 <!-- more -->
 
@@ -49,8 +50,8 @@ trufflehog filesystem --only-verified --no-update \
 
 ## Prerequisites
 
-1Password desktop app installed, with the **Connect with
-1Password CLI** integration enabled (Settings → Developer).
+Install the 1Password desktop app and enable the **Connect with 1Password
+CLI** integration (Settings → Developer).
 
 Install the `op` CLI with Homebrew:
 
@@ -67,14 +68,11 @@ Git's credential helper config supports per-host scoping, so we point
 `https://github.com` at a custom helper that reads from 1Password, while
 leaving other HTTPS hosts (GitLab, Bitbucket, etc.) unaffected.
 
-### 1. Store a GitHub PAT in 1Password
+Create a fine-grained PAT on GitHub and save it in 1Password as `github-pat`
+(type API Credentials). Fill in the expiry date so 1Password notifies you to
+rotate it.
 
-Create a fine-grained PAT on GitHub and save it in 1Password as `github-pat` (type API Credentials).
-Make sure to fill in the expiry date to get notified about renewal.
-
-### 2. Create the credential helper script
-
-`~/.local/bin/git-credential-1password-github`:
+Write a credential helper at `~/.local/bin/git-credential-1password-github`:
 
 ```bash
 #!/usr/bin/env bash
@@ -94,10 +92,10 @@ Make it executable:
 chmod +x ~/.local/bin/git-credential-1password-github
 ```
 
-The script only responds to `get`;
-`store` and `erase` are no-ops, so git won't try to persist anything.
+The script only responds to `get`; `store` and `erase` are no-ops, so git
+won't try to persist anything.
 
-### 3. Update `~/.gitconfig`
+Wire it into `~/.gitconfig`, scoped to github.com:
 
 ```gitconfig
 [credential "https://github.com"]
@@ -105,40 +103,28 @@ The script only responds to `get`;
     helper = /Users/<your-username>/.local/bin/git-credential-1password-github
 ```
 
-Replace `<your-username>` with the actual value.
+Replace `<your-username>` with the actual value. The empty `helper =` inside
+the github.com section clears any helper inherited from the system-level
+`/opt/homebrew/etc/gitconfig` (which Homebrew ships as `osxkeychain`); other
+HTTPS hosts continue to use whatever the inherited config specifies.
 
-The empty `helper =` inside the github.com section clears any helper
-inherited from the system-level `/opt/homebrew/etc/gitconfig` (which
-Homebrew ships as `osxkeychain`). Other HTTPS hosts (GitLab, Bitbucket, etc.)
-continue to use whatever helper the inherited config specifies.
-
-### 4. Purge existing keychain entries
+Purge any existing keychain entry:
 
 ```bash
 printf 'protocol=https\nhost=github.com\n\n' | git credential-osxkeychain erase
 ```
 
-### 5. Verify the helper
+Verify by cloning a private repo:
 
 ```bash
 git clone https://github.com/org/private-repo
 ```
 
-Running `git clone/pull/push` from a new shell will trigger the Touch ID prompt,
-even while the 1Password is unlocked. The desktop app authorizes `op` calls
-per parent process, so every new shell needs a fresh approval the first time
-it invokes the helper. After that, all git operations in that shell run
+The first `git clone`, `pull`, or `push` from a new shell triggers the
+Touch ID prompt, even while 1Password is unlocked. The desktop app authorizes `op`
+calls per parent process, so every new shell needs a fresh approval the first
+time it invokes the helper. After that, all git operations in that shell run
 silently until the 1Password session times out or the app is locked.
-
-### 6. JetBrains IDEs
-
-If you prefer to use IntelliJ, GoLand, or any other JetBrains IDE to push commits,
-enable the "Use credential helper" option in "Settings > Version Control > Git".
-
-The first push from each IDE session invokes the `git-credential-1password-github`
-script and triggers a 1Password Touch ID prompt. Subsequent pushes from the same
-IDE process run silently until the 1Password session times out or the app is locked,
-at which point the next push re-prompts.
 
 ## Docker setup (ghcr.io)
 
@@ -146,14 +132,12 @@ Docker config supports `credHelpers` (per-host overrides) alongside
 `credsStore` (the global default), so Docker Desktop continues to handle
 Docker Hub and other registries while ghcr.io is routed to 1Password.
 
-### 1. Store a GHCR PAT in 1Password
+Create a classic PAT scoped to `write:packages` via
+[github.com/settings/tokens/new?scopes=write:packages](https://github.com/settings/tokens/new?scopes=write:packages)
+(this URL avoids granting repo access). Save it in 1Password as `ghcr-pat`
+(type API Credentials).
 
-Create a classic PAT on GitHub by navigating to https://github.com/settings/tokens/new?scopes=write:packages
-(this URL will avoid granting repo access). Save the PAT in 1Password as `ghcr-pat` (type API Credentials).
-
-### 2. Create the credential helper script
-
-`~/.local/bin/docker-credential-1password-ghcr`:
+Write a helper at `~/.local/bin/docker-credential-1password-ghcr`:
 
 ```bash
 #!/usr/bin/env bash
@@ -196,9 +180,8 @@ chmod +x ~/.local/bin/docker-credential-1password-ghcr
 ```
 
 Docker looks for `docker-credential-<name>` on `$PATH`, so the file name
-suffix (`1password-ghcr`) is what you reference from config.
-
-### 3. Update `~/.docker/config.json`
+suffix (`1password-ghcr`) is what you reference from config. Update
+`~/.docker/config.json` to route ghcr.io specifically:
 
 ```json
 {
@@ -209,29 +192,33 @@ suffix (`1password-ghcr`) is what you reference from config.
 }
 ```
 
-Keep `credsStore` for everything else; `credHelpers` overrides only for ghcr.io.
+Keep `credsStore` for everything else; `credHelpers` overrides only for
+ghcr.io.
 
-### 4. Purge the cached credential
+Purge the cached credential:
 
 ```bash
 docker logout ghcr.io
 ```
 
-Verify Docker Desktop's store no longer has it:
-
-```bash
-echo 'https://ghcr.io' | docker-credential-desktop get
-# credentials not found in native keychain
-```
-
-### 5. Verify the helper
+Verify the new helper:
 
 ```bash
 docker pull ghcr.io/stefanprodan/podinfo
 ```
 
-As with the git helper, the first invocation triggers a 1Password Touch ID prompt.
-Approve it once per shell session.
+As with the git helper, the first invocation triggers a 1Password Touch ID
+prompt. Approve it once per shell session.
+
+## JetBrains IDEs
+
+If you prefer to use IntelliJ, GoLand, or any other JetBrains IDE to push commits,
+enable the "Use credential helper" option in "Settings > Version Control > Git".
+
+The first push from each IDE session invokes the `git-credential-1password-github`
+script and triggers a 1Password Touch ID prompt. Subsequent pushes from the same
+IDE process run silently until the 1Password session times out or the app is locked,
+at which point the next push re-prompts.
 
 ## GitHub CLI
 
@@ -240,11 +227,14 @@ It wraps each `gh` invocation with `op run`, injecting the PAT
 into `GITHUB_TOKEN` per command, so nothing is ever written to
 `~/.config/gh/hosts.yml` nor the keychain.
 
+Generate a dedicated fine-grained PAT for the GitHub CLI and save it in
+1Password (a separate item from `github-pat`, scoped to whatever `gh`
+operations you actually need). Then initialize the plugin and pick that
+item when prompted:
+
 ```bash
 op plugin init gh
 ```
-
-It is recommended to generate a dedicated fine-grained PAT for the GitHub CLI.
 
 `op` writes a shim to `~/.config/op/plugins.sh`; source it from your shell config:
 
@@ -282,6 +272,13 @@ That window is the weak link:
   inherit that authorization too. Treat them as untrusted: do not run
   `git push` or `docker push` from inside an agent session, and do not
   let an agent invoke `op read` on your behalf.
+
+The Touch ID prompt itself carries no useful context: it does not show
+which vault or item is being requested, and it does not show which
+process triggered the request. A legitimate `git push` from your terminal
+and a stealthy `op read` from a background daemon look identical at the
+prompt. You cannot make a security decision from the prompt alone, only
+from what you know you were just doing.
 
 **Recommendation**: keep a dedicated terminal window for `git push` and
 `docker push`, and run nothing else in it: no AI agents, no npm commands,
