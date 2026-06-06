@@ -66,6 +66,7 @@ brew "stefanprodan/tap/timoni"
 brew "crane"
 brew "cosign"
 brew "trivy"
+brew "grype"
 
 # Cloud
 brew "awscli"
