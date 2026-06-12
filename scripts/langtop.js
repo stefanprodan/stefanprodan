@@ -1031,17 +1031,24 @@ if (watchSecs === null) {
   // Draw on the alternate screen buffer (like top/htop) so refreshes
   // replace in place instead of piling up in the scrollback, and the
   // original terminal contents come back on exit.
-  process.stdout.write("\x1b[?1049h\x1b[H");
-  // leave the alternate screen on any exit (clean quit, signal, or crash)
-  process.on("exit", () => process.stdout.write("\x1b[?1049l"));
+  process.stdout.write("\x1b[?1049h\x1b[?25l\x1b[H");
+  // restore the screen and cursor on any exit (clean quit, signal, or crash)
+  process.on("exit", () => process.stdout.write("\x1b[?25h\x1b[?1049l"));
   process.on("SIGINT", () => process.exit(0));
   process.on("SIGTERM", () => process.exit(0));
 
   while (true) {
     const table = await renderTable();
     const footer = `\x1b[2mevery ${watchSecs}s  ${new Date().toLocaleTimeString()}  Ctrl+C to quit\x1b[0m`;
-    // home the cursor, overdraw, then erase whatever is left below
-    process.stdout.write(`\x1b[H${table}\n\n${footer}\x1b[J`);
+    // home the cursor, overdraw clearing each line as we go (a bare \n
+    // leaves stale text when a frame has fewer/shorter lines), then
+    // erase whatever is left below; ?2026 makes terminals that support
+    // synchronized output apply the frame atomically (others ignore it)
+    const frame = `${table}\n\n${footer}`
+      .split("\n")
+      .map((line) => `${line}\x1b[K`)
+      .join("\n");
+    process.stdout.write(`\x1b[?2026h\x1b[H${frame}\x1b[J\x1b[?2026l`);
     await Bun.sleep(watchSecs * 1000);
   }
 }
