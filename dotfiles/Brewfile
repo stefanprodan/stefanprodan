@@ -26,7 +26,7 @@ brew "watch"
 brew "micro"
 
 # Security
-brew "1password-cli"
+cask "1password-cli"
 brew "age"
 brew "cfssl"
 brew "gnupg"
@@ -35,6 +35,7 @@ brew "trufflehog"
 brew "sops"
 brew "step"
 brew "zizmor"
+brew "pinact"
 
 # Languages
 brew "cue"
@@ -47,6 +48,10 @@ brew "uv"
 brew "node"
 brew "make"
 brew "cmake"
+brew "typescript"
+tap "oven-sh/bun", trusted: true
+brew "oven-sh/bun/bun"
+brew "biome"
 
 # Kubernetes
 brew "kubectl"
@@ -55,12 +60,12 @@ brew "kubeconform"
 brew "kustomize"
 brew "helm"
 brew "helm-docs"
-tap "fluxcd/tap"
+tap "fluxcd/tap", trusted: true
 brew "fluxcd/tap/flux"
-tap "controlplaneio-fluxcd/tap"
+tap "controlplaneio-fluxcd/tap", trusted: true
 brew "controlplaneio-fluxcd/tap/flux-operator"
 brew "controlplaneio-fluxcd/tap/flux-operator-mcp"
-tap "stefanprodan/tap"
+tap "stefanprodan/tap", trusted: true
 brew "stefanprodan/tap/timoni"
 
 # OCI
@@ -72,9 +77,9 @@ brew "grype"
 # Cloud
 brew "awscli"
 brew "eksctl"
-tap "hashicorp/tap"
+tap "hashicorp/tap", trusted: true
 brew "hashicorp/tap/terraform"
-tap "replicatedhq/replicated"
+tap "replicatedhq/replicated", trusted: true
 brew "replicatedhq/replicated/cli"
 
 # AI
