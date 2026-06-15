@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Claude Code status line. Reads the session JSON on stdin and prints one line:
 # ⎇ <branch|dir> | <model> | <ctx_usage%> ctx | <wk_usage%> wk
-# Wired via settings.json -> statusLine.command.
+# Wired via settings.json -> statusLine.command
+# Statusline docs: https://code.claude.com/docs/en/statusline.md
 set -euo pipefail
 
+# Read the session data in JSON format.
 input=$(cat)
 
 # Single jq pass: tab-separated fields read straight into shell vars. Keep
@@ -18,9 +20,8 @@ IFS=$'\t' read -r current_dir model ctx_usage wk_usage < <(
   ] | @tsv'
 )
 
-cd "$current_dir" 2>/dev/null || true
-branch=$(git branch --show-current 2>/dev/null || true)
-
+# Determine Git branch with fallback to the current dir name.
+branch=$(cd "$current_dir" 2>/dev/null && git branch --show-current 2>/dev/null || true)
 if [ -n "$branch" ]; then
   line="⎇ $branch | $model"
 else
@@ -31,4 +32,5 @@ fi
 { [ -n "$ctx_usage" ] && [ "$ctx_usage" != "0" ]; } && line="$line | ${ctx_usage}% ctx"
 [ -n "$wk_usage" ] && line="$line | ${wk_usage}% wk"
 
+# Print the final status.
 echo "$line"
