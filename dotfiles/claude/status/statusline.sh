@@ -33,20 +33,6 @@ fi
 # Print the final status.
 echo "$line"
 
-# Persist the account-wide 5h/7d rate limits for cctop
-{
-  cctop_dir="$HOME/.claude/cctop"; cctop_f="$cctop_dir/usage.json"
-  cctop_now=$(date +%s)
-  cctop_mt=$(stat -f %m "$cctop_f" 2>/dev/null || stat -c %Y "$cctop_f" 2>/dev/null || echo 0)
-  if [ $(( cctop_now - cctop_mt )) -ge 30 ]; then
-    cctop_snap=$(echo "$input" \
-      | jq -c '.rate_limits | objects | select(length > 0)
-               | {rate_limits: ., captured_at: (now|floor)}' 2>/dev/null)
-    if [ -n "$cctop_snap" ]; then
-      mkdir -p "$cctop_dir"
-      cctop_tmp=$(mktemp "$cctop_dir/usage.json.XXXXXX") \
-        && printf '%s' "$cctop_snap" > "$cctop_tmp" \
-        && mv -f "$cctop_tmp" "$cctop_f"
-    fi
-  fi
-} || true
+# Persist the account-wide 5h/7d rate limits
+cctop_exe="$HOME/go/src/github.com/stefanprodan/cctop/cctop.ts"
+printf '%s' "$input" | "$cctop_exe" --capture-usage || true
