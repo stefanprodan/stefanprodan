@@ -3,6 +3,7 @@ cask "ghostty"
 brew "bash"
 brew "bash-completion@2"
 brew "mcfly"
+brew "tmux"
 
 # Git
 brew "git"
