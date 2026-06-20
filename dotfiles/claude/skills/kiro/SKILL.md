@@ -17,76 +17,71 @@ prompt, Kiro does the work, you verify and relay.
 ## Invocation
 
 A Kiro run routinely takes 10-30 minutes, longer than the foreground Bash
-limit. So there is one way to run it: always `run_in_background: true`, always
-redirect to a log. Never run it in the foreground.
+limit, so always run it with `run_in_background: true` and redirect to a log.
+Never run it in the foreground.
 
 ```shell
-cd <working directory> && kiro-cli chat --no-interactive --model=claude-opus-4.8 --trust-all-tools 2>/dev/null <<'TASK' | sed 's/\x1b\[[0-9;?]*[a-zA-Z]//g' | sed '/^$/d' > /tmp/kiro-<task>.log
+cd <working directory> && kiro-cli chat --no-interactive --model=claude-opus-4.8 --trust-all-tools 2>&1 <<'TASK' | sed -u 's/\x1b\[[0-9;?]*[a-zA-Z]//g' | sed -u '/^$/d' > /tmp/kiro-<task>.log
 <task prompt>
 TASK
 ```
 
-When it finishes, read first the summary (`awk '/SUMMARY/,0'
+When it finishes, read the summary first (`awk '/SUMMARY/,0'
 /tmp/kiro-<task>.log`); grep the full log only when the summary reports a
 failure, pulling just the error excerpt.
 
-- For review/research/analysis tasks, state "Do NOT modify any files" in the
-  task prompt.
+The run is in the background and notifies you when it finishes, so don't poll.
+For a mid-run peek, run a bare `tail -n 20 /tmp/kiro-<task>.log` (no `sleep`
+prefix; the harness blocks `sleep N; tail`). A growing log means it is working;
+a flat one only hints it may be stuck, since Kiro buffers its own stdout. If it
+goes silent, wrap the tool in `stdbuf -oL` or a PTY (`script -q /dev/null
+kiro-cli ...`).
+
+- For review/research/analysis, state "Do NOT modify any files" in the prompt.
 - The output interleaves tool-activity lines ("Reading file: ...", "Completed
-  in 0.1s") with Kiro's response; the `sed` filter strips ANSI codes, the log
-  still holds both, so relay only the response, not the tool noise.
+  in 0.1s") with Kiro's response; `sed` strips ANSI codes (the log still holds
+  both, so relay only the response), and `-u` runs it unbuffered so each line
+  flushes to the log instead of block-buffering.
 
 ## Composing the task prompt
 
-Kiro runs in a separate context and inherits nothing from this session, so
-the prompt must be self-contained:
+Kiro inherits nothing from this session, so the prompt must be self-contained:
 
 - State the working directory (absolute path) on the first line.
-- Reference on-disk files by path, Kiro reads them itself. Do not read files
-  solely to paste them into the prompt; that duplicates Kiro's work. (Content
-  you already have in context is fine to summarize for framing.)
-- Paste in full anything that is NOT on disk: plan text, review findings,
-  conversation decisions, diffs you were handed.
-- State constraints: scope limits, style ("minimal surgical edits matching the
-  file's existing style"), things not to touch.
-- Dictate the output format so the relay is mechanical. Reviews: path:line,
-  severity (high/medium/low), one-paragraph rationale, and whether the finding
-  was verified or suspected. Edits: list every modified file with line numbers
-  and a one-line summary per change. Searches: path:line plus a one-line role
-  description.
-- End the prompt with: "End your reply with a section titled SUMMARY: files
-  changed (path: one line each), tests run and their result, and anything left
-  undone."
-- For reviews, tell Kiro to be critical and flag problems, not confirm that
-  things look good.
+- Reference on-disk files by path (Kiro reads them itself); don't paste contents
+  you'd be making it re-read. Paste in full anything NOT on disk: plan text,
+  review findings, decisions, diffs you were handed.
+- State constraints (scope, style, what not to touch) and dictate the output
+  format so the relay is mechanical: reviews as path:line + severity
+  (high/medium/low) + one-line rationale + verified/suspected; edits as
+  file:lines + one-line summary each; searches as path:line + role.
+- End with: "SUMMARY: files changed (path: one line each), tests run + result,
+  anything left undone."
+- For reviews, tell it to be critical and flag problems, not reassure.
 
 ## Parallel tasks
 
-To orchestrate several Kiro tasks, launch each as its own background Bash call
-(each already redirects to its own `/tmp/kiro-<task>.log`), end your turn, then
-collect summaries as the processes exit, verify each, and re-dispatch failures
-with the error excerpt. Decomposition, sequencing, and verification stay with
-you, do not introduce intermediate agents.
-
-Concurrency rule: parallel is always safe for read-only tasks (reviews,
-research, searches). Write tasks conflict on the same checkout (same files, same
-git index), so parallelize them only across disjoint repos/directories or one
-git worktree per run (merge after verification); otherwise run write tasks
-sequentially.
+Launch each task as its own background Bash call (each redirects to its own
+`/tmp/kiro-<task>.log`), end your turn, then collect summaries as they exit,
+verify, and re-dispatch failures with the error excerpt. Decomposition and
+verification stay with you, no intermediate agents. Read-only tasks always
+parallelize safely; write tasks conflict on the same checkout, so run them
+sequentially or isolate each in its own worktree/repo and merge after
+verification.
 
 ## After Kiro finishes
 
-- Verify edits cheaply: `git diff --stat` first, full diffs only where the stat
-  looks suspicious, plus one smoke run if the project has an obvious one. Never
-  assume Kiro's changes are correct, but also never re-review the whole work
-  product, that recreates the duplication this skill exists to avoid.
-- Relay reviews/findings essentially verbatim (minus tool noise). Do not soften
-  or reorder severities.
-- Report any files Kiro modified.
+- Verify edits cheaply: `git diff --stat`, full diffs only where it looks
+  suspicious, plus one smoke run if the project has an obvious one. Never assume
+  the changes are correct, but don't re-review the whole product (that recreates
+  the duplication this skill avoids).
+- Relay reviews/findings essentially verbatim; don't soften or reorder
+  severities. Report any files modified.
 
 ## Auth and known noise
 
 - kiro-cli is already authenticated: `KIRO_API_KEY` is in the session env
   (Claude is launched via `op run`). Call it bare; never wrap in `op run`.
-- The warning "Failed to retrieve MCP settings" is benign noise that kiro-cli
-  always prints. It is NOT a signal, ignore it.
+- The "Failed to retrieve MCP settings" warning is benign noise kiro-cli always
+  prints to stderr; `2>&1` lands it in the log (so real errors reach the log
+  too). It is NOT a signal, ignore it when relaying.

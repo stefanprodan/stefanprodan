@@ -17,8 +17,8 @@ does the work, you verify and relay.
 ## Invocation
 
 A Gemini run routinely takes 10-30 minutes, longer than the foreground Bash
-limit. So there is one way to run it: always `run_in_background: true`, always
-redirect to a log. Never run it in the foreground.
+limit, so always run it with `run_in_background: true` and redirect to a log.
+Never run it in the foreground.
 
 Write tasks (Gemini may edit files and run commands):
 
@@ -26,90 +26,75 @@ Write tasks (Gemini may edit files and run commands):
 cd <working directory> && gemini -m gemini-3-pro-preview --approval-mode yolo --skip-trust -p "$(cat <<'TASK'
 <task prompt>
 TASK
-)" 2>&1 | grep -vE '^\[STARTUP\]|^YOLO mode is enabled' > /tmp/gemini-<task>.log
+)" 2>&1 | grep --line-buffered -vE '^\[STARTUP\]|^YOLO mode is enabled' > /tmp/gemini-<task>.log
 ```
 
-Read-only tasks (reviews, research, searches) use `plan` mode for a HARD
-read-only guarantee, no prompt-instruction guard needed:
+Read-only tasks use `plan` mode (hard read-only, no prompt guard needed):
 
 ```shell
 cd <working directory> && gemini -m gemini-3-pro-preview --approval-mode plan --skip-trust -p "$(cat <<'TASK'
 <task prompt>
 TASK
-)" 2>&1 | grep -vE '^\[STARTUP\]' > /tmp/gemini-<task>.log
+)" 2>&1 | grep --line-buffered -vE '^\[STARTUP\]' > /tmp/gemini-<task>.log
 ```
 
-When it finishes, read first the summary (`awk '/SUMMARY/,0'
-/tmp/gemini-<task>.log`); grep the full log only when the summary reports a
-failure, pulling just the error excerpt.
+When it finishes, read the summary first (`awk '/SUMMARY/,0'
+/tmp/gemini-<task>.log`); grep the full log only on a reported failure.
 
-- `-m gemini-3-pro-preview` is the default for this skill. Fallback if it's
-  unavailable: `gemini-2.5-pro`.
-- `--approval-mode yolo` auto-approves all tool calls (required to let Gemini
-  act non-interactively); `--approval-mode plan` is read-only. `auto_edit`
-  (auto-approve edits only) is the middle ground.
-- `--skip-trust` trusts the workspace for the session so it doesn't block on a
-  trust prompt. Gemini has no working-dir flag, `cd` into the directory first.
-- The `grep -v` strips Gemini's startup noise (`[STARTUP] …` lines, and the
-  `YOLO mode is enabled` banner in yolo mode); the log holds only Gemini's
-  response.
+The run is in the background and notifies you when it finishes, so don't poll.
+For a mid-run peek, run a bare `tail -n 20 /tmp/gemini-<task>.log` (no `sleep`
+prefix; the harness blocks `sleep N; tail`). A growing log means it is working;
+a flat one only hints it may be stuck, since Gemini buffers its own stdout. If
+it goes silent, wrap the tool in `stdbuf -oL` or a PTY (`script -q /dev/null
+gemini ...`).
+
+- `-m gemini-3-pro-preview` is the default; fallback `gemini-2.5-pro`.
+- `--approval-mode yolo` auto-approves all tool calls (needed non-interactively);
+  `plan` is read-only; `auto_edit` approves edits only.
+- `--skip-trust` trusts the workspace (no trust prompt). Gemini has no
+  working-dir flag, so `cd` in first.
+- `grep -v` strips startup noise (`[STARTUP] …`, `YOLO mode is enabled`);
+  `--line-buffered` flushes each line to the log instead of block-buffering.
 
 ## Composing the task prompt
 
-Gemini runs in a separate context and inherits nothing from this session, so
-the prompt must be self-contained:
+Gemini inherits nothing from this session, so the prompt must be self-contained:
 
 - State the working directory (absolute path) on the first line.
-- Reference on-disk files by path, Gemini reads them itself. Do not read files
-  solely to paste them into the prompt; that duplicates Gemini's work. (Content
-  you already have in context is fine to summarize for framing.)
-- Paste in full anything that is NOT on disk: plan text, review findings,
-  conversation decisions, diffs you were handed.
-- State constraints: scope limits, style ("minimal surgical edits matching the
-  file's existing style"), things not to touch.
-- Dictate the output format so the relay is mechanical. Reviews: path:line,
-  severity (high/medium/low), one-paragraph rationale, and whether the finding
-  was verified or suspected. Edits: list every modified file with line numbers
-  and a one-line summary per change. Searches: path:line plus a one-line role
-  description.
-- End the prompt with: "End your reply with a section titled SUMMARY: files
-  changed (path: one line each), tests run and their result, and anything left
-  undone."
-- For reviews, tell Gemini to be critical and flag problems, not confirm that
-  things look good.
+- Reference on-disk files by path (Gemini reads them itself); don't paste
+  contents you'd be making it re-read. Paste in full anything NOT on disk: plan
+  text, review findings, decisions, diffs you were handed.
+- State constraints (scope, style, what not to touch) and dictate the output
+  format so the relay is mechanical: reviews as path:line + severity
+  (high/medium/low) + one-line rationale + verified/suspected; edits as
+  file:lines + one-line summary each; searches as path:line + role.
+- End with: "SUMMARY: files changed (path: one line each), tests run + result,
+  anything left undone."
+- For reviews, tell it to be critical and flag problems, not reassure.
 
 ## Parallel tasks
 
-To orchestrate several Gemini tasks, launch each as its own background Bash call
-(each already redirects to its own `/tmp/gemini-<task>.log`), end your turn,
-then collect summaries as the processes exit, verify each, and re-dispatch
-failures with the error excerpt. Decomposition, sequencing, and verification
-stay with you, do not introduce intermediate agents. (Gemini also has native
-`-w/--worktree` to run in a fresh git worktree, useful for parallel write tasks
-on one repo.)
-
-Concurrency rule: parallel is always safe for read-only tasks (reviews,
-research, searches). Write tasks conflict on the same checkout (same files, same
-git index), so parallelize them only across disjoint repos/directories or one
-git worktree per run (merge after verification); otherwise run write tasks
-sequentially.
+Launch each task as its own background Bash call (each redirects to its own
+`/tmp/gemini-<task>.log`), end your turn, then collect summaries as they exit,
+verify, and re-dispatch failures with the error excerpt. Decomposition and
+verification stay with you, no intermediate agents. Read-only tasks always
+parallelize safely; write tasks conflict on the same checkout, so run them
+sequentially or isolate each in its own worktree/repo and merge after
+verification (Gemini has native `-w/--worktree` for this).
 
 ## After Gemini finishes
 
-- Verify edits cheaply: `git diff --stat` first, full diffs only where the stat
-  looks suspicious, plus one smoke run if the project has an obvious one. Never
-  assume Gemini's changes are correct, but also never re-review the whole work
-  product, that recreates the duplication this skill exists to avoid.
-- Relay reviews/findings essentially verbatim (minus the startup noise). Do not
-  soften or reorder severities.
-- Report any files Gemini modified.
+- Verify edits cheaply: `git diff --stat`, full diffs only where it looks
+  suspicious, plus one smoke run if the project has an obvious one. Never assume
+  the changes are correct, but don't re-review the whole product (that recreates
+  the duplication this skill avoids).
+- Relay reviews/findings essentially verbatim; don't soften or reorder
+  severities. Report any files modified.
 
 ## Auth and known noise
 
-- Gemini CLI authenticates via Google login or a `GEMINI_API_KEY`. If a run
-  fails with an auth error, the user must re-auth (run `gemini` interactively
-  and sign in, or export `GEMINI_API_KEY`). You cannot fix auth
-  non-interactively, surface it and stop.
-- The `[STARTUP] Phase 'cleanup_ops' …` lines and the `YOLO mode is enabled`
-  banner are benign noise Gemini always prints. They are NOT signals, the
-  `grep -v` in the invocation drops them.
+- Auth is Google login or `GEMINI_API_KEY`. On an auth error the user must
+  re-auth (run `gemini` interactively and sign in, or export the key); you can't
+  fix it non-interactively, so surface it and stop.
+- The `[STARTUP] …` lines and `YOLO mode is enabled` banner are benign noise;
+  the `grep -v` drops them.
