@@ -2,9 +2,27 @@
 import BaseLayout from './BaseLayout.astro';
 
 const { frontmatter } = Astro.props;
+
+const portfolioPages = [
+  { href: '/portfolio/open-source/', label: 'Projects' },
+  { href: '/portfolio/open-source-history/', label: 'Past Contributions' },
+  { href: '/portfolio/biography/', label: 'Biography' },
+];
+const isPortfolio = Astro.url.pathname.startsWith('/portfolio/');
 ---
 
 <BaseLayout title={`${frontmatter.title} | Stefan Prodan`} description={frontmatter.description}>
+  {
+    isPortfolio && (
+      <nav class="meta subnav" aria-label="Portfolio">
+        {portfolioPages.map(({ href, label }) => (
+          <a href={href} aria-current={Astro.url.pathname === href ? 'page' : undefined}>
+            {label}
+          </a>
+        ))}
+      </nav>
+    )
+  }
   <article class="prose">
     <h1>{frontmatter.title}</h1>
     <slot />
@@ -15,5 +33,24 @@ const { frontmatter } = Astro.props;
   h1 {
     font-size: 2rem;
     margin: 1rem 0 1.5rem;
+  }
+
+  .subnav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    padding: 1rem 0 0;
+  }
+
+  .subnav a {
+    color: var(--muted);
+  }
+
+  .subnav a:hover {
+    color: var(--accent);
+  }
+
+  .subnav a[aria-current='page'] {
+    color: var(--accent);
   }
 </style>
