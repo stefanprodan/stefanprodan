@@ -1,9 +1,15 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  wide?: boolean;
+}
+
+const { wide = false } = Astro.props;
 ---
 
 <header>
-  <div class="inner">
+  <div class:list={['inner', { wide }]}>
     <a class="wordmark" href="/"><span class="tilde">~</span>/stefanprodan</a>
     <nav aria-label="Main">
       <a href="/blog/">Blog</a>
@@ -27,6 +33,11 @@ import ThemeToggle from './ThemeToggle.astro';
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+  }
+
+  /* Match the page container so the menu aligns with rail layouts */
+  .inner.wide {
+    max-width: var(--measure-wide);
   }
 
   .wordmark {

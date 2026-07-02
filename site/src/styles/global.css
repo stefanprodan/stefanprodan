@@ -172,7 +172,8 @@ pre code {
 /* Sidebar layouts: filter rail on list pages, meta/toc rails on posts */
 .with-rail {
   display: grid;
-  grid-template-columns: 13rem minmax(0, 1fr);
+  /* Same rail width as post pages so titles line up across templates */
+  grid-template-columns: 11rem minmax(0, 1fr);
   gap: 3rem;
   align-items: start;
 }

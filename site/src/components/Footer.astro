@@ -1,9 +1,14 @@
 ---
+interface Props {
+  wide?: boolean;
+}
+
+const { wide = false } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
 <footer>
-  <div class="inner">
+  <div class:list={['inner', { wide }]}>
     <nav class="meta" aria-label="Social links">
       <a href="https://github.com/stefanprodan" rel="me">GitHub</a>
       <a href="https://linkedin.com/in/stefanprodan" rel="me">LinkedIn</a>
@@ -29,6 +34,11 @@ const year = new Date().getFullYear();
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
+  }
+
+  /* Match the page container so the footer aligns with rail layouts */
+  .inner.wide {
+    max-width: var(--measure-wide);
   }
 
   nav {

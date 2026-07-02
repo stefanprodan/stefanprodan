@@ -44,10 +44,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     </script>
   </head>
   <body>
-    <Header />
+    <Header wide={wide} />
     <main class:list={[{ wide }]}>
       <slot />
     </main>
-    <Footer />
+    <Footer wide={wide} />
   </body>
 </html>

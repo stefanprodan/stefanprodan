@@ -109,7 +109,8 @@ const readingMinutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).len
     text-underline-offset: 3px;
   }
 
-  .toc a,
+  /* .toc ul a matches .side ul a's specificity so this later rule wins */
+  .toc ul a,
   .side p a {
     text-decoration: none;
   }

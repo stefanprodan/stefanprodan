@@ -28,6 +28,13 @@ const description =
 </BaseLayout>
 
 <style>
+  /* Center the hero in the space between header and footer */
+  :global(main:has(.hero)) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .hero {
     display: flex;
     align-items: center;
