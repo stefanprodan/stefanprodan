@@ -22,6 +22,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/images/favicon.png" type="image/png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Stefan Prodan's Blog" href="/rss.xml" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="https://stefanprodan.com/images/favicon.png" />
+    <meta property="og:image:alt" content="stefanprodan.com" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@stefanprodan" />
+    <meta name="twitter:creator" content="@stefanprodan" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://stefanprodan.com/images/favicon.png" />
     <script is:inline>
       (() => {
         const stored = localStorage.getItem('theme');
