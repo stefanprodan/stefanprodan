@@ -1,0 +1,53 @@
+---
+import { formatDate, postExcerpt, postUrl, categorySlug, type Post } from '../lib/blog';
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+---
+
+<article>
+  <p class="meta">
+    <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+    {post.data.categories.map((c) => <a href={`/blog/category/${categorySlug(c)}/`}>{c}</a>)}
+  </p>
+  <h2><a href={postUrl(post)}>{post.data.title}</a></h2>
+  <p class="excerpt">{postExcerpt(post)}</p>
+</article>
+
+<style>
+  article {
+    padding: 1.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  article:last-of-type {
+    border-bottom: none;
+  }
+
+  .meta a {
+    color: var(--accent);
+    margin-left: 0.75rem;
+  }
+
+  h2 {
+    margin: 0.35rem 0 0.5rem;
+    font-size: 1.35rem;
+  }
+
+  h2 a {
+    color: var(--fg);
+  }
+
+  h2 a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .excerpt {
+    margin: 0;
+    color: var(--muted);
+  }
+</style>

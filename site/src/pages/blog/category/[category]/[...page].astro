@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import PostCard from '../../../../components/PostCard.astro';
+import Pagination from '../../../../components/Pagination.astro';
+import { getSortedPosts, paginatePosts, categorySlug, type Post } from '../../../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  const categories = new Map<string, string>();
+  for (const post of posts) {
+    for (const c of post.data.categories) {
+      categories.set(categorySlug(c), c);
+    }
+  }
+  return [...categories.entries()].flatMap(([slug, name]) => {
+    const inCategory = posts.filter((p) => p.data.categories.some((c) => categorySlug(c) === slug));
+    return paginatePosts(inCategory).map(({ page, total, posts }) => ({
+      params: { category: slug, page: page === 1 ? undefined : `page/${page}` },
+      props: { posts, page, total, name },
+    }));
+  });
+}
+
+interface Props {
+  posts: Post[];
+  page: number;
+  total: number;
+  name: string;
+}
+
+const { posts, page, total, name } = Astro.props;
+const { category } = Astro.params;
+---
+
+<BaseLayout title={`${name} | Stefan Prodan`} description={`Blog posts about ${name} by Stefan Prodan.`}>
+  <h1>{name}</h1>
+  {posts.map((post) => <PostCard post={post} />)}
+  <Pagination base={`/blog/category/${category}`} page={page} total={total} />
+</BaseLayout>

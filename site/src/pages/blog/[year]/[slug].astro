@@ -1,0 +1,67 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getSortedPosts, postYear, formatDate, categorySlug, type Post } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  return posts.map((post) => ({
+    params: { year: postYear(post), slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const description = post.data.description.trim();
+---
+
+<BaseLayout title={`${post.data.title} | Stefan Prodan`} description={description}>
+  <article>
+    <header>
+      <p class="meta">
+        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+        {post.data.categories.map((c) => <a href={`/blog/category/${categorySlug(c)}/`}>{c}</a>)}
+      </p>
+      <h1>{post.data.title}</h1>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  header {
+    margin: 1rem 0 2rem;
+  }
+
+  header h1 {
+    font-size: 2rem;
+    margin: 0.4rem 0 0;
+  }
+
+  .meta a {
+    color: var(--accent);
+    margin-left: 0.75rem;
+  }
+</style>
+
+<script>
+  for (const pre of document.querySelectorAll('.prose pre.astro-code')) {
+    const button = document.createElement('button');
+    button.className = 'code-copy';
+    button.type = 'button';
+    button.textContent = 'copy';
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? '');
+      button.textContent = 'copied';
+      setTimeout(() => (button.textContent = 'copy'), 1500);
+    });
+    pre.appendChild(button);
+  }
+</script>
