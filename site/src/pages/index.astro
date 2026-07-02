@@ -12,9 +12,17 @@ const description =
   <section class="hero">
     <div class="side">
       <Image class="avatar" src={stefan} alt="Stefan Prodan" width={240} height={240} densities={[1, 2]} loading="eager" />
-      <p class="term" aria-hidden="true">
-        <span class="prompt">$&nbsp;</span><span id="typer"></span><span class="cursor"></span>
-      </p>
+      <div class="term" aria-hidden="true">
+        <div class="term-bar">
+          <span class="dot close"></span>
+          <span class="dot min"></span>
+          <span class="dot max"></span>
+          <span class="term-title">zsh</span>
+        </div>
+        <p class="term-body">
+          <span class="prompt">$&nbsp;</span><span id="typer"></span><span class="cursor"></span>
+        </p>
+      </div>
     </div>
     <div>
       <p class="meta">Head of development at ControlPlane</p>
@@ -31,24 +39,24 @@ const description =
 </BaseLayout>
 
 <style>
-  /* Center the hero in the space between header and footer */
+  /* Sit the hero in the upper third of the space between header and footer */
   :global(main:has(.hero)) {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   .hero {
     display: flex;
     align-items: flex-start;
     gap: 3rem;
-    padding: 3.5rem 0;
+    padding: 4.5vh 0 3rem;
   }
 
   .side {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1.5rem;
     flex-shrink: 0;
     width: 240px;
   }
@@ -59,14 +67,54 @@ const description =
   }
 
   .term {
-    margin: 0;
     font-family: var(--font-mono);
-    font-size: 0.8rem;
-    color: var(--muted);
     background: var(--bg-raised);
     border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.5rem 0.7rem;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+  }
+
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0.45rem 0.7rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot.close {
+    background: #ff5f57;
+  }
+
+  .dot.min {
+    background: #febc2e;
+  }
+
+  .dot.max {
+    background: #28c840;
+  }
+
+  .term-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--muted);
+    /* Visually center between the dots and the right edge */
+    margin-left: -42px;
+  }
+
+  .term-body {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--muted);
+    padding: 0.6rem 0.7rem 0.9rem;
     white-space: nowrap;
     overflow: hidden;
   }
@@ -150,7 +198,7 @@ const description =
 <script>
   const typer = document.getElementById('typer');
   if (typer) {
-    const phrases = ['hacking on flux', 'hacking on flagger'];
+    const phrases = ['hacking on flux operator', 'hacking on timoni', 'hacking on flagger'];
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       typer.textContent = phrases[0];
     } else {
