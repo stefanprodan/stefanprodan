@@ -180,6 +180,8 @@ pre code {
 .rail {
   position: sticky;
   top: 1.5rem;
+  /* First rail line starts where the page title text starts */
+  padding-top: 1.1rem;
 }
 
 .rail-title {
@@ -226,6 +228,7 @@ pre code {
 
   .rail {
     position: static;
+    padding-top: 0;
   }
 }
 
