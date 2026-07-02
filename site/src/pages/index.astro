@@ -5,19 +5,17 @@ import stefan from '../assets/stefan.jpeg';
 
 const description =
   "Stefan Prodan's open source portfolio and tech blog. " +
-  'Principal Consultant at ControlPlane, core maintainer of the CNCF projects Flux and Flagger.';
+  'Head of development at ControlPlane, core maintainer of the CNCF projects Flux and Flagger.';
 ---
 
 <BaseLayout title="Stefan Prodan" description={description}>
   <section class="hero">
     <Image class="avatar" src={stefan} alt="Stefan Prodan" width={240} height={240} densities={[1, 2]} loading="eager" />
     <div>
-      <p class="meta">Principal Consultant at ControlPlane</p>
-      <p class="prompt">$ whoami</p>
+      <p class="meta">Head of development at ControlPlane</p>
       <h1>Stefan Prodan</h1>
       <p>
-        Passionate about OSS, Cloud Native and Kubernetes. Core maintainer of CNCF projects:
-        Flux, Flagger and the GitOps Toolkit.
+        Passionate about OSS, Cloud Native and Kubernetes. Core maintainer of the CNCF Flux CD project.
       </p>
       <div class="actions">
         <a class="button button-primary" href="/blog/">Blog</a>
@@ -48,13 +46,6 @@ const description =
     flex-shrink: 0;
   }
 
-  .prompt {
-    font-family: var(--font-mono);
-    font-weight: 600;
-    color: var(--accent);
-    margin: 1rem 0 0;
-  }
-
   h1 {
     margin: 0.25rem 0 1rem;
     font-size: 2.5rem;
@@ -68,7 +59,13 @@ const description =
   .actions {
     display: flex;
     gap: 0.75rem;
-    margin-top: 1.5rem;
+    margin-top: 1.25rem;
+  }
+
+  /* Compact buttons so the text column stays within the avatar height */
+  .actions .button {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
   }
 
   @media (max-width: 640px) {
