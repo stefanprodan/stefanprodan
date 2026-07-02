@@ -10,20 +10,7 @@ const description =
 
 <BaseLayout title="Stefan Prodan" description={description}>
   <section class="hero">
-    <div class="side">
-      <Image class="avatar" src={stefan} alt="Stefan Prodan" width={240} height={240} densities={[1, 2]} loading="eager" />
-      <div class="term" aria-hidden="true">
-        <div class="term-bar">
-          <span class="dot close"></span>
-          <span class="dot min"></span>
-          <span class="dot max"></span>
-          <span class="term-title">zsh</span>
-        </div>
-        <p class="term-body">
-          <span class="prompt">$&nbsp;</span><span id="typer"></span><span class="cursor"></span>
-        </p>
-      </div>
-    </div>
+    <Image class="avatar" src={stefan} alt="Stefan Prodan" width={240} height={240} densities={[1, 2]} loading="eager" />
     <div>
       <p class="meta">Head of development at ControlPlane</p>
       <h1>Stefan Prodan</h1>
@@ -36,6 +23,18 @@ const description =
       </div>
     </div>
   </section>
+
+  <div class="term" aria-hidden="true">
+    <div class="term-bar">
+      <span class="dot close"></span>
+      <span class="dot min"></span>
+      <span class="dot max"></span>
+      <span class="term-title">zsh</span>
+    </div>
+    <p class="term-body">
+      <span class="prompt">$&nbsp;</span><span id="typer"></span><span class="cursor"></span>
+    </p>
+  </div>
 </BaseLayout>
 
 <style>
@@ -50,20 +49,13 @@ const description =
     display: flex;
     align-items: flex-start;
     gap: 3rem;
-    padding: 4.5vh 0 3rem;
-  }
-
-  .side {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    flex-shrink: 0;
-    width: 240px;
+    padding: 4.5vh 0 2.5rem;
   }
 
   .avatar {
     border-radius: 10px;
     border: 1px solid var(--accent);
+    flex-shrink: 0;
   }
 
   .term {
@@ -112,9 +104,9 @@ const description =
 
   .term-body {
     margin: 0;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: var(--muted);
-    padding: 0.6rem 0.7rem 0.9rem;
+    padding: 1rem 1.1rem 2.5rem;
     white-space: nowrap;
     overflow: hidden;
   }
@@ -179,18 +171,14 @@ const description =
       justify-content: center;
     }
 
-    .side {
-      width: 180px;
-      margin: 0 auto;
-    }
-
     .avatar {
       width: 180px;
       height: 180px;
+      margin: 0 auto;
     }
 
-    .term {
-      font-size: 0.7rem;
+    .term-body {
+      font-size: 0.8rem;
     }
   }
 </style>
