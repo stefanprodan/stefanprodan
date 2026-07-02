@@ -1,0 +1,73 @@
+---
+import { getSortedPosts, postYear, categorySlug } from '../lib/blog';
+
+interface Props {
+  activeCategory?: string;
+  activeYear?: string;
+}
+
+const { activeCategory, activeYear } = Astro.props;
+
+const posts = await getSortedPosts();
+
+const categories = new Map<string, { name: string; count: number }>();
+for (const post of posts) {
+  for (const c of post.data.categories) {
+    const slug = categorySlug(c);
+    const entry = categories.get(slug) ?? { name: c, count: 0 };
+    entry.count += 1;
+    categories.set(slug, entry);
+  }
+}
+const sortedCategories = [...categories.entries()].sort((a, b) => b[1].count - a[1].count);
+
+const years = [...new Set(posts.map(postYear))];
+---
+
+<div class="filters meta">
+  <p>
+    {
+      sortedCategories.map(([slug, { name, count }]) => (
+        <a href={`/blog/category/${slug}/`} aria-current={slug === activeCategory ? 'page' : undefined}>
+          {name} ({count})
+        </a>
+      ))
+    }
+  </p>
+  <p>
+    {
+      years.map((year) => (
+        <a href={`/blog/${year}/`} aria-current={year === activeYear ? 'page' : undefined}>
+          {year}
+        </a>
+      ))
+    }
+  </p>
+</div>
+
+<style>
+  .filters {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1rem;
+  }
+
+  .filters p {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    margin: 0.5rem 0 0;
+  }
+
+  .filters a {
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .filters a:hover {
+    color: var(--accent);
+  }
+
+  .filters a[aria-current='page'] {
+    color: var(--accent);
+  }
+</style>

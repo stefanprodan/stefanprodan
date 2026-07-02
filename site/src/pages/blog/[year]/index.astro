@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PostCard from '../../../components/PostCard.astro';
+import BlogFilters from '../../../components/BlogFilters.astro';
 import { getSortedPosts, postYear, type Post } from '../../../lib/blog';
 
 export async function getStaticPaths() {
@@ -22,5 +23,6 @@ const { year } = Astro.params;
 
 <BaseLayout title={`Blog - ${year} | Stefan Prodan`} description={`Blog posts from ${year} by Stefan Prodan.`}>
   <h1>{year}</h1>
+  <BlogFilters activeYear={year} />
   {posts.map((post) => <PostCard post={post} />)}
 </BaseLayout>

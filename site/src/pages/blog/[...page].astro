@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../components/PostCard.astro';
 import Pagination from '../../components/Pagination.astro';
+import BlogFilters from '../../components/BlogFilters.astro';
 import { getSortedPosts, paginatePosts, type Post } from '../../lib/blog';
 
 export async function getStaticPaths() {
@@ -24,6 +25,7 @@ const title = page === 1 ? 'Blog' : `Blog - page ${page}`;
 
 <BaseLayout title={`${title} | Stefan Prodan`} description="Stefan Prodan's tech blog: GitOps, Flux, Kubernetes and Cloud Native.">
   <h1>Blog</h1>
+  <BlogFilters />
   {posts.map((post) => <PostCard post={post} />)}
   <Pagination base="/blog" page={page} total={total} />
 </BaseLayout>

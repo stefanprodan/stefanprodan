@@ -1,0 +1,102 @@
+---
+interface Props {
+  id: string;
+  name: string;
+  role: string;
+  period: string;
+  repos: string[];
+  stack: string[];
+}
+
+const { id, name, role, period, repos, stack } = Astro.props;
+const repoLabel = (url: string) => url.replace('https://github.com/', '');
+---
+
+<section class="project" id={id}>
+  <header>
+    <h2>{name}</h2>
+    <p class="meta">{role} &middot; {period}</p>
+  </header>
+  <div class="desc">
+    <slot />
+  </div>
+  <footer>
+    <ul class="repos">
+      {
+        repos.map((repo) => (
+          <li class="meta">
+            <a href={repo}>{repoLabel(repo)}</a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="stack">
+      {stack.map((s) => <code>{s}</code>)}
+    </p>
+  </footer>
+</section>
+
+<style>
+  .project {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem 1.75rem;
+    margin: 1.5rem 0;
+  }
+
+  header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin: 0;
+    scroll-margin-top: 1rem;
+  }
+
+  header .meta {
+    margin: 0;
+  }
+
+  .desc {
+    color: var(--muted);
+  }
+
+  .desc :global(p) {
+    margin: 0.75rem 0;
+  }
+
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem 1rem;
+    margin-top: 1rem;
+  }
+
+  .repos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .stack {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .stack code {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+</style>
