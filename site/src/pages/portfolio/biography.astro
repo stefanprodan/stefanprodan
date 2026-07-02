@@ -12,8 +12,8 @@ const career = [
   {
     period: '2024-present',
     org: 'ControlPlane',
-    role: 'Principal Consultant',
-    text: 'Expanding the company security services portfolio to Flux and GitOps continuous delivery.',
+    role: 'Head of Development',
+    text: 'Leading the Flux CD Enterprise product at <a href="https://control-plane.io/enterprise-for-flux-cd/">control-plane.io</a>.',
   },
   {
     period: '2017-2023',
@@ -65,7 +65,7 @@ const contact = [
             <p class="org">
               {org} <span class="meta">{role}</span>
             </p>
-            <p class="what">{text}</p>
+            <p class="what" set:html={text} />
           </div>
         </li>
       ))
@@ -145,6 +145,12 @@ const contact = [
   .what {
     color: var(--muted);
     margin-top: 0.25rem !important;
+  }
+
+  /* set:html content skips scoped styles; in-text links must be underlined */
+  .what :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .contact {
