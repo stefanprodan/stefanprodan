@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const description =
+  "Stefan Prodan's open source portfolio and tech blog. " +
+  'Principal Consultant at ControlPlane, core maintainer of the CNCF projects Flux and Flagger.';
+---
+
+<BaseLayout title="Stefan Prodan" description={description}>
+  <section class="hero">
+    <img class="avatar" src="/images/stefan.jpeg" alt="Stefan Prodan" width="240" height="240" />
+    <div>
+      <p class="meta">Principal Consultant at ControlPlane</p>
+      <h1>Stefan Prodan</h1>
+      <p>
+        Passionate about OSS, Cloud Native and Kubernetes. Core maintainer of CNCF projects:
+        Flux, Flagger and the GitOps Toolkit.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/blog/">Blog</a>
+        <a class="button" href="/portfolio/open-source/">Portfolio</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding: 3.5rem 0;
+  }
+
+  .avatar {
+    border-radius: 50%;
+    border: 3px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  h1 {
+    margin: 0.25rem 0 1rem;
+    font-size: 2.4rem;
+  }
+
+  .hero > div > p:not(.meta) {
+    color: var(--muted);
+    max-width: 34rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      flex-direction: column;
+      text-align: center;
+      gap: 2rem;
+      padding: 2rem 0;
+    }
+
+    .actions {
+      justify-content: center;
+    }
+
+    .avatar {
+      width: 180px;
+      height: 180px;
+    }
+  }
+</style>

@@ -1,0 +1,56 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<header>
+  <div class="inner">
+    <a class="wordmark" href="/"><span class="tilde">~</span>/stefanprodan</a>
+    <nav aria-label="Main">
+      <a href="/blog/">Blog</a>
+      <a href="/portfolio/open-source/">Portfolio</a>
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
+
+<style>
+  header {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .inner {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 0.85rem var(--space);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .wordmark {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--fg);
+  }
+
+  .wordmark:hover {
+    text-decoration: none;
+  }
+
+  .tilde {
+    color: var(--accent);
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  nav a {
+    color: var(--fg);
+    font-size: 0.95rem;
+  }
+</style>
