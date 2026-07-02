@@ -15,7 +15,8 @@ const description =
       <p class="meta">Head of development at ControlPlane</p>
       <h1>Stefan Prodan</h1>
       <p>
-        Passionate about OSS, Cloud Native and Kubernetes. Core maintainer of the CNCF Flux CD project.
+        Passionate about OSS, Cloud Native and Kubernetes.<br />
+        Core maintainer of the CNCF Flux project.
       </p>
       <div class="actions">
         <a class="button button-primary" href="/blog/">Blog</a>
@@ -29,10 +30,10 @@ const description =
       <span class="dot close"></span>
       <span class="dot min"></span>
       <span class="dot max"></span>
-      <span class="term-title">zsh</span>
+      <span class="term-title">bash</span>
     </div>
     <p class="term-body">
-      <span class="prompt">$&nbsp;</span><span id="typer"></span><span class="cursor"></span>
+      <span class="user">stefan</span><span class="sep">:</span><span class="path">~</span><span class="sep">$&nbsp;</span><span id="typer"></span><span class="cursor"></span>
     </p>
   </div>
 </BaseLayout>
@@ -59,20 +60,43 @@ const description =
   }
 
   .term {
+    --t-bg: #0b1016;
+    --t-bar: #131a22;
+    --t-border: #232f3b;
+    --t-fg: #c8d5df;
+    --t-muted: #7c90a1;
+    --t-user: #2dd4bf;
+    --t-path: #d9a94a;
+    --t-glow: rgb(45 212 191 / 0.12);
+    --t-shadow: rgb(0 0 0 / 0.35);
     font-family: var(--font-mono);
-    background: var(--bg-raised);
-    border: 1px solid var(--border);
-    border-radius: 6px;
+    background: var(--t-bg);
+    border: 1px solid var(--t-border);
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 8px 24px rgb(0 0 0 / 0.25);
+    box-shadow: 0 12px 32px var(--t-shadow);
+  }
+
+  /* Light theme: macOS-style light terminal */
+  :global(:root[data-theme='light']) .term {
+    --t-bg: #ffffff;
+    --t-bar: #e7edf1;
+    --t-border: #d0dae1;
+    --t-fg: #17242e;
+    --t-muted: #5d707e;
+    --t-user: #0f766e;
+    --t-path: #96690f;
+    --t-glow: transparent;
+    --t-shadow: rgb(23 36 46 / 0.12);
   }
 
   .term-bar {
     display: flex;
     align-items: center;
-    gap: 6px;
-    padding: 0.45rem 0.7rem;
-    border-bottom: 1px solid var(--border);
+    gap: 7px;
+    padding: 0.55rem 0.8rem;
+    background: var(--t-bar);
+    border-bottom: 1px solid var(--t-border);
   }
 
   .dot {
@@ -97,22 +121,32 @@ const description =
     flex: 1;
     text-align: center;
     font-size: 0.7rem;
-    color: var(--muted);
+    letter-spacing: 0.06em;
+    color: var(--t-muted);
     /* Visually center between the dots and the right edge */
-    margin-left: -42px;
+    margin-left: -44px;
   }
 
   .term-body {
     margin: 0;
     font-size: 0.9rem;
-    color: var(--muted);
-    padding: 1rem 1.1rem 2.5rem;
+    color: var(--t-fg);
+    padding: 1rem 1.1rem 2.75rem;
     white-space: nowrap;
     overflow: hidden;
+    text-shadow: 0 0 10px var(--t-glow);
   }
 
-  .term .prompt {
-    color: var(--accent);
+  .term .user {
+    color: var(--t-user);
+  }
+
+  .term .path {
+    color: var(--t-path);
+  }
+
+  .term .sep {
+    color: var(--t-muted);
   }
 
   .cursor {
@@ -121,7 +155,8 @@ const description =
     height: 1em;
     margin-left: 2px;
     vertical-align: -0.15em;
-    background: var(--accent);
+    background: var(--t-user);
+    box-shadow: 0 0 8px var(--t-glow);
     animation: blink 1s steps(1) infinite;
   }
 
@@ -186,24 +221,30 @@ const description =
 <script>
   const typer = document.getElementById('typer');
   if (typer) {
-    const phrases = ['hacking on flux operator', 'hacking on timoni', 'hacking on flagger'];
+    const prefix = 'hacking on ';
+    const names = ['flux operator', 'timoni', 'flagger', 'flux mcp server', 'flux web ui'];
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      typer.textContent = phrases[0];
+      typer.textContent = prefix + names[0];
     } else {
       const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
       (async () => {
+        // Type the prefix once; only the project name cycles
+        for (let c = 1; c <= prefix.length; c++) {
+          typer.textContent = prefix.slice(0, c);
+          await sleep(80);
+        }
         for (let i = 0; ; i++) {
-          const phrase = phrases[i % phrases.length];
-          for (let c = 1; c <= phrase.length; c++) {
-            typer.textContent = phrase.slice(0, c);
+          const name = names[i % names.length];
+          for (let c = 1; c <= name.length; c++) {
+            typer.textContent = prefix + name.slice(0, c);
             await sleep(80);
           }
           await sleep(2200);
-          for (let c = phrase.length - 1; c >= 0; c--) {
-            typer.textContent = phrase.slice(0, c);
+          for (let c = name.length - 1; c >= 0; c--) {
+            typer.textContent = prefix + name.slice(0, c);
             await sleep(35);
           }
-          await sleep(500);
+          await sleep(400);
         }
       })();
     }
