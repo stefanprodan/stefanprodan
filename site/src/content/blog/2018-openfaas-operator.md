@@ -4,6 +4,7 @@ description: >
   OpenFaaS Operator for Serverless on Kubernetes released.
 date: 2018-07-11
 slug: openfaas-operator---a-kubernetes-crd-controller-for-serverless
+hideToc: true
 categories:
   - Kubernetes
 ---

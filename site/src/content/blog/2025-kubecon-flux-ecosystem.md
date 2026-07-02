@@ -4,6 +4,7 @@ description: >
   Overview of Flux CD ecosystem at KubeCon London 2025.
 date: 2025-04-02
 slug: kubecon-eu-2025---flux-ecosystem-evolution
+hideToc: true
 categories:
   - Flux
   - Video

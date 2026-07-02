@@ -4,6 +4,7 @@ description: >
   CNCF TOC votes to promote the Flux project from Incubation to Graduated status.
 date: 2022-11-30
 slug: flux-project-graduates-from-the-cncf-incubator
+hideToc: true
 categories:
   - Flux
 ---

@@ -5,6 +5,7 @@ description: >
   and Git in the context of Internal Developer Platform.
 date: 2023-03-17
 slug: cncf-webinar---kubernetes-in-2023
+hideToc: true
 categories:
   - Kubernetes
   - Video

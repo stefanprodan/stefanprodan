@@ -4,6 +4,7 @@ description: >
     A deep dive into Flux scaling features at KubeCon Paris 2024.
 date: 2024-03-20
 slug: kubecon-eu-2024---gitops-continuous-delivery-at-scale-with-flux
+hideToc: true
 categories:
   - Flux
   - Video

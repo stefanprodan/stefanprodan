@@ -16,38 +16,130 @@ interface Props {
 }
 
 const { post } = Astro.props;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
 const description = post.data.description.trim();
+const toc = post.data.hideToc ? [] : headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const readingMinutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).length / 200));
 ---
 
-<BaseLayout title={`${post.data.title} | Stefan Prodan`} description={description}>
-  <article>
-    <header>
-      <p class="meta">
-        <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
-        {post.data.categories.map((c) => <a href={`/blog/category/${categorySlug(c)}/`}>{c}</a>)}
-      </p>
-      <h1>{post.data.title}</h1>
-    </header>
-    <div class="prose">
-      <Content />
-    </div>
-  </article>
+<BaseLayout wide title={`${post.data.title} | Stefan Prodan`} description={description}>
+  <div class:list={['post-grid', { 'has-toc': toc.length > 0 }]}>
+    <aside class="rail meta side">
+      <p><a href="/blog/">&larr; Back to index</a></p>
+      <div class="author">
+        <img src="/images/stefan.jpeg" alt="Stefan Prodan" width="44" height="44" />
+        <span>Stefan Prodan<br /><span class="dim">Author</span></span>
+      </div>
+      <p class="rail-title">Metadata</p>
+      <ul>
+        <li><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time></li>
+        {post.data.categories.map((c) => (
+          <li>
+            in <a href={`/blog/category/${categorySlug(c)}/`}>{c}</a>
+          </li>
+        ))}
+        <li>{readingMinutes} min read</li>
+      </ul>
+    </aside>
+
+    <article>
+      <h1 class="page-title">{post.data.title}</h1>
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+
+    {
+      toc.length > 0 && (
+        <aside class="rail meta side toc">
+          <p class="rail-title">Table of contents</p>
+          <ul>
+            {toc.map((h) => (
+              <li class:list={[`depth-${h.depth}`]}>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+  </div>
 </BaseLayout>
 
 <style>
-  header {
-    margin: 1rem 0 2rem;
+  .post-grid {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 3rem;
+    align-items: start;
   }
 
-  header h1 {
-    font-size: 2rem;
-    margin: 0.4rem 0 0;
+  .post-grid.has-toc {
+    grid-template-columns: 11rem minmax(0, 1fr) 13rem;
   }
 
-  .meta a {
-    color: var(--accent);
-    margin-left: 0.75rem;
+  article {
+    max-width: var(--measure);
+    min-width: 0;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1.25rem 0;
+    color: var(--fg);
+    line-height: 1.35;
+  }
+
+  .author img {
+    border-radius: 6px;
+  }
+
+  .dim {
+    color: var(--muted);
+  }
+
+  .toc .depth-3 {
+    padding-left: 0.9rem;
+  }
+
+  @media (max-width: 1080px) {
+    .post-grid,
+    .post-grid.has-toc {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .side {
+      position: static;
+    }
+
+    .toc {
+      display: none;
+    }
+
+    .author {
+      display: none;
+    }
+
+    .rail-title {
+      display: none;
+    }
+
+    .side ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1rem;
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0;
+    }
   }
 </style>
 
@@ -63,5 +155,25 @@ const description = post.data.description.trim();
       setTimeout(() => (button.textContent = 'copy'), 1500);
     });
     pre.appendChild(button);
+  }
+
+  const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.toc a[href^="#"]')];
+  if (tocLinks.length > 0) {
+    const byId = new Map(tocLinks.map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            tocLinks.forEach((a) => a.classList.remove('active'));
+            byId.get(entry.target.id)?.classList.add('active');
+          }
+        }
+      },
+      { rootMargin: '0px 0px -70% 0px' }
+    );
+    for (const id of byId.keys()) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
   }
 </script>

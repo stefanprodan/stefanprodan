@@ -4,6 +4,7 @@ description: >
   Announcing the first General Availability release of Flagger.
 date: 2020-06-17
 slug: flagger-v1---general-availability-release
+hideToc: true
 categories:
   - Flagger
 ---

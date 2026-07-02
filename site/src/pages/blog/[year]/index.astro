@@ -21,8 +21,12 @@ const { posts } = Astro.props;
 const { year } = Astro.params;
 ---
 
-<BaseLayout title={`Blog - ${year} | Stefan Prodan`} description={`Blog posts from ${year} by Stefan Prodan.`}>
-  <h1>{year}</h1>
-  <BlogFilters activeYear={year} />
-  {posts.map((post) => <PostCard post={post} />)}
+<BaseLayout wide title={`Blog - ${year} | Stefan Prodan`} description={`Blog posts from ${year} by Stefan Prodan.`}>
+  <div class="with-rail">
+    <BlogFilters activeYear={year} />
+    <div>
+      <h1 class="page-title">{year}</h1>
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </div>
 </BaseLayout>

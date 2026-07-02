@@ -24,50 +24,43 @@ const sortedCategories = [...categories.entries()].sort((a, b) => b[1].count - a
 const years = [...new Set(posts.map(postYear))];
 ---
 
-<div class="filters meta">
-  <p>
+<aside class="rail meta">
+  <p class="rail-title">Categories</p>
+  <ul>
     {
       sortedCategories.map(([slug, { name, count }]) => (
-        <a href={`/blog/category/${slug}/`} aria-current={slug === activeCategory ? 'page' : undefined}>
-          {name} ({count})
-        </a>
+        <li>
+          <a href={`/blog/category/${slug}/`} aria-current={slug === activeCategory ? 'page' : undefined}>
+            {name} ({count})
+          </a>
+        </li>
       ))
     }
-  </p>
-  <p>
+  </ul>
+  <p class="rail-title">Years</p>
+  <ul class="years">
     {
       years.map((year) => (
-        <a href={`/blog/${year}/`} aria-current={year === activeYear ? 'page' : undefined}>
-          {year}
-        </a>
+        <li>
+          <a href={`/blog/${year}/`} aria-current={year === activeYear ? 'page' : undefined}>
+            {year}
+          </a>
+        </li>
       ))
     }
-  </p>
-</div>
+  </ul>
+</aside>
 
 <style>
-  .filters {
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 1rem;
-  }
+  @media (max-width: 900px) {
+    aside ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1rem;
+    }
 
-  .filters p {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 1rem;
-    margin: 0.5rem 0 0;
-  }
-
-  .filters a {
-    color: var(--muted);
-    white-space: nowrap;
-  }
-
-  .filters a:hover {
-    color: var(--accent);
-  }
-
-  .filters a[aria-current='page'] {
-    color: var(--accent);
+    aside li {
+      margin: 0;
+    }
   }
 </style>

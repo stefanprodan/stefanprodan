@@ -4,6 +4,7 @@ description: >
   CNCF TOC votes to promote the Flux project from Sandbox to Incubation.
 date: 2021-03-10
 slug: cncf-promotes-the-flux-project-to-incubation
+hideToc: true
 categories:
   - Flux
 ---

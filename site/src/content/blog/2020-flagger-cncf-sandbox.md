@@ -4,6 +4,7 @@ description: >
   Weaveworks donates Flagger to the CNCF as Flux sub-project.
 date: 2020-12-22
 slug: flagger-joins-cncf-and-the-flux-project
+hideToc: true
 categories:
   - Flagger
 ---

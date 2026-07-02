@@ -4,6 +4,7 @@ description: >
     An introduction to Flux AIO and Timoni at GitOpsCon EU 2023.
 date: 2023-12-21
 slug: gitopscon-eu-2023---flux-aio---a-distribution-of-flux-made-with-timoni-and-cue
+hideToc: true
 categories:
   - Flux
   - Video

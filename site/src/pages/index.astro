@@ -11,6 +11,7 @@ const description =
     <img class="avatar" src="/images/stefan.jpeg" alt="Stefan Prodan" width="240" height="240" />
     <div>
       <p class="meta">Principal Consultant at ControlPlane</p>
+      <p class="prompt">$ whoami</p>
       <h1>Stefan Prodan</h1>
       <p>
         Passionate about OSS, Cloud Native and Kubernetes. Core maintainer of CNCF projects:
@@ -33,14 +34,21 @@ const description =
   }
 
   .avatar {
-    border-radius: 50%;
-    border: 3px solid var(--accent);
+    border-radius: 10px;
+    border: 1px solid var(--accent);
     flex-shrink: 0;
+  }
+
+  .prompt {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--accent);
+    margin: 1rem 0 0;
   }
 
   h1 {
     margin: 0.25rem 0 1rem;
-    font-size: 2.4rem;
+    font-size: 2.5rem;
   }
 
   .hero > div > p:not(.meta) {

@@ -4,6 +4,7 @@ description: >
     A deep dive into Flux security features at KubeCon Valencia 2022.
 date: 2022-06-06
 slug: kubecon-eu-2022---flux-security-deep-dive
+hideToc: true
 categories:
   - Flux
   - Video

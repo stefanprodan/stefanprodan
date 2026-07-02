@@ -4,6 +4,7 @@ description: >
   GitOps Evolution Through the Lens of a Flux Maintainer at FluxCon Atlanta 2025.
 date: 2025-11-10
 slug: fluxcon-na-2025---gitops-evolution
+hideToc: true
 categories:
   - Flux
   - Video

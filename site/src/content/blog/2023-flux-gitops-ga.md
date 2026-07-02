@@ -4,6 +4,7 @@ description: >
   Announcing the first General Availability release of Flux v2 and its GitOps APIs.
 date: 2023-07-05
 slug: flux-v2---gitops-general-availability-release
+hideToc: true
 categories:
   - Flux
 ---

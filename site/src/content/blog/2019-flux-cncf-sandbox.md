@@ -4,6 +4,7 @@ description: >
   Weaveworks donates Flux to the Cloud Native Computing Foundation.
 date: 2019-08-20
 slug: flux-project-joins-cncf-sandbox
+hideToc: true
 categories:
   - Flux
 ---

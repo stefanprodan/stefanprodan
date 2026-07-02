@@ -6,9 +6,10 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description: string;
+  wide?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, wide = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -44,7 +45,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <Header />
-    <main>
+    <main class:list={[{ wide }]}>
       <slot />
     </main>
     <Footer />

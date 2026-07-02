@@ -4,6 +4,7 @@ description: >
     A deep dive into Flux OCI features at KubeCon Amsterdam 2023.
 date: 2023-05-01
 slug: kubecon-eu-2023---flux-beyond-git-harnessing-the-power-of-oci
+hideToc: true
 categories:
   - Flux
   - Video

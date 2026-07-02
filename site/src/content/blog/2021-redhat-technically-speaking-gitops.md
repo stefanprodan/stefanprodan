@@ -4,6 +4,7 @@ description: >
   Red Hat CTO Chris Wright is joined by Stefan Prodan to discuss the exciting topic of GitOps.
 date: 2021-10-27
 slug: technically-speaking---get-into-gitops
+hideToc: true
 categories:
   - Flux
   - Video

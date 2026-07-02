@@ -24,17 +24,12 @@ const isPortfolio = Astro.url.pathname.startsWith('/portfolio/');
     )
   }
   <article class="prose">
-    <h1>{frontmatter.title}</h1>
+    <h1 class="page-title">{frontmatter.title}</h1>
     <slot />
   </article>
 </BaseLayout>
 
 <style>
-  h1 {
-    font-size: 2rem;
-    margin: 1rem 0 1.5rem;
-  }
-
   .subnav {
     display: flex;
     flex-wrap: wrap;

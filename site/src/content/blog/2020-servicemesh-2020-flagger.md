@@ -4,6 +4,7 @@ description: >
     A deep dive into Progressive Delivery with Flagger at ServiceMeshCon 2020.
 date: 2020-09-09
 slug: servicemeshcon-2020---progressive-delivery-with-flagger
+hideToc: true
 categories:
   - Flagger
   - Video
