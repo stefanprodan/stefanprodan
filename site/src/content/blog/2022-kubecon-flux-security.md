@@ -13,6 +13,6 @@ View the recording of my talk about the Flux project security features
 from KubeCon Valencia maintainers track.
 <!-- more -->
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/MjxZcY6THdc?si=gt5kpfeSH3nrMQmk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+https://youtu.be/MjxZcY6THdc
 
-[YouTube link](https://youtu.be/MjxZcY6THdc?si=25ZIggEtD-HDnatI)
+https://speakerdeck.com/stefanprodan/fluxcd-security-focused-gitops

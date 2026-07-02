@@ -45,8 +45,8 @@ export function postSocialImage(post: Post): string | undefined {
     .filter((m): m is RegExpMatchArray => m !== null && m.index !== undefined)
     .sort((a, b) => a.index! - b.index!);
   if (candidates.length > 0) return candidates[0][1];
-  const video = body.match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]+)/);
-  if (video) return `https://i.ytimg.com/vi/${video[1]}/hqdefault.jpg`;
+  const video = body.match(/youtube(?:-nocookie)?\.com\/(?:embed\/|watch\?v=)([\w-]+)|youtu\.be\/([\w-]+)/);
+  if (video) return `https://i.ytimg.com/vi/${video[1] ?? video[2]}/hqdefault.jpg`;
   return undefined;
 }
 

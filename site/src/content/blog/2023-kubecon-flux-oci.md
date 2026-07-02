@@ -14,6 +14,6 @@ around the Open Container Initiative (OCI) from KubeCon Amsterdam maintainers tr
 
 <!-- more -->
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/gKR95Kmc5ac?si=sq5_uy7YO2T1aFti" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+https://youtu.be/gKR95Kmc5ac
 
-[YouTube link](https://youtu.be/gKR95Kmc5ac?si=sq5_uy7YO2T1aFti)
+https://speakerdeck.com/stefanprodan/fluxcd-beyond-git-harnessing-the-power-of-oci

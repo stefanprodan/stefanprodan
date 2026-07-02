@@ -14,6 +14,6 @@ of FluxCD written in CUE from GitOpsCon EU.
 
 <!-- more -->
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/EyeZUxWIDsc?si=fw3c7d2U6hr6TXf3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+https://youtu.be/EyeZUxWIDsc
 
-[YouTube link](https://youtu.be/EyeZUxWIDsc?si=ngeWVf2VDFrvhdYW)
+https://speakerdeck.com/stefanprodan/flux-aio-a-distribution-of-fluxcd-made-with-timoni-and-cue

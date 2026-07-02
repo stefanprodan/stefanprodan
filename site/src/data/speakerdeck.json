@@ -1,0 +1,14 @@
+{
+  "https://speakerdeck.com/stefanprodan/ai-assisted-gitops-with-flux-mcp-server": { "id": "5d333895a58749f99c665d5a245c4c67", "title": "AI-Assisted GitOps With Flux MCP Server" },
+  "https://speakerdeck.com/stefanprodan/flux-aio-a-distribution-of-fluxcd-made-with-timoni-and-cue": { "id": "46224b8d9c714616aa35cb8af1fe48fa", "title": "Flux AIO - a Distribution of FluxCD made with Timoni and CUE" },
+  "https://speakerdeck.com/stefanprodan/flux-ecosystem-evolution": { "id": "313fafa890a04f2c80a31e9f6b241d18", "title": "Flux Ecosystem Evolution" },
+  "https://speakerdeck.com/stefanprodan/flux-the-gitless-gitops-edition": { "id": "6e465b0fedc44c4cb2c5620f9d38d296", "title": "Flux - The GitLess GitOps Edition" },
+  "https://speakerdeck.com/stefanprodan/fluxcd-beyond-git-harnessing-the-power-of-oci": { "id": "283e1ff910714336a2b7adbb87c19941", "title": "FluxCD beyond Git - Harnessing the power of OCI" },
+  "https://speakerdeck.com/stefanprodan/fluxcd-security-focused-gitops": { "id": "c32050edbb16431f82442fdeeb212b66", "title": "FluxCD - Security-focused GitOps" },
+  "https://speakerdeck.com/stefanprodan/gitops-continuous-delivery-at-scale-with-flux": { "id": "f8b1ab67e84840d38d435f87ad955d98", "title": "GitOps Continuous Delivery at scale with Flux" },
+  "https://speakerdeck.com/stefanprodan/gitops-evolution-through-the-lens-of-a-flux-maintainer": { "id": "0cf1a0ed913c4c3b9fb919520939a87b", "title": "GitOps Evolution Through the Lens of a Flux Maintainer" },
+  "https://speakerdeck.com/stefanprodan/introducing-timoni-next-gen-package-manager-for-kubernetes": { "id": "ec7b9a7c28964ca0986ad81dd441ae95", "title": "Introducing Timoni - Next-Gen Package Manager for Kubernetes" },
+  "https://speakerdeck.com/stefanprodan/progressive-delivery-techniques-with-flagger": { "id": "551118f5c3004e5199d00113cd96eba0", "title": "Progressive Delivery Techniques with Flagger" },
+  "https://speakerdeck.com/stefanprodan/the-evolution-of-fluxcd": { "id": "6134d8bbd2f943dba509bb1ef79cf322", "title": "The evolution of FluxCD" },
+  "https://speakerdeck.com/stefanprodan/vibe-coding-meets-gitops": { "id": "e396e61eea4047b8af6d96619e884969", "title": "Vibe Coding Meets GitOps" }
+}

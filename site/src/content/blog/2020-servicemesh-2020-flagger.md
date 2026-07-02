@@ -13,6 +13,6 @@ View the recording of my talk about Progressive Delivery with Flagger
 from ServiceMeshCon.
 <!-- more -->
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Fqso_bl9WPg?si=7JvXmmDz-krQ31sh" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+https://youtu.be/Fqso_bl9WPg
 
-[YouTube link](https://youtu.be/Fqso_bl9WPg?si=7JvXmmDz-krQ31sh)
+https://speakerdeck.com/stefanprodan/progressive-delivery-techniques-with-flagger

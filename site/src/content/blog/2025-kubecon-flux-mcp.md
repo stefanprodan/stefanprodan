@@ -14,6 +14,6 @@ from KubeCon Atlanta AI track.
 
 <!-- more -->
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/QAatvo2o-No?si=08R5Blx_oEzC9XaA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+https://youtu.be/QAatvo2o-No
 
-[YouTube link](https://youtu.be/QAatvo2o-No)
+https://speakerdeck.com/stefanprodan/ai-assisted-gitops-with-flux-mcp-server

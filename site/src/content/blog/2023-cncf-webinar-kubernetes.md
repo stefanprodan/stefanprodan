@@ -16,6 +16,6 @@ of a successful Internal Developer Platform.
 
 <!-- more -->
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/kGrpLKNi4ZI?si=9pGfZG16Mhx42td3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+https://youtu.be/kGrpLKNi4ZI
 
 [Event link](https://community.cncf.io/events/details/cncf-cncf-online-programs-presents-cncf-on-demand-webinar-kubernetes-in-2023/)

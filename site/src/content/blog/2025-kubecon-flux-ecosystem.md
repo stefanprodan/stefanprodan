@@ -14,6 +14,6 @@ from KubeCon London maintainers track.
 
 <!-- more -->
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/jikiO3CC7Zw?si=IHRFQLI1N4QVicwg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+https://youtu.be/jikiO3CC7Zw
 
-[YouTube link](https://youtu.be/jikiO3CC7Zw)
+https://speakerdeck.com/stefanprodan/flux-ecosystem-evolution
