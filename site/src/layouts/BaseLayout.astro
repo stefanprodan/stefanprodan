@@ -7,10 +7,16 @@ interface Props {
   title: string;
   description: string;
   wide?: boolean;
+  image?: string;
+  imageAlt?: string;
 }
 
-const { title, description, wide = false } = Astro.props;
+const { title, description, wide = false, image, imageAlt } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image ?? '/images/favicon.png', Astro.site);
+const ogImageAlt = imageAlt ?? (image ? title : 'stefanprodan.com');
+// Pages with a real image get the large preview on X; the favicon stays a small card
+const twitterCard = image ? 'summary_large_image' : 'summary';
 ---
 
 <!doctype html>
@@ -27,14 +33,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://stefanprodan.com/images/favicon.png" />
-    <meta property="og:image:alt" content="stefanprodan.com" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content={twitterCard} />
     <meta name="twitter:site" content="@stefanprodan" />
     <meta name="twitter:creator" content="@stefanprodan" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content="https://stefanprodan.com/images/favicon.png" />
+    <meta name="twitter:image" content={ogImage} />
     <script is:inline>
       (() => {
         const stored = localStorage.getItem('theme');

@@ -261,7 +261,8 @@ pre code {
   scroll-margin-top: 1.5rem;
 }
 
-.prose iframe[src*="youtube"] {
+.prose iframe[src*="youtube"],
+.prose iframe[src*="speakerdeck"] {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 9;

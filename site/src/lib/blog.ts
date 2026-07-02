@@ -35,6 +35,21 @@ export function postExcerpt(post: Post): string {
     .trim();
 }
 
+/* Social embed image: the first image in the body, or the thumbnail of the
+   first YouTube embed for video posts. Returns undefined when neither exists. */
+export function postSocialImage(post: Post): string | undefined {
+  const body = post.body ?? '';
+  const md = body.match(/!\[[^\]]*\]\(([^)\s]+)/);
+  const html = body.match(/<img[^>]+src="([^"]+)"/);
+  const candidates = [md, html]
+    .filter((m): m is RegExpMatchArray => m !== null && m.index !== undefined)
+    .sort((a, b) => a.index! - b.index!);
+  if (candidates.length > 0) return candidates[0][1];
+  const video = body.match(/youtube(?:-nocookie)?\.com\/embed\/([\w-]+)/);
+  if (video) return `https://i.ytimg.com/vi/${video[1]}/hqdefault.jpg`;
+  return undefined;
+}
+
 export function formatDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }

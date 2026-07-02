@@ -17,4 +17,6 @@ View the recording of my "Vibe Coding Meets GitOps" talk from FluxCon Amsterdam.
 
 [YouTube link](https://youtu.be/efpqMLQJaW4)
 
+<iframe src="https://speakerdeck.com/player/e396e61eea4047b8af6d96619e884969" title="Vibe Coding Meets GitOps slides" frameborder="0" allowfullscreen></iframe>
+
 [Slides on Speaker Deck](https://speakerdeck.com/stefanprodan/vibe-coding-meets-gitops)
