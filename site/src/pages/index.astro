@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import stefan from '../assets/stefan.jpeg';
 
 const description =
   "Stefan Prodan's open source portfolio and tech blog. " +
@@ -8,7 +10,7 @@ const description =
 
 <BaseLayout title="Stefan Prodan" description={description}>
   <section class="hero">
-    <img class="avatar" src="/images/stefan.jpeg" alt="Stefan Prodan" width="240" height="240" />
+    <Image class="avatar" src={stefan} alt="Stefan Prodan" width={240} height={240} densities={[1, 2]} loading="eager" />
     <div>
       <p class="meta">Principal Consultant at ControlPlane</p>
       <p class="prompt">$ whoami</p>

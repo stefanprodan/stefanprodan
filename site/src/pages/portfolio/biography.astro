@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets';
+import ProseLayout from '../../layouts/ProseLayout.astro';
+import stefanprodan from '../../assets/stefanprodan.jpeg';
+
+const frontmatter = {
+  title: 'Biography',
+  description: 'Biography of Stefan Prodan, Software Engineer and open source contributor.',
+};
+---
+
+<ProseLayout frontmatter={frontmatter}>
+  <Image class="align-right" src={stefanprodan} alt="stefanprodan" width={250} height={333} densities={[1, 2]} />
+
+  <p>
+    Stefan is a Software Engineer and an open source contributor to cloud-native projects. He is the creator of Flagger
+    the progressive delivery operator for Kubernetes, and a core maintainer of Flux CD, a
+    <a href="https://cncf.io">CNCF</a> graduated project.
+  </p>
+
+  <p>
+    In 2024, Stefan joined <a href="https://control-plane.io">ControlPlane</a>, as a Principal Consultant, where he is
+    working on expanding the company security services portfolio to Flux and GitOps continuous delivery.
+  </p>
+
+  <p>
+    Between 2017 - 2023, Stefan worked as a Principal Engineer at Weaveworks, where he was responsible for architecting
+    and maintaining Flux, Flagger and the GitOps Toolkit.
+  </p>
+
+  <p>
+    Before Weaveworks, he worked as a software architect and a DevOps consultant, helping companies embrace DevOps and
+    the SRE movement. Stefan has over 15 years of experience with software development, and he enjoys programming in Go
+    and given talks about distributed systems.
+  </p>
+
+  <h2>Contact</h2>
+
+  <p>Slack: <a href="https://cloud-native.slack.com/team/ULPRMFH38">@stefanprodan</a> on cloud-native.slack.com</p>
+
+  <h2>Social</h2>
+
+  <ul>
+    <li>LinkedIn: <a href="https://linkedin.com/in/stefanprodan">@stefanprodan</a></li>
+    <li>X: <a href="https://x.com/stefanprodan">@stefanprodan</a></li>
+    <li>GitHub: <a href="https://github.com/stefanprodan">@stefanprodan</a></li>
+    <li>Substack: <a href="https://stefanprodan.substack.com/">stefanprodan.substack.com</a></li>
+  </ul>
+</ProseLayout>
