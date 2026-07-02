@@ -69,15 +69,12 @@ const readingMinutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).len
 </BaseLayout>
 
 <style>
+  /* Always reserve the TOC track so content width is identical on all posts */
   .post-grid {
     display: grid;
-    grid-template-columns: 11rem minmax(0, 1fr);
+    grid-template-columns: 11rem minmax(0, 1fr) 13rem;
     gap: 3rem;
     align-items: start;
-  }
-
-  .post-grid.has-toc {
-    grid-template-columns: 11rem minmax(0, 1fr) 13rem;
   }
 
   article {
@@ -107,13 +104,22 @@ const readingMinutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).len
     color: var(--muted);
   }
 
+  .side ul a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .toc a,
+  .side p a {
+    text-decoration: none;
+  }
+
   .toc .depth-3 {
     padding-left: 0.9rem;
   }
 
   @media (max-width: 1080px) {
-    .post-grid,
-    .post-grid.has-toc {
+    .post-grid {
       grid-template-columns: 1fr;
       gap: 0;
     }

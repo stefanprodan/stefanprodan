@@ -7,43 +7,169 @@ const frontmatter = {
   title: 'Biography',
   description: 'Biography of Stefan Prodan, Software Engineer and open source contributor.',
 };
+
+const career = [
+  {
+    period: '2024-present',
+    org: 'ControlPlane',
+    role: 'Principal Consultant',
+    text: 'Expanding the company security services portfolio to Flux and GitOps continuous delivery.',
+  },
+  {
+    period: '2017-2023',
+    org: 'Weaveworks',
+    role: 'Principal Engineer',
+    text: 'Architecting and maintaining Flux, Flagger and the GitOps Toolkit.',
+  },
+  {
+    period: 'before 2017',
+    org: 'Consulting',
+    role: 'Software Architect, DevOps Consultant',
+    text: 'Helping companies embrace DevOps and the SRE movement.',
+  },
+];
+
+const contact = [
+  { label: 'Slack', text: '@stefanprodan on cloud-native.slack.com', href: 'https://cloud-native.slack.com/team/ULPRMFH38' },
+  { label: 'GitHub', text: '@stefanprodan', href: 'https://github.com/stefanprodan' },
+  { label: 'LinkedIn', text: '@stefanprodan', href: 'https://linkedin.com/in/stefanprodan' },
+  { label: 'X', text: '@stefanprodan', href: 'https://x.com/stefanprodan' },
+  { label: 'Substack', text: 'stefanprodan.substack.com', href: 'https://stefanprodan.substack.com/' },
+];
 ---
 
 <ProseLayout frontmatter={frontmatter}>
-  <Image class="align-right" src={stefanprodan} alt="stefanprodan" width={250} height={333} densities={[1, 2]} />
+  <div class="bio">
+    <Image class="portrait" src={stefanprodan} alt="Stefan Prodan" width={220} height={293} densities={[1, 2]} />
+    <div>
+      <p class="meta">Software Engineer &middot; Open Source Contributor</p>
+      <p class="lede">
+        Stefan is the creator of Flagger, the progressive delivery operator for Kubernetes, and a core maintainer of
+        Flux CD, a <a href="https://cncf.io">CNCF</a> graduated project.
+      </p>
+      <p class="lede">
+        He has over 15 years of experience with software development, enjoys programming in Go, and gives talks about
+        distributed systems.
+      </p>
+    </div>
+  </div>
 
-  <p>
-    Stefan is a Software Engineer and an open source contributor to cloud-native projects. He is the creator of Flagger
-    the progressive delivery operator for Kubernetes, and a core maintainer of Flux CD, a
-    <a href="https://cncf.io">CNCF</a> graduated project.
-  </p>
+  <h2>Career</h2>
 
-  <p>
-    In 2024, Stefan joined <a href="https://control-plane.io">ControlPlane</a>, as a Principal Consultant, where he is
-    working on expanding the company security services portfolio to Flux and GitOps continuous delivery.
-  </p>
-
-  <p>
-    Between 2017 - 2023, Stefan worked as a Principal Engineer at Weaveworks, where he was responsible for architecting
-    and maintaining Flux, Flagger and the GitOps Toolkit.
-  </p>
-
-  <p>
-    Before Weaveworks, he worked as a software architect and a DevOps consultant, helping companies embrace DevOps and
-    the SRE movement. Stefan has over 15 years of experience with software development, and he enjoys programming in Go
-    and given talks about distributed systems.
-  </p>
+  <ol class="career">
+    {
+      career.map(({ period, org, role, text }) => (
+        <li>
+          <span class="meta period">{period}</span>
+          <div>
+            <p class="org">
+              {org} <span class="meta">{role}</span>
+            </p>
+            <p class="what">{text}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
 
   <h2>Contact</h2>
 
-  <p>Slack: <a href="https://cloud-native.slack.com/team/ULPRMFH38">@stefanprodan</a> on cloud-native.slack.com</p>
-
-  <h2>Social</h2>
-
-  <ul>
-    <li>LinkedIn: <a href="https://linkedin.com/in/stefanprodan">@stefanprodan</a></li>
-    <li>X: <a href="https://x.com/stefanprodan">@stefanprodan</a></li>
-    <li>GitHub: <a href="https://github.com/stefanprodan">@stefanprodan</a></li>
-    <li>Substack: <a href="https://stefanprodan.substack.com/">stefanprodan.substack.com</a></li>
+  <ul class="contact">
+    {
+      contact.map(({ label, text, href }) => (
+        <li>
+          <span class="meta label">{label}</span>
+          <a href={href}>{text}</a>
+        </li>
+      ))
+    }
   </ul>
 </ProseLayout>
+
+<style>
+  .bio {
+    display: flex;
+    gap: 2.5rem;
+    align-items: flex-start;
+    margin: 1.5rem 0 1rem;
+  }
+
+  .portrait {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .lede {
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .career {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .career li {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .career li:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .period {
+    color: var(--accent-2);
+    padding-top: 0.15rem;
+  }
+
+  .career p {
+    margin: 0;
+  }
+
+  .org {
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .org .meta {
+    font-weight: 400;
+    margin-left: 0.5rem;
+  }
+
+  .what {
+    color: var(--muted);
+    margin-top: 0.25rem !important;
+  }
+
+  .contact {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .contact li {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 1.5rem;
+    padding: 0.4rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .bio {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .career li,
+    .contact li {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+  }
+</style>

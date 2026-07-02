@@ -177,6 +177,12 @@ pre code {
   align-items: start;
 }
 
+/* Content never runs wider than the reading measure, even without a right rail */
+.with-rail > :not(.rail) {
+  max-width: var(--measure);
+  min-width: 0;
+}
+
 .rail {
   position: sticky;
   top: 1.5rem;
@@ -232,7 +238,16 @@ pre code {
   }
 }
 
-/* Post prose */
+/* Post prose. In-text links are underlined so they don't rely on color alone. */
+.prose a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose .repos a {
+  text-decoration: none;
+}
+
 .prose h2 {
   font-size: 1.35rem;
   margin: 2.25rem 0 0.75rem;
