@@ -63,6 +63,22 @@ const { wide = false } = Astro.props;
 
   nav a {
     color: var(--fg);
-    font-size: 0.95rem;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    text-transform: lowercase;
+  }
+
+  nav a::before {
+    content: './';
+    color: var(--muted);
+  }
+
+  nav a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  nav a:hover::before {
+    color: var(--accent);
   }
 </style>
