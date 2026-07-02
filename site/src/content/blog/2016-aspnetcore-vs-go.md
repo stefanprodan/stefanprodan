@@ -79,7 +79,7 @@ public IActionResult Data([FromBody]Payload payload)
 
 The front-end data ingestion handler in Go:
 
-```golang
+```go
 func eventIngestHandler(w http.ResponseWriter, r *http.Request) {
     decoder := json.NewDecoder(r.Body)
     var p Payload
@@ -113,7 +113,7 @@ func redirectPayload(p Payload, url string) error {
 
 And the back-end handler in Go:
 
-```golang
+```go
 func dataIngestHandler(w http.ResponseWriter, r *http.Request) {
     decoder := json.NewDecoder(r.Body)
     var p Payload
