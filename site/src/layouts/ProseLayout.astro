@@ -11,41 +11,41 @@ const portfolioPages = [
 const isPortfolio = Astro.url.pathname.startsWith('/portfolio/');
 ---
 
-<BaseLayout title={`${frontmatter.title} | Stefan Prodan`} description={frontmatter.description}>
-  {
-    isPortfolio && (
-      <nav class="meta subnav" aria-label="Portfolio">
-        {portfolioPages.map(({ href, label }) => (
-          <a href={href} aria-current={Astro.url.pathname === href ? 'page' : undefined}>
-            {label}
-          </a>
-        ))}
-      </nav>
-    )
-  }
-  <article class="prose">
-    <h1 class="page-title">{frontmatter.title}</h1>
-    <slot />
-  </article>
+<BaseLayout wide={isPortfolio} title={`${frontmatter.title} | Stefan Prodan`} description={frontmatter.description}>
+  <div class:list={[{ 'with-rail': isPortfolio }]}>
+    {
+      isPortfolio && (
+        <aside class="rail meta">
+          <p class="rail-title">Portfolio</p>
+          <ul>
+            {portfolioPages.map(({ href, label }) => (
+              <li>
+                <a href={href} aria-current={Astro.url.pathname === href ? 'page' : undefined}>
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+    <article class="prose">
+      <h1 class="page-title">{frontmatter.title}</h1>
+      <slot />
+    </article>
+  </div>
 </BaseLayout>
 
 <style>
-  .subnav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.25rem;
-    padding: 1rem 0 0;
-  }
+  @media (max-width: 900px) {
+    aside ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1rem;
+    }
 
-  .subnav a {
-    color: var(--muted);
-  }
-
-  .subnav a:hover {
-    color: var(--accent);
-  }
-
-  .subnav a[aria-current='page'] {
-    color: var(--accent);
+    aside li {
+      margin: 0;
+    }
   }
 </style>

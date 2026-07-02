@@ -24,10 +24,10 @@ const title = page === 1 ? 'Blog' : `Blog - page ${page}`;
 ---
 
 <BaseLayout wide title={`${title} | Stefan Prodan`} description="Stefan Prodan's tech blog: GitOps, Flux, Kubernetes and Cloud Native.">
+  <h1 class="page-title">Blog</h1>
   <div class="with-rail">
     <BlogFilters />
     <div>
-      <h1 class="page-title">Blog</h1>
       {posts.map((post) => <PostCard post={post} />)}
       <Pagination base="/blog" page={page} total={total} />
     </div>

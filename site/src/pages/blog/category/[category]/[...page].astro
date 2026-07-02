@@ -34,10 +34,10 @@ const { category } = Astro.params;
 ---
 
 <BaseLayout wide title={`${name} | Stefan Prodan`} description={`Blog posts about ${name} by Stefan Prodan.`}>
+  <h1 class="page-title">{name}</h1>
   <div class="with-rail">
     <BlogFilters activeCategory={category} />
     <div>
-      <h1 class="page-title">{name}</h1>
       {posts.map((post) => <PostCard post={post} />)}
       <Pagination base={`/blog/category/${category}`} page={page} total={total} />
     </div>
