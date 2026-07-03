@@ -1,12 +1,15 @@
 import { defineConfig } from 'astro/config';
+import { satteri } from '@astrojs/markdown-satteri';
 import sitemap from '@astrojs/sitemap';
-import remarkEmbeds from './src/lib/remark-embeds.mjs';
+import satteriEmbeds from './src/lib/satteri-embeds.mjs';
 
 export default defineConfig({
   site: 'https://stefanprodan.com',
   integrations: [sitemap()],
   markdown: {
-    remarkPlugins: [remarkEmbeds],
+    processor: satteri({
+      mdastPlugins: [satteriEmbeds],
+    }),
     shikiConfig: {
       themes: {
         light: 'github-light',
