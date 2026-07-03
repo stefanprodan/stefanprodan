@@ -75,7 +75,7 @@ The skills rely on a few CLIs being available in the environment:
 - [flux](https://fluxcd.io/flux/installation/#install-the-flux-cli)
 - [flux-schema](https://fluxcd.io/flux/cli-plugins/flux-schema/) (install with `flux plugin install schema`)
 - [flux-operator-mcp](https://fluxoperator.dev/docs/mcp/install/) (for the cluster debugging skill)
-- kustomize or kubectl
+- kustomize or kubectl (for building overlays)
 
 A [Brewfile](https://raw.githubusercontent.com/fluxcd/agent-skills/refs/heads/main/Brewfile) is provided for easy installation on macOS and Linux.
 
