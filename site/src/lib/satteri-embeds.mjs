@@ -1,5 +1,6 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
+import { defineMdastPlugin } from 'satteri';
 
 /* Turns a bare URL on its own line into an embed:
      https://youtu.be/<id>                     -> YouTube player (nocookie)
@@ -12,6 +13,8 @@ const CACHE_PATH = fileURLToPath(new URL('../data/speakerdeck.json', import.meta
 
 const YOUTUBE = /^https?:\/\/(?:www\.)?(?:youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]{6,})/;
 const SPEAKERDECK = /^https?:\/\/speakerdeck\.com\/[\w-]+\/[\w-]+\/?$/;
+
+let cache;
 
 function escapeAttr(value) {
   return value.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
@@ -32,7 +35,8 @@ function speakerdeckEmbed(deck) {
   );
 }
 
-async function resolveDeck(url, cache) {
+async function resolveDeck(url) {
+  cache ??= JSON.parse(readFileSync(CACHE_PATH, 'utf8'));
   const key = url.replace(/\/$/, '');
   if (cache[key]) return cache[key];
   const res = await fetch(`https://speakerdeck.com/oembed.json?url=${encodeURIComponent(key)}`);
@@ -47,36 +51,21 @@ async function resolveDeck(url, cache) {
 
 /* A paragraph that holds nothing but an autolinked URL. */
 function bareUrl(node) {
-  if (node.type !== 'paragraph' || node.children.length !== 1) return null;
+  if (node.children?.length !== 1) return null;
   const link = node.children[0];
-  if (link.type !== 'link' || link.children.length !== 1) return null;
+  if (link.type !== 'link' || link.children?.length !== 1) return null;
   const text = link.children[0];
   if (text.type !== 'text' || text.value.trim() !== link.url.trim()) return null;
   return link.url.trim();
 }
 
-export default function remarkEmbeds() {
-  return async (tree) => {
-    const targets = [];
-    const walk = (node) => {
-      for (const child of node.children ?? []) {
-        const url = bareUrl(child);
-        if (url && (YOUTUBE.test(url) || SPEAKERDECK.test(url))) targets.push({ node: child, url });
-        else walk(child);
-      }
-    };
-    walk(tree);
-    if (targets.length === 0) return;
-
-    const cache = JSON.parse(readFileSync(CACHE_PATH, 'utf8'));
-    for (const target of targets) {
-      const youtube = target.url.match(YOUTUBE);
-      const html = youtube
-        ? youtubeEmbed(youtube[1])
-        : speakerdeckEmbed(await resolveDeck(target.url, cache));
-      target.node.type = 'html';
-      target.node.value = html;
-      delete target.node.children;
-    }
-  };
-}
+export default defineMdastPlugin({
+  name: 'embeds',
+  async paragraph(node) {
+    const url = bareUrl(node);
+    if (!url) return;
+    const youtube = url.match(YOUTUBE);
+    if (youtube) return { rawHtml: youtubeEmbed(youtube[1]) };
+    if (SPEAKERDECK.test(url)) return { rawHtml: speakerdeckEmbed(await resolveDeck(url)) };
+  },
+});
