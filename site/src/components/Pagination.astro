@@ -1,0 +1,31 @@
+---
+interface Props {
+  base: string; // e.g. "/blog" or "/blog/category/flux"
+  page: number;
+  total: number;
+}
+
+const { base, page, total } = Astro.props;
+const pageHref = (n: number) => (n === 1 ? `${base}/` : `${base}/page/${n}/`);
+---
+
+{
+  total > 1 && (
+    <nav class="meta" aria-label="Pagination">
+      {page > 1 ? <a href={pageHref(page - 1)}>&larr; Newer</a> : <span />}
+      <span>
+        {page} / {total}
+      </span>
+      {page < total ? <a href={pageHref(page + 1)}>Older &rarr;</a> : <span />}
+    </nav>
+  )
+}
+
+<style>
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+  }
+</style>

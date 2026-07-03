@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PostCard from '../../../components/PostCard.astro';
+import BlogFilters from '../../../components/BlogFilters.astro';
+import { getSortedPosts, postYear, type Post } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  const years = [...new Set(posts.map(postYear))];
+  return years.map((year) => ({
+    params: { year },
+    props: { posts: posts.filter((p) => postYear(p) === year) },
+  }));
+}
+
+interface Props {
+  posts: Post[];
+}
+
+const { posts } = Astro.props;
+const { year } = Astro.params;
+---
+
+<BaseLayout wide title={`Blog - ${year} | Stefan Prodan`} description={`Blog posts from ${year} by Stefan Prodan.`}>
+  <div class="with-rail">
+    <BlogFilters activeYear={year} />
+    <div>
+      <h1 class="page-title">{year}</h1>
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </div>
+</BaseLayout>

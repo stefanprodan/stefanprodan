@@ -1,0 +1,281 @@
+---
+import { Image } from 'astro:assets';
+import ProseLayout from '../../layouts/ProseLayout.astro';
+import stefanprodan from '../../assets/stefanprodan.jpeg';
+import type { ImageMetadata } from 'astro';
+
+const badgeImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/badges/*.png', { eager: true });
+const badgeImage = (file: string) => badgeImages[`../../assets/badges/${file}.png`].default;
+
+const frontmatter = {
+  title: 'Biography',
+  description: 'Biography of Stefan Prodan, Software Engineer and open source contributor.',
+};
+
+const career = [
+  {
+    period: '2024-present',
+    org: 'ControlPlane',
+    role: 'Head of Development',
+    text: 'Leading the Flux CD Enterprise product at <a href="https://control-plane.io/enterprise-for-flux-cd/">ControlPlane</a>.',
+  },
+  {
+    period: '2017-2023',
+    org: 'Weaveworks',
+    role: 'Principal Engineer',
+    text: 'Architecting and maintaining Flux, Flagger and the GitOps Toolkit.',
+  },
+  {
+    period: 'before 2017',
+    org: 'Consulting',
+    role: 'Software Architect, DevOps Consultant',
+    text: 'Helping companies embrace DevOps and the SRE movement.',
+  },
+];
+
+/* All badges from credly.com/users/stefanprodan, newest first */
+const badges = [
+  {
+    img: 'kubecon-eu-2026-speaker',
+    name: 'Speaker: KubeCon + CloudNativeCon Europe 2026',
+    href: 'https://www.credly.com/badges/a32a5891-2efd-456f-9784-0cdf627dd5f3',
+  },
+  {
+    img: 'fluxcon-eu-2026-speaker',
+    name: 'FluxCon EU 2026 Speaker',
+    href: 'https://www.credly.com/badges/3cd6a926-748f-40f8-b212-7a8536f6302a',
+  },
+  {
+    img: 'fluxcon-na-2025-speaker',
+    name: 'FluxCon NA 2025 Speaker',
+    href: 'https://www.credly.com/badges/4c3f0207-5387-4eec-8843-274e3fb8938a',
+  },
+  {
+    img: 'kubecon-na-2025-speaker',
+    name: 'Speaker: KubeCon + CloudNativeCon North America 2025',
+    href: 'https://www.credly.com/badges/9792884b-a3ed-4fbc-8a67-f1f8821d1254',
+  },
+  {
+    img: 'osff-london-2025-speaker',
+    name: 'Speaker: Open Source in Finance Forum London 2025',
+    href: 'https://www.credly.com/badges/77b4f79f-e377-4e3e-9bd8-ab5ce0a46ec8',
+  },
+  {
+    img: 'kubecon-eu-2025-speaker',
+    name: 'Speaker: KubeCon + CloudNativeCon Europe 2025',
+    href: 'https://www.credly.com/badges/4e91e1c7-fc85-4bc8-affe-dabd3ca10210',
+  },
+  {
+    img: 'kubecon-eu-2024-speaker',
+    name: 'Speaker: KubeCon + CloudNativeCon Europe 2024',
+    href: 'https://www.credly.com/badges/3dc8d1fd-be46-4542-ae8c-d6dc96c2a7f4',
+  },
+  {
+    img: 'gitopscon-eu-2023-speaker',
+    name: 'Speaker: GitOpsCon Europe 2023',
+    href: 'https://www.credly.com/badges/b38c49ba-745d-4a3e-b0df-602d13981ace',
+  },
+  {
+    img: 'kubecon-eu-2023-speaker',
+    name: 'Speaker: KubeCon + CloudNativeCon Europe 2023',
+    href: 'https://www.credly.com/badges/5f0191f3-01d2-4253-a889-48b8ba907000',
+  },
+  {
+    img: 'kubecon-eu-2022-speaker',
+    name: 'Speaker: KubeCon + CloudNativeCon Europe 2022',
+    href: 'https://www.credly.com/badges/0bdd88c4-c461-492d-b020-31d92ea6b071',
+  },
+  {
+    img: 'kubecon-eu-2021-keynote',
+    name: 'Keynote Speaker: KubeCon + CloudNativeCon Europe 2021',
+    href: 'https://www.credly.com/badges/393292d2-a18c-4320-a0d2-8ad35a91b5cd',
+  },
+  {
+    img: 'kubecon-na-2020-speaker',
+    name: 'Speaker: KubeCon + CloudNativeCon North America 2020',
+    href: 'https://www.credly.com/badges/047fd251-aa30-4728-882c-caae8d0ac207',
+  },
+];
+
+const contact = [
+  { label: 'Slack', text: '@stefanprodan on cloud-native.slack.com', href: 'https://cloud-native.slack.com/team/ULPRMFH38' },
+  { label: 'GitHub', text: '@stefanprodan', href: 'https://github.com/stefanprodan' },
+  { label: 'LinkedIn', text: '@stefanprodan', href: 'https://linkedin.com/in/stefanprodan' },
+  { label: 'X', text: '@stefanprodan', href: 'https://x.com/stefanprodan' },
+  { label: 'Substack', text: 'stefanprodan.substack.com', href: 'https://stefanprodan.substack.com/' },
+];
+---
+
+<ProseLayout frontmatter={frontmatter}>
+  <div class="bio">
+    <Image class="portrait" src={stefanprodan} alt="Stefan Prodan" width={220} height={293} densities={[1, 2]} />
+    <div>
+      <p class="meta">Software Engineer &middot; Open Source Contributor</p>
+      <p class="lede">
+        Stefan is the creator of Flagger, the progressive delivery operator for Kubernetes, and a core maintainer of
+        Flux CD, a CNCF graduated project.
+      </p>
+      <p class="lede">
+        He has over 20 years of experience with software development, enjoys programming in Go, and gives talks about
+        distributed systems.
+      </p>
+    </div>
+  </div>
+
+  <h2>Career</h2>
+
+  <ol class="career">
+    {
+      career.map(({ period, org, role, text }) => (
+        <li>
+          <span class="meta period">{period}</span>
+          <div>
+            <p class="org">
+              {org} <span class="meta">{role}</span>
+            </p>
+            <p class="what" set:html={text} />
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  <h2>Badges</h2>
+
+  <ul class="badges">
+    {
+      badges.map(({ img, name, href }) => (
+        <li>
+          <a href={href} title={name}>
+            <Image src={badgeImage(img)} alt={name} width={110} height={110} densities={[1, 2]} />
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <h2>Contact</h2>
+
+  <ul class="contact">
+    {
+      contact.map(({ label, text, href }) => (
+        <li>
+          <span class="meta label">{label}</span>
+          <a href={href}>{text}</a>
+        </li>
+      ))
+    }
+  </ul>
+</ProseLayout>
+
+<style>
+  .bio {
+    display: flex;
+    gap: 2.5rem;
+    align-items: flex-start;
+    margin: 1.5rem 0 1rem;
+  }
+
+  .portrait {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .lede {
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  .career {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .career li {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 1.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .career li:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .period {
+    color: var(--accent-2);
+    padding-top: 0.15rem;
+  }
+
+  .career p {
+    margin: 0;
+  }
+
+  .org {
+    font-family: var(--font-mono);
+    font-weight: 700;
+  }
+
+  .org .meta {
+    font-weight: 400;
+    margin-left: 0.5rem;
+  }
+
+  .what {
+    color: var(--muted);
+    margin-top: 0.25rem !important;
+  }
+
+  /* set:html content skips scoped styles; in-text links must be underlined */
+  .what :global(a) {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 1.25rem 0 0.75rem;
+    padding: 0;
+  }
+
+  .badges a {
+    display: block;
+    transition: transform 0.15s;
+  }
+
+  .badges a:hover {
+    transform: translateY(-3px);
+  }
+
+  .contact {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .contact li {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: 1.5rem;
+    padding: 0.4rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .bio {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .career li,
+    .contact li {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+  }
+</style>

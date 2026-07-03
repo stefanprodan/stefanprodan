@@ -1,0 +1,66 @@
+---
+import { getSortedPosts, postYear, categorySlug } from '../lib/blog';
+
+interface Props {
+  activeCategory?: string;
+  activeYear?: string;
+}
+
+const { activeCategory, activeYear } = Astro.props;
+
+const posts = await getSortedPosts();
+
+const categories = new Map<string, { name: string; count: number }>();
+for (const post of posts) {
+  for (const c of post.data.categories) {
+    const slug = categorySlug(c);
+    const entry = categories.get(slug) ?? { name: c, count: 0 };
+    entry.count += 1;
+    categories.set(slug, entry);
+  }
+}
+const sortedCategories = [...categories.entries()].sort((a, b) => b[1].count - a[1].count);
+
+const years = [...new Set(posts.map(postYear))];
+---
+
+<aside class="rail meta">
+  <p class="rail-title">Categories</p>
+  <ul>
+    {
+      sortedCategories.map(([slug, { name, count }]) => (
+        <li>
+          <a href={`/blog/category/${slug}/`} aria-current={slug === activeCategory ? 'page' : undefined}>
+            {name} ({count})
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+  <p class="rail-title">Years</p>
+  <ul class="years">
+    {
+      years.map((year) => (
+        <li>
+          <a href={`/blog/${year}/`} aria-current={year === activeYear ? 'page' : undefined}>
+            {year}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</aside>
+
+<style>
+  @media (max-width: 900px) {
+    aside ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1rem;
+    }
+
+    aside li {
+      margin: 0;
+    }
+  }
+</style>

@@ -1,0 +1,30 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "blog",
+  "compatibility_date": "2026-06-30",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  // workers.dev stays on until the custom-domain cutover is verified
+  "workers_dev": true,
+  "preview_urls": true,
+  // Match the dashboard settings so deploys don't reset them
+  "observability": {
+    "enabled": false,
+    "head_sampling_rate": 1,
+    "logs": {
+      "enabled": true,
+      "head_sampling_rate": 1,
+      "persist": true,
+      "invocation_logs": true
+    },
+    "traces": {
+      "enabled": false,
+      "persist": true,
+      "head_sampling_rate": 1
+    }
+  }
+  // "routes" is added at cutover: [{ "pattern": "stefanprodan.com", "custom_domain": true }]
+}

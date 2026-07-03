@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import Pagination from '../../components/Pagination.astro';
+import BlogFilters from '../../components/BlogFilters.astro';
+import { getSortedPosts, paginatePosts, type Post } from '../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  return paginatePosts(posts).map(({ page, total, posts }) => ({
+    params: { page: page === 1 ? undefined : `page/${page}` },
+    props: { posts, page, total },
+  }));
+}
+
+interface Props {
+  posts: Post[];
+  page: number;
+  total: number;
+}
+
+const { posts, page, total } = Astro.props;
+const title = page === 1 ? 'Blog' : `Blog - page ${page}`;
+---
+
+<BaseLayout wide title={`${title} | Stefan Prodan`} description="Stefan Prodan's tech blog: GitOps, Flux, Kubernetes and Cloud Native.">
+  <div class="with-rail">
+    <BlogFilters />
+    <div>
+      <h1 class="page-title">Blog</h1>
+      {posts.map((post) => <PostCard post={post} />)}
+      <Pagination base="/blog" page={page} total={total} />
+    </div>
+  </div>
+</BaseLayout>

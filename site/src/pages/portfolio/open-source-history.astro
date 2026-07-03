@@ -1,0 +1,149 @@
+---
+import ProseLayout from '../../layouts/ProseLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+
+const frontmatter = {
+  title: 'Past Contributions',
+  description: 'Open source projects that Stefan Prodan helped maintain and contributed to.',
+};
+---
+
+<ProseLayout frontmatter={frontmatter}>
+  <p>Open source projects that I helped maintain and contributed to with passion.</p>
+
+  <ProjectCard
+    id="kustomizer"
+    name="Kustomizer"
+    icon="git"
+    role="creator & maintainer"
+    period="2020-2022"
+    repos={['https://github.com/stefanprodan/kustomizer']}
+    stack={['golang', 'kubernetes']}
+  >
+    <p>
+      Kustomizer is an experimental package manager for distributing Kubernetes configuration as OCI artifacts. It
+      offers commands to publish, fetch, diff, customize, validate, apply and prune Kubernetes resources.
+    </p>
+    <p>
+      This project served as a testing bench for features that made their way into Flux. Kustomizer is the project
+      where features like staged-apply, garbage collection and diffing were first introduced.
+    </p>
+    <p>
+      The server-side apply engine used by Flux
+      <a href="https://github.com/fluxcd/kustomize-controller">kustomize-controller</a>, and the OCI artifacts
+      management in <a href="/portfolio/open-source/#flux">Flux</a> and
+      <a href="/portfolio/open-source/#timoni">Timoni</a> are all derived from experiments in Kustomizer.
+    </p>
+  </ProjectCard>
+
+  <ProjectCard
+    id="helm-operator-flux-v1"
+    name="Helm Operator (Flux v1)"
+    icon="git"
+    role="maintainer"
+    period="2018-2022"
+    repos={['https://github.com/fluxcd/helm-operator']}
+    stack={['golang', 'helm', 'kubernetes']}
+  >
+    <p>
+      The Helm Operator was initially developed by Weaveworks, as an extension to Flux v1. It was the first project in
+      CNCF that made possible to declaratively manage Helm releases using Kubernetes CRDs.
+    </p>
+    <p>
+      In 2019, we showcased the Flux Helm Operator at Helm Summit in Amsterdam, after that, the project took off. The
+      GitOps practices gained traction in the Helm community and brought a new wave of users to Flux.
+    </p>
+    <p>
+      In 2020, the Flux team started migrating the Helm Operator users to Flux v2, and in 2022 the project was archived
+      in favor of Flux v2 and its <a href="https://github.com/fluxcd/helm-controller">helm-controller</a>.
+    </p>
+  </ProjectCard>
+
+  <ProjectCard
+    id="service-mesh-interface"
+    name="Service Mesh Interface"
+    icon="git"
+    role="maintainer"
+    period="2019-2021"
+    repos={[
+      'https://github.com/servicemeshinterface/smi-spec',
+      'https://github.com/servicemeshinterface/smi-sdk-go',
+    ]}
+    stack={['golang', 'kubernetes']}
+  >
+    <p>
+      SMI was created to provide a standard interface for service meshes on Kubernetes and a basic feature set for the
+      most common service mesh use cases. It was accepted as a <a href="https://cncf.io">CNCF</a> Sandbox project in
+      March 2020.
+    </p>
+    <p>
+      I've joined the project early on and, I've implemented the SMI APIs in
+      <a href="/portfolio/open-source/#flagger">Flagger</a>. Which made Flagger compatible with the Linkerd service
+      mesh. Later on, both Flagger and Linkerd adopted Kubernetes Gateway API.
+    </p>
+    <p>
+      In 2023, SMI was archived in favor of the Gateway API
+      <a href="https://kubernetes.io/blog/2023/08/29/gateway-api-v0-8/">GAMMA Initiative</a>.
+    </p>
+  </ProjectCard>
+
+  <ProjectCard
+    id="mgob"
+    name="MGOB"
+    icon="git"
+    role="creator & maintainer"
+    period="2017-2020"
+    repos={['https://github.com/stefanprodan/mgob']}
+    stack={['golang']}
+  >
+    <p>
+      MongoDB dockerized backup agent that runs backups on a schedule with retention policies, S3 &amp; SFTP upload,
+      notifications and Prometheus instrumentation.
+    </p>
+    <p>
+      While working full-time on Flux, I lost interest in MongoDB and archived the project. Thanks to Sam Lin, the
+      project lives on and has a new home at <a href="https://github.com/maxisam/mgob">github.com/maxisam/mgob</a>.
+    </p>
+  </ProjectCard>
+
+  <ProjectCard
+    id="syros"
+    name="Syros"
+    icon="git"
+    role="creator & maintainer"
+    period="2017-2018"
+    repos={['https://github.com/stefanprodan/syros']}
+    stack={['golang', 'vuejs']}
+  >
+    <p>
+      DevOps tool built on top of VMware Vsphere, Docker, NATS and MongoDB for managing the deployment of microservices
+      across multiple regions and environments.
+    </p>
+    <p>
+      This project was born during my SRE days, while working on-call for a large EU organisation in the energy sector.
+      After quiting the SRE job and joining Weaveworks, I've archived this project and fully embraced Kubernetes.
+    </p>
+  </ProjectCard>
+
+  <ProjectCard
+    id="aspnet-throttle"
+    name="ASP.NET Throttle"
+    icon="git"
+    role="creator & maintainer"
+    period="2014-2017"
+    repos={[
+      'https://github.com/stefanprodan/AspNetCoreRateLimit',
+      'https://github.com/stefanprodan/WebApiThrottle',
+    ]}
+    stack={['C#']}
+  >
+    <p>
+      ASP.NET rate limiting solution designed to control the rate of requests that clients can make to a Web API or MVC
+      app based on IP address, client API Key and request route.
+    </p>
+    <p>
+      In 2016, I gave up on the .NET ecosystem and one of my former colleagues, Cristi Pufu, took over the
+      maintainership of the ASP.NET Core middlewares.
+    </p>
+  </ProjectCard>
+</ProseLayout>

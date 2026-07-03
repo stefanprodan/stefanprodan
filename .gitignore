@@ -6,4 +6,6 @@ _site
 .DS_Store
 .idea/
 .vscode/
-bin/
+bin/node_modules/
+site/dist/
+site/.astro/

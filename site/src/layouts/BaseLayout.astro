@@ -1,0 +1,59 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  wide?: boolean;
+  image?: string;
+  imageAlt?: string;
+}
+
+const { title, description, wide = false, image, imageAlt } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image ?? '/images/favicon.png', Astro.site);
+const ogImageAlt = imageAlt ?? (image ? title : 'stefanprodan.com');
+// Pages with a real image get the large preview on X; the favicon stays a small card
+const twitterCard = image ? 'summary_large_image' : 'summary';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/images/favicon.png" type="image/png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Stefan Prodan's Blog" href="/rss.xml" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content={twitterCard} />
+    <meta name="twitter:site" content="@stefanprodan" />
+    <meta name="twitter:creator" content="@stefanprodan" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <script is:inline>
+      (() => {
+        const stored = localStorage.getItem('theme');
+        const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = stored === 'light' || stored === 'dark' ? stored : system;
+      })();
+    </script>
+  </head>
+  <body>
+    <Header wide={wide} />
+    <main class:list={[{ wide }]}>
+      <slot />
+    </main>
+    <Footer wide={wide} />
+  </body>
+</html>

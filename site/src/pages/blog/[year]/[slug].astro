@@ -1,0 +1,189 @@
+---
+import { render } from 'astro:content';
+import { Image } from 'astro:assets';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import stefan from '../../../assets/stefan.jpeg';
+import { getSortedPosts, postYear, formatDate, categorySlug, postSocialImage, type Post } from '../../../lib/blog';
+
+export async function getStaticPaths() {
+  const posts = await getSortedPosts();
+  return posts.map((post) => ({
+    params: { year: postYear(post), slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const description = post.data.description.trim();
+const toc = post.data.hideToc ? [] : headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const readingMinutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).length / 200));
+const socialImage = postSocialImage(post);
+---
+
+<BaseLayout wide title={`${post.data.title} | Stefan Prodan`} description={description} image={socialImage}>
+  <div class:list={['post-grid', { 'has-toc': toc.length > 0 }]}>
+    <aside class="rail meta side">
+      <p><a href="/blog/">&larr; Back to index</a></p>
+      <div class="author">
+        <Image src={stefan} alt="Stefan Prodan" width={44} height={44} densities={[1, 2]} />
+        <span>Stefan Prodan<br /><span class="dim">Author</span></span>
+      </div>
+      <p class="rail-title">Metadata</p>
+      <ul>
+        <li><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time></li>
+        {post.data.categories.map((c) => (
+          <li>
+            in <a href={`/blog/category/${categorySlug(c)}/`}>{c}</a>
+          </li>
+        ))}
+        <li>{readingMinutes} min read</li>
+      </ul>
+    </aside>
+
+    <article>
+      <h1 class="page-title">{post.data.title}</h1>
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+
+    {
+      toc.length > 0 && (
+        <aside class="rail meta side toc">
+          <p class="rail-title">Table of contents</p>
+          <ul>
+            {toc.map((h) => (
+              <li class:list={[`depth-${h.depth}`]}>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  /* Always reserve the TOC track so content width is identical on all posts */
+  .post-grid {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr) 13rem;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  article {
+    max-width: var(--measure);
+    min-width: 0;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+    margin-top: 0.5rem;
+  }
+
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin: 1.25rem 0;
+    color: var(--fg);
+    line-height: 1.35;
+  }
+
+  .author img {
+    border-radius: 6px;
+  }
+
+  .dim {
+    color: var(--muted);
+  }
+
+  .side ul a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* .toc ul a matches .side ul a's specificity so this later rule wins */
+  .toc ul a,
+  .side p a {
+    text-decoration: none;
+  }
+
+  .toc .depth-3 {
+    padding-left: 0.9rem;
+  }
+
+  @media (max-width: 1080px) {
+    .post-grid {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+
+    .side {
+      position: static;
+    }
+
+    .toc {
+      display: none;
+    }
+
+    .author {
+      display: none;
+    }
+
+    .rail-title {
+      display: none;
+    }
+
+    .side ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1rem;
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 0;
+    }
+  }
+</style>
+
+<script>
+  for (const pre of document.querySelectorAll('.prose pre.astro-code')) {
+    const button = document.createElement('button');
+    button.className = 'code-copy';
+    button.type = 'button';
+    button.textContent = 'copy';
+    button.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(pre.querySelector('code')?.innerText ?? '');
+      button.textContent = 'copied';
+      setTimeout(() => (button.textContent = 'copy'), 1500);
+    });
+    pre.appendChild(button);
+  }
+
+  const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.toc a[href^="#"]')];
+  if (tocLinks.length > 0) {
+    const byId = new Map(tocLinks.map((a) => [decodeURIComponent(a.hash.slice(1)), a]));
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            tocLinks.forEach((a) => a.classList.remove('active'));
+            byId.get(entry.target.id)?.classList.add('active');
+          }
+        }
+      },
+      { rootMargin: '0px 0px -70% 0px' }
+    );
+    for (const id of byId.keys()) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+  }
+</script>

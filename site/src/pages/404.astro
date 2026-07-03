@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found | Stefan Prodan" description="Page not found.">
+  <section class="notfound">
+    <h1>404</h1>
+    <div class="term">
+      <div class="term-bar" aria-hidden="true">
+        <span class="dot close"></span>
+        <span class="dot min"></span>
+        <span class="dot max"></span>
+        <span class="term-title">bash</span>
+      </div>
+      <div class="term-body">
+        <p>
+          <span class="user">stefan</span><span class="sep">:</span><span class="path">~</span><span class="sep">$&nbsp;</span>cat <span class="miss">/404</span>
+        </p>
+        <p>cat: <span class="miss">/404</span>: No such file or directory</p>
+        <p>
+          <span class="user">stefan</span><span class="sep">:</span><span class="path">~</span><span class="sep">$&nbsp;</span>ls
+        </p>
+        <p class="ls">
+          <a href="/blog/">blog/</a>
+          <a href="/portfolio/open-source/">portfolio/</a>
+          <a href="/portfolio/biography/">bio/</a>
+        </p>
+        <p>
+          <span class="user">stefan</span><span class="sep">:</span><span class="path">~</span><span class="sep">$&nbsp;</span><span class="cursor" aria-hidden="true"></span>
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .notfound {
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 6vh 0 2rem;
+  }
+
+  h1 {
+    font-family: var(--font-mono);
+    font-size: 3rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .term {
+    --t-bg: #0b1016;
+    --t-bar: #131a22;
+    --t-border: #232f3b;
+    --t-fg: #c8d5df;
+    --t-muted: #7c90a1;
+    --t-user: #2dd4bf;
+    --t-path: #d9a94a;
+    --t-glow: rgb(45 212 191 / 0.12);
+    --t-shadow: rgb(0 0 0 / 0.35);
+    font-family: var(--font-mono);
+    background: var(--t-bg);
+    border: 1px solid var(--t-border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px var(--t-shadow);
+  }
+
+  /* Light theme: macOS-style light terminal */
+  :global(:root[data-theme='light']) .term {
+    --t-bg: #ffffff;
+    --t-bar: #e7edf1;
+    --t-border: #d0dae1;
+    --t-fg: #17242e;
+    --t-muted: #5d707e;
+    --t-user: #0f766e;
+    --t-path: #96690f;
+    --t-glow: transparent;
+    --t-shadow: rgb(23 36 46 / 0.12);
+  }
+
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0.55rem 0.8rem;
+    background: var(--t-bar);
+    border-bottom: 1px solid var(--t-border);
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot.close {
+    background: #ff5f57;
+  }
+
+  .dot.min {
+    background: #febc2e;
+  }
+
+  .dot.max {
+    background: #28c840;
+  }
+
+  .term-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--t-muted);
+    /* Visually center between the dots and the right edge */
+    margin-left: -44px;
+  }
+
+  .term-body {
+    font-size: 0.9rem;
+    color: var(--t-fg);
+    padding: 1rem 1.1rem 1.25rem;
+    overflow-x: auto;
+    text-shadow: 0 0 10px var(--t-glow);
+  }
+
+  .term-body p {
+    margin: 0 0 0.35rem;
+    white-space: nowrap;
+  }
+
+  .term .user {
+    color: var(--t-user);
+  }
+
+  .term .path {
+    color: var(--t-path);
+  }
+
+  .term .sep {
+    color: var(--t-muted);
+  }
+
+  .ls {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .ls a {
+    color: var(--t-user);
+    font-weight: 600;
+  }
+
+  .ls a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    background: var(--t-user);
+    box-shadow: 0 0 8px var(--t-glow);
+    animation: blink 1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  // Show the path the visitor actually requested, truncated to keep the line sane
+  const path = document.location.pathname;
+  if (path && path !== '/404' && path !== '/404/') {
+    const cut = (max: number) => (path.length > max ? `${path.slice(0, max - 1)}…` : path);
+    document.querySelectorAll('.miss').forEach((el, i) => {
+      el.textContent = cut(i === 0 ? 80 : 10);
+    });
+  }
+</script>

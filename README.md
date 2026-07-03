@@ -1,3 +1,3 @@
 # Stefan Prodan's Blog
 
-Made with Material for MkDocs
+Made with [Astro](https://astro.build), deployed to Cloudflare Workers.

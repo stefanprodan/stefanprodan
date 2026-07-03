@@ -1,0 +1,349 @@
+/* Terminal design system. Phosphor teal accent, amber timestamps,
+   mono display voice. */
+:root {
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  --measure: 46rem;
+  --measure-wide: 76rem;
+  --space: 1.25rem;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f4f7f9;
+  --bg-raised: #e9eef2;
+  --fg: #17242e;
+  --muted: #5d707e;
+  --accent: #0f766e;
+  --accent-2: #96690f;
+  --accent-contrast: #ffffff;
+  --border: #d6dfe5;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0a0f14;
+  --bg-raised: #10161d;
+  --fg: #c8d5df;
+  --muted: #7c90a1;
+  --accent: #2dd4bf;
+  --accent-2: #d9a94a;
+  --accent-contrast: #062420;
+  --border: #1e2a35;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 106.25%; /* 17px base */
+  line-height: 1.65;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 2rem var(--space) 4rem;
+}
+
+main.wide {
+  max-width: var(--measure-wide);
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-mono);
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+/* Page titles carry a markdown heading marker */
+.page-title {
+  font-size: 2.1rem;
+  margin: 1.25rem 0 1rem;
+}
+
+.page-title::before {
+  content: '# ';
+  color: var(--accent);
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+time {
+  color: var(--accent-2);
+}
+
+code, pre, kbd {
+  font-family: var(--font-mono);
+}
+
+code {
+  font-size: 0.875em;
+  background: var(--bg-raised);
+  border-radius: 3px;
+  padding: 0.15em 0.35em;
+}
+
+pre {
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.85rem;
+}
+
+/* Shiki dual theme switching */
+:root[data-theme='dark'] .astro-code,
+:root[data-theme='dark'] .astro-code span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+}
+
+/* Utility voice: dates, categories, labels */
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.button {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  padding: 0.55rem 1.2rem;
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  color: var(--accent);
+}
+
+.button:hover {
+  text-decoration: none;
+  background: var(--bg-raised);
+}
+
+.button-primary {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.button-primary:hover {
+  background: var(--accent);
+  opacity: 0.9;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Sidebar layouts: filter rail on list pages, meta/toc rails on posts */
+.with-rail {
+  display: grid;
+  /* Same rail width as post pages so titles line up across templates */
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 3rem;
+  align-items: start;
+}
+
+/* Content never runs wider than the reading measure, even without a right rail */
+.with-rail > :not(.rail) {
+  max-width: var(--measure);
+  min-width: 0;
+}
+
+.rail {
+  position: sticky;
+  top: 1.5rem;
+  /* First rail line starts where the page title text starts */
+  padding-top: 1.1rem;
+}
+
+.rail-title {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg);
+  margin: 1.25rem 0 0.5rem;
+}
+
+.rail-title:first-child {
+  margin-top: 0.35rem;
+}
+
+.rail ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rail li {
+  margin: 0.3rem 0;
+}
+
+.rail a {
+  color: var(--muted);
+}
+
+.rail a:hover {
+  color: var(--accent);
+}
+
+.rail a[aria-current='page'],
+.rail a.active {
+  color: var(--accent);
+}
+
+@media (max-width: 900px) {
+  .with-rail {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .rail {
+    position: static;
+    padding-top: 0;
+  }
+}
+
+/* Post prose. In-text links are underlined so they don't rely on color alone. */
+.prose a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.prose .repos a {
+  text-decoration: none;
+}
+
+.prose h2 {
+  font-size: 1.35rem;
+  margin: 2.25rem 0 0.75rem;
+  scroll-margin-top: 1.5rem;
+}
+
+.prose h3 {
+  font-size: 1.1rem;
+  margin: 1.75rem 0 0.5rem;
+  scroll-margin-top: 1.5rem;
+}
+
+.prose iframe[src*="youtube"],
+.prose iframe[src*="speakerdeck"] {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  height: auto;
+  border: 0;
+  border-radius: 4px;
+  margin: 1.5rem 0;
+}
+
+.prose img {
+  display: block;
+  margin: 1.5rem auto;
+  border-radius: 4px;
+}
+
+.prose img.align-right {
+  float: right;
+  margin: 0.25rem 0 1rem 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .prose img.align-right {
+    float: none;
+    margin: 1.5rem auto;
+  }
+}
+
+.prose blockquote {
+  margin: 1.5rem 0;
+  padding: 0.25rem 1.25rem;
+  border-left: 2px solid var(--accent);
+  background: var(--bg-raised);
+  border-radius: 0 4px 4px 0;
+  color: var(--muted);
+}
+
+.prose table {
+  border-collapse: collapse;
+  display: block;
+  overflow-x: auto;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.75rem;
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2.5rem 0;
+}
+
+.prose pre.astro-code {
+  position: relative;
+}
+
+.code-copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.prose pre.astro-code:hover .code-copy,
+.code-copy:focus-visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

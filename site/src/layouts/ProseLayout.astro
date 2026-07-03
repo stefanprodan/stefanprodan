@@ -1,0 +1,51 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+const { frontmatter } = Astro.props;
+
+const portfolioPages = [
+  { href: '/portfolio/open-source/', label: 'Projects' },
+  { href: '/portfolio/open-source-history/', label: 'Past Contributions' },
+  { href: '/portfolio/biography/', label: 'Biography' },
+];
+const isPortfolio = Astro.url.pathname.startsWith('/portfolio/');
+---
+
+<BaseLayout wide={isPortfolio} title={`${frontmatter.title} | Stefan Prodan`} description={frontmatter.description}>
+  <div class:list={[{ 'with-rail': isPortfolio }]}>
+    {
+      isPortfolio && (
+        <aside class="rail meta">
+          <p class="rail-title">Portfolio</p>
+          <ul>
+            {portfolioPages.map(({ href, label }) => (
+              <li>
+                <a href={href} aria-current={Astro.url.pathname === href ? 'page' : undefined}>
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
+    <article class="prose">
+      <h1 class="page-title">{frontmatter.title}</h1>
+      <slot />
+    </article>
+  </div>
+</BaseLayout>
+
+<style>
+  @media (max-width: 900px) {
+    aside ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 1rem;
+    }
+
+    aside li {
+      margin: 0;
+    }
+  }
+</style>

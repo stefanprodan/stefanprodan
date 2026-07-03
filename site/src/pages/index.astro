@@ -1,0 +1,252 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import stefan from '../assets/stefan.jpeg';
+
+const description =
+  "Stefan Prodan's open source portfolio and tech blog. " +
+  'Head of development at ControlPlane, core maintainer of the CNCF projects Flux and Flagger.';
+---
+
+<BaseLayout title="Stefan Prodan" description={description}>
+  <section class="hero">
+    <Image class="avatar" src={stefan} alt="Stefan Prodan" width={240} height={240} densities={[1, 2]} loading="eager" />
+    <div>
+      <p class="meta">Head of development at ControlPlane</p>
+      <h1>Stefan Prodan</h1>
+      <p>
+        Passionate about OSS, Cloud Native and Kubernetes.<br />
+        Core maintainer of the CNCF Flux project.
+      </p>
+      <div class="actions">
+        <a class="button button-primary" href="/blog/">Blog</a>
+        <a class="button" href="/portfolio/open-source/">Portfolio</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="term" aria-hidden="true">
+    <div class="term-bar">
+      <span class="dot close"></span>
+      <span class="dot min"></span>
+      <span class="dot max"></span>
+      <span class="term-title">bash</span>
+    </div>
+    <p class="term-body">
+      <span class="user">stefan</span><span class="sep">:</span><span class="path">~</span><span class="sep">$&nbsp;</span><span id="typer"></span><span class="cursor"></span>
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Sit the hero in the upper third of the space between header and footer */
+  :global(main:has(.hero)) {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 3rem;
+    padding: 4.5vh 0 2.5rem;
+  }
+
+  .avatar {
+    border-radius: 10px;
+    border: 1px solid var(--accent);
+    flex-shrink: 0;
+  }
+
+  .term {
+    --t-bg: #0b1016;
+    --t-bar: #131a22;
+    --t-border: #232f3b;
+    --t-fg: #c8d5df;
+    --t-muted: #7c90a1;
+    --t-user: #2dd4bf;
+    --t-path: #d9a94a;
+    --t-glow: rgb(45 212 191 / 0.12);
+    --t-shadow: rgb(0 0 0 / 0.35);
+    font-family: var(--font-mono);
+    background: var(--t-bg);
+    border: 1px solid var(--t-border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 32px var(--t-shadow);
+  }
+
+  /* Light theme: macOS-style light terminal */
+  :global(:root[data-theme='light']) .term {
+    --t-bg: #ffffff;
+    --t-bar: #e7edf1;
+    --t-border: #d0dae1;
+    --t-fg: #17242e;
+    --t-muted: #5d707e;
+    --t-user: #0f766e;
+    --t-path: #96690f;
+    --t-glow: transparent;
+    --t-shadow: rgb(23 36 46 / 0.12);
+  }
+
+  .term-bar {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 0.55rem 0.8rem;
+    background: var(--t-bar);
+    border-bottom: 1px solid var(--t-border);
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot.close {
+    background: #ff5f57;
+  }
+
+  .dot.min {
+    background: #febc2e;
+  }
+
+  .dot.max {
+    background: #28c840;
+  }
+
+  .term-title {
+    flex: 1;
+    text-align: center;
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--t-muted);
+    /* Visually center between the dots and the right edge */
+    margin-left: -44px;
+  }
+
+  .term-body {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--t-fg);
+    padding: 1rem 1.1rem 2.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-shadow: 0 0 10px var(--t-glow);
+  }
+
+  .term .user {
+    color: var(--t-user);
+  }
+
+  .term .path {
+    color: var(--t-path);
+  }
+
+  .term .sep {
+    color: var(--t-muted);
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    margin-left: 2px;
+    vertical-align: -0.15em;
+    background: var(--t-user);
+    box-shadow: 0 0 8px var(--t-glow);
+    animation: blink 1s steps(1) infinite;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cursor {
+      animation: none;
+    }
+  }
+
+  h1 {
+    margin: 0.25rem 0 1rem;
+    font-size: 2.5rem;
+  }
+
+  .hero > div > p:not(.meta) {
+    color: var(--muted);
+    max-width: 34rem;
+  }
+
+  .actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+
+  /* Compact buttons so the text column stays within the avatar height */
+  .actions .button {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      flex-direction: column;
+      text-align: center;
+      gap: 2rem;
+      padding: 2rem 0;
+    }
+
+    .actions {
+      justify-content: center;
+    }
+
+    .avatar {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto;
+    }
+
+    .term-body {
+      font-size: 0.8rem;
+    }
+  }
+</style>
+
+<script>
+  const typer = document.getElementById('typer');
+  if (typer) {
+    const prefix = 'hacking on ';
+    const names = ['flux operator', 'timoni', 'flagger', 'flux mcp server', 'flux web ui'];
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      typer.textContent = prefix + names[0];
+    } else {
+      const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+      (async () => {
+        // Type the prefix once; only the project name cycles
+        for (let c = 1; c <= prefix.length; c++) {
+          typer.textContent = prefix.slice(0, c);
+          await sleep(80);
+        }
+        for (let i = 0; ; i++) {
+          const name = names[i % names.length];
+          for (let c = 1; c <= name.length; c++) {
+            typer.textContent = prefix + name.slice(0, c);
+            await sleep(80);
+          }
+          await sleep(2200);
+          for (let c = name.length - 1; c >= 0; c--) {
+            typer.textContent = prefix + name.slice(0, c);
+            await sleep(35);
+          }
+          await sleep(400);
+        }
+      })();
+    }
+  }
+</script>

@@ -1,0 +1,21 @@
+---
+title: "CNCF Webinar - Kubernetes in 2023"
+description: >
+  Brendan Burns is joined by Stefan Prodan to discuss Kubernetes
+  and Git in the context of Internal Developer Platform.
+date: 2023-03-17
+slug: cncf-webinar---kubernetes-in-2023
+hideToc: true
+categories:
+  - Kubernetes
+  - Video
+---
+In this webinar, I joined Brendan Burns (Kubernetes co-founder) to discuss
+platform engineering making the case for Kubernetes and GitOps as the building blocks
+of a successful Internal Developer Platform.
+
+<!-- more -->
+
+https://youtu.be/kGrpLKNi4ZI
+
+[Event link](https://community.cncf.io/events/details/cncf-cncf-online-programs-presents-cncf-on-demand-webinar-kubernetes-in-2023/)
