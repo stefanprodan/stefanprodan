@@ -17,7 +17,7 @@ const career = [
     period: '2024-present',
     org: 'ControlPlane',
     role: 'Head of Development',
-    text: 'Leading the Flux CD Enterprise product at <a href="https://control-plane.io/enterprise-for-flux-cd/">ControlPlane</a>.',
+    text: 'Leading the Flux CD Enterprise product at <a href="https://control-plane.io/enterprise-for-flux-cd/" target="_blank" rel="noopener">ControlPlane</a>.',
   },
   {
     period: '2017-2023',
@@ -146,7 +146,7 @@ const contact = [
     {
       badges.map(({ img, name, href }) => (
         <li>
-          <a href={href} title={name}>
+          <a href={href} title={name} target="_blank" rel="noopener">
             <Image class="badge" src={badgeImage(img)} alt={name} width={110} height={110} densities={[1, 2]} />
           </a>
         </li>
@@ -161,7 +161,7 @@ const contact = [
       contact.map(({ label, text, href }) => (
         <li>
           <span class="meta label">{label}</span>
-          <a href={href}>{text}</a>
+          <a href={href} target="_blank" rel="noopener">{text}</a>
         </li>
       ))
     }
