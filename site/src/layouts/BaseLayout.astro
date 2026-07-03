@@ -41,6 +41,7 @@ const twitterCard = image ? 'summary_large_image' : 'summary';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <slot name="head" />
     <script is:inline>
       (() => {
         const stored = localStorage.getItem('theme');

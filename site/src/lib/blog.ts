@@ -21,9 +21,11 @@ export function categorySlug(category: string): string {
   return category.toLowerCase();
 }
 
-/* Social embed image: the first image in the body, or the thumbnail of the
-   first YouTube embed for video posts. Returns undefined when neither exists. */
+/* Social embed image: the frontmatter image, the first image in the body, or
+   the thumbnail of the first YouTube embed for video posts. Returns undefined
+   when none exists. */
 export function postSocialImage(post: Post): string | undefined {
+  if (post.data.image) return post.data.image.src;
   const body = post.body ?? '';
   const md = body.match(/!\[[^\]]*\]\(([^)\s]+)/);
   const html = body.match(/<img[^>]+src="([^"]+)"/);

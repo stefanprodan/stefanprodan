@@ -3,7 +3,7 @@ import { render } from 'astro:content';
 import { Image } from 'astro:assets';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import stefan from '../../../assets/stefan.jpeg';
-import { getSortedPosts, postYear, formatDate, categorySlug, postSocialImage, type Post } from '../../../lib/blog';
+import { getSortedPosts, postYear, postUrl, formatDate, categorySlug, postSocialImage, type Post } from '../../../lib/blog';
 
 export async function getStaticPaths() {
   const posts = await getSortedPosts();
@@ -23,9 +23,11 @@ const description = post.data.description.trim();
 const toc = post.data.hideToc ? [] : headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 const readingMinutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).length / 200));
 const socialImage = postSocialImage(post);
+const markdownUrl = postUrl(post).replace(/\/$/, '.md');
 ---
 
 <BaseLayout wide title={`${post.data.title}`} description={description} image={socialImage}>
+  <link slot="head" rel="alternate" type="text/markdown" href={markdownUrl} title="Markdown version of this post" />
   <div class:list={['post-grid', { 'has-toc': toc.length > 0 }]}>
     <aside class="rail meta side">
       <p class="back"><a href="/blog/">&larr; Back to index</a></p>
