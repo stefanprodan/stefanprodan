@@ -1,7 +1,7 @@
 ---
 title: "Flux project graduates from the CNCF incubator"
 description: >
-  CNCF TOC votes to promote the Flux project from Incubation to Graduated status.
+  CNCF TOC votes to promote the Flux project from Incubation to Graduated status
 date: 2022-11-30
 slug: flux-project-graduates-from-the-cncf-incubator
 hideToc: true
@@ -12,8 +12,6 @@ Flux is now a CNCF Graduated project. Huge thanks to the
 Flux community for being with us on this incredible journey.
 
 GitOps was just the beginning, I'm super excited about what comes next!
-
-<!-- more -->
 
 <img src="/blog/assets/flux-cncf-graduation.png" alt="Flux Graduation" width="700">
 

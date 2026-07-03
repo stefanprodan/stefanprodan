@@ -1,7 +1,7 @@
 ---
 title: "Flagger joins CNCF and the Flux project"
 description: >
-  Weaveworks donates Flagger to the CNCF as Flux sub-project.
+  Weaveworks donates Flagger to the CNCF as Flux sub-project
 date: 2020-12-22
 slug: flagger-joins-cncf-and-the-flux-project
 hideToc: true
@@ -12,8 +12,6 @@ I am very happy to announce that Flagger, the Progressive Delivery Operator for 
 has joined CNCF as a Flux subproject.
 
 Flagger source code repository is now available at [fluxcd/flagger](https://github.com/fluxcd/flagger).
-
-<!-- more -->
 
 [Flagger](https://flagger.app) was specifically designed for **GitOps** style delivery.
 Flagger extends Flux functionality with progressive delivery strategies like Canary Releases,

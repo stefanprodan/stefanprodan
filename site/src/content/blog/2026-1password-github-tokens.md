@@ -2,7 +2,7 @@
 title: "Locking GitHub PATs behind Touch ID with 1Password"
 description: >
   A minimal-disruption macOS setup that fetches GitHub PATs from 1Password,
-  gated by Touch ID, instead of caching them in the keychain.
+  gated by Touch ID, instead of caching them in the keychain
 date: 2026-05-22
 slug: locking-github-pats-behind-touch-id-with-1password
 categories:
@@ -10,8 +10,6 @@ categories:
 ---
 A macOS setup recipe for routing GitHub authentication through the 1Password CLI instead of the login keychain.
 It covers `git` against _github.com_, the `gh` CLI, and `docker` against _ghcr.io_.
-
-<!-- more -->
 
 With this configuration, GitHub PATs live only in the 1Password vault and
 are fetched per terminal session, gated by macOS Touch ID.

@@ -1,9 +1,9 @@
 ---
 title: "Flux v2 - GitOps General Availability Release"
 description: >
-  Announcing the first General Availability release of Flux v2 and its GitOps APIs.
+  Announcing the first General Availability release of Flux v2 and its GitOps APIs
 date: 2023-07-05
-slug: flux-v2---gitops-general-availability-release
+slug: flux-v2-gitops-general-availability-release
 hideToc: true
 categories:
   - Flux
@@ -12,8 +12,6 @@ I am thrilled to announce the **v2.0.0** General Availability (GA) release of Fl
 
 :fontawesome-solid-heart: Big thanks to all the Flux contributors that helped us reach this milestone,
 and a special shoutout to the Flux community who supported us over the years!
-
-<!-- more -->
 
 ![Flux stats](/blog/assets/flux-ga-stats.png)
 

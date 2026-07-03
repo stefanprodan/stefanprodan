@@ -1,9 +1,9 @@
 ---
 title: "OpenFaaS Operator - A Kubernetes CRD controller for Serverless"
 description: >
-  OpenFaaS Operator for Serverless on Kubernetes released.
+  OpenFaaS Operator for Serverless on Kubernetes released
 date: 2018-07-11
-slug: openfaas-operator---a-kubernetes-crd-controller-for-serverless
+slug: openfaas-operator-a-kubernetes-crd-controller-for-serverless
 hideToc: true
 categories:
   - Kubernetes
@@ -12,8 +12,6 @@ The OpenFaaS team released the Kubernetes operator for OpenFaaS.
 
 This release brings me joy as I've been helping the OpenFaaS Team
 with the design and development of the CRD controller.
-
-<!-- more -->
 
 The OpenFaaS Operator comes with an extension to the Kubernetes API that allows
 users to manage OpenFaaS functions in a declarative manner.

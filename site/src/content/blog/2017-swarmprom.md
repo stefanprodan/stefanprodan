@@ -2,7 +2,7 @@
 title: "Docker Swarm instrumentation with Prometheus"
 description: >
     Setup monitoring for Docker Swarm clusters with Prometheus, Grafana, cAdvisor,
-    NodeExporter and alerting with AlertManager.
+    NodeExporter and alerting with AlertManager
 date: 2017-10-26
 slug: docker-swarm-instrumentation-with-prometheus
 categories:
@@ -10,8 +10,6 @@ categories:
 ---
 Swarmprom is a starter kit for Docker Swarm monitoring with Prometheus, 
 Grafana, cAdvisor, Node Exporter, Alert Manager and Unsee.
-
-<!-- more -->
 
 Since its inception at SoundCloud, Prometheus has been a rising star in the infrastructure monitoring space.
 With the 2.0 release coming up, I would say Prometheus is one of the best 

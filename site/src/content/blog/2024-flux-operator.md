@@ -11,8 +11,6 @@ In this article, we introduce the Flux Operator, a new component in the Flux CD 
 that automates the lifecycle management of Flux components and streamlines the GitOps
 workflows for Kubernetes clusters.
 
-<!-- more -->
-
 We've been working on the [Flux Operator](https://github.com/controlplaneio-fluxcd/flux-operator)
 since the beginning of 2024, and we are excited to announce that the project is being used in production
 by several organizations. We are confident that the operator will simplify the adoption of GitOps practices

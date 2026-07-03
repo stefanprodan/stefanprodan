@@ -1,9 +1,9 @@
 ---
 title: "KubeCon EU 2025 - Flux Ecosystem Evolution"
 description: >
-  Overview of Flux CD ecosystem at KubeCon London 2025.
+  Overview of Flux CD ecosystem at KubeCon London 2025
 date: 2025-04-02
-slug: kubecon-eu-2025---flux-ecosystem-evolution
+slug: kubecon-eu-2025-flux-ecosystem-evolution
 hideToc: true
 categories:
   - Flux
@@ -11,8 +11,6 @@ categories:
 ---
 View the recording of my talk with Sanskar about the Flux ecosystem
 from KubeCon London maintainers track.
-
-<!-- more -->
 
 https://youtu.be/jikiO3CC7Zw
 

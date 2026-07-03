@@ -1,7 +1,7 @@
 ---
 title: "A monitoring solution for Docker hosts, containers and containerized services"
 description: >
-    Self-hosted monitoring with Prometheus, Grafana, cAdvisor, NodeExporter and alerting with AlertManager.
+    Self-hosted monitoring with Prometheus, Grafana, cAdvisor, NodeExporter and alerting with AlertManager
 date: 2016-10-06
 slug: a-monitoring-solution-for-docker-hosts-containers-and-containerized-services
 categories:
@@ -10,8 +10,6 @@ categories:
 I've been looking for an open source self-hosted monitoring solution that can provide metrics storage,
 visualization and alerting for physical servers, virtual machines, containers and services that are
 running inside containers. After trying out Elastic Beats, Graphite and Prometheus I've settled-on Prometheus.
-
-<!-- more -->
 
 The main reason for choosing Prometheus was the support for multi-dimensional metrics and the query language
 that's easy to grasp. The fact that you can use the same language for graphing and alerting makes the

@@ -1,15 +1,13 @@
 ---
 title: "ASP.NET Core vs Go data ingestion benchmark"
 description: >
-    A performance test of ASP.NET Core and Go HTTP Server and HTTP Client data ingestion flow.
+    A performance test of ASP.NET Core and Go HTTP Server and HTTP Client data ingestion flow
 date: 2016-10-01
 slug: aspnetcore-vs-golang-data-ingestion-benchmark
 categories:
 - Prometheus
 ---
 A performance test of ASP.NET Core and Go HTTP Server & Client data ingestion flow.
-
-<!-- more -->
 
 Two year ago I've developed a data ingestion system and I'm planning to migrate it from Windows to Linux and Docker. 
 

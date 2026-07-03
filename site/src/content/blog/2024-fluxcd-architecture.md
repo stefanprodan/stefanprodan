@@ -1,7 +1,7 @@
 ---
 title: "Flux Multi-cluster Architecture"
 description: >
-    A comprehensive overview of Flux CD architectures for multi-cluster continuous deliver.
+    A comprehensive overview of Flux CD architectures for multi-cluster continuous deliver
 date: 2024-05-06
 slug: fluxcd-multi-cluster-architecture
 categories:
@@ -9,8 +9,6 @@ categories:
 ---
 In this article we will explore the architecture of **Flux CD**, and we will compare the deployment strategies
 of the Flux components when implementing GitOps for multi-cluster continuous delivery.
-
-<!-- more -->
 
 ## Flux components
 

@@ -1,22 +1,19 @@
 ---
 title: "Introducing the Flux CD Agent Skills"
 description: >
-  Introducing the official Flux CD agent skills, a set of reusable
-  AI skills for generating Kubernetes manifests, auditing GitOps repositories,
-  and debugging live clusters.
+  Reusable AI skills for generating Kubernetes manifests, auditing GitOps repositories, and debugging live clusters
 date: 2026-07-02
 slug: fluxcd-agent-skills
 categories:
   - Flux
 ---
+
 The Flux project maintainers have released the official
 [GitOps Agent Skills](https://github.com/fluxcd/agent-skills) for Flux CD,
 and this post walks through what they do and how to use them. The skills give AI agents
 expertise in Flux, Kubernetes, and GitOps best practices:
 answering questions with up-to-date knowledge, generating schema-validated
 manifests, auditing repository structure and security, and troubleshooting live clusters.
-
-<!-- more -->
 
 ![Flux CD GitOps Agent Skills](/blog/assets/flux-agent-skills-banner.png)
 

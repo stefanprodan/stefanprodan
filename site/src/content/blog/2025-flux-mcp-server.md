@@ -12,8 +12,6 @@ In this blog post, we introduce the Flux MCP Server, a new component of the
 that connects AI assistants directly to your Kubernetes clusters, enabling
 seamless interaction through natural language.
 
-<!-- more -->
-
 ## AI-Assisted GitOps
 
 Using AI assistants with the Flux MCP Server, you can:
@@ -24,7 +22,6 @@ Using AI assistants with the Flux MCP Server, you can:
 - Visualize Flux dependencies with diagrams generated from the cluster state
 - Instruct Flux to perform operations using conversational prompts
 - Get up-to-date information and recommendations using the latest Flux official docs
-
 
 ## How It Works
 
@@ -141,9 +138,7 @@ and provide a detailed explanation of what went wrong and how to fix it.
 
 You can even perform GitOps operations directly through natural language:
 
-
 > Resume all the suspended Flux resources in the current cluster and verify their status.
-
 
 The AI will identify suspended resources, resume them, and report on the results.
 

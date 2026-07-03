@@ -21,20 +21,6 @@ export function categorySlug(category: string): string {
   return category.toLowerCase();
 }
 
-/* Plain-text excerpt: body up to the mkdocs `<!-- more -->` marker,
-   with markdown/HTML syntax stripped. */
-export function postExcerpt(post: Post): string {
-  const marker = post.body?.indexOf('<!-- more -->') ?? -1;
-  const raw = marker > 0 ? post.body!.slice(0, marker) : (post.data.description ?? '');
-  return raw
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
-    .replace(/<[^>]+>/g, '')
-    .replace(/[`*_]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
 /* Social embed image: the first image in the body, or the thumbnail of the
    first YouTube embed for video posts. Returns undefined when neither exists. */
 export function postSocialImage(post: Post): string | undefined {

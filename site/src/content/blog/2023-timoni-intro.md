@@ -3,15 +3,13 @@ title: "Introducing Timoni - Next-Gen Package Manager for Kubernetes"
 description: >
   Distribution and Lifecycle Management for Cloud-Native Applications
 date: 2023-11-13
-slug: introducing-timoni---next-gen-package-manager-for-kubernetes
+slug: introducing-timoni-next-gen-package-manager-for-kubernetes
 categories:
   - Timoni
 ---
 I'm excited to formally introduce [Timoni](https://github.com/stefanprodan/timoni),
 an open source project that I've started at the beginning of 2023, with the goal
 of offering a better experience for creating, packaging and delivering apps to Kubernetes.
-
-<!-- more -->
 
 Timoni was born out of frustration from crafting Kubernetes YAMLs and especially Helm charts.
 I’ve been a [Flux](https://fluxcd.io) maintainer for six years now, and while I enjoy building

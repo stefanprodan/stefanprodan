@@ -1,9 +1,9 @@
 ---
 title: "Flagger v1 - General Availability Release"
 description: >
-  Announcing the first General Availability release of Flagger.
+  Announcing the first General Availability release of Flagger
 date: 2020-06-17
-slug: flagger-v1---general-availability-release
+slug: flagger-v1-general-availability-release
 hideToc: true
 categories:
   - Flagger
@@ -13,8 +13,6 @@ Flagger, the Progressive Deliver Operator for Kubernetes.
 
 :fontawesome-solid-heart: Thanks to all users who helped us in the past three months
 testing the release candidates.
-
-<!-- more -->
 
 ![Flagger](/blog/assets/flagger-v1-ga.png)
 

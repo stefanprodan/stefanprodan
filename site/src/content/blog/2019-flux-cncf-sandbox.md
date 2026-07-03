@@ -1,7 +1,7 @@
 ---
 title: "Flux project joins CNCF sandbox"
 description: >
-  Weaveworks donates Flux to the Cloud Native Computing Foundation.
+  Weaveworks donates Flux to the Cloud Native Computing Foundation
 date: 2019-08-20
 slug: flux-project-joins-cncf-sandbox
 hideToc: true
@@ -9,8 +9,6 @@ categories:
   - Flux
 ---
 Flux, the Kubernetes GitOps operator, has been accepted as a Sandbox project by the Cloud Native Computing Foundation.
-
-<!-- more -->
 
 Built to drive Weaveworks’ own deployment pipeline, [Flux](https://fluxcd.io) is a tool that automatically
 ensures that the state of a Kubernetes cluster matches the config in Git.
