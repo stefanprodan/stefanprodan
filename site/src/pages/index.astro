@@ -15,8 +15,7 @@ const description =
       <p class="meta">Head of development at ControlPlane</p>
       <h1>Stefan Prodan</h1>
       <p>
-        Passionate about OSS, Cloud Native and Kubernetes.<br />
-        Core maintainer of the CNCF Flux project.
+        Passionate about OSS, Cloud Native and Kubernetes.<br />{' '}Core maintainer of the CNCF Flux project.
       </p>
       <div class="actions">
         <a class="button button-primary" href="/blog/">Blog</a>
@@ -215,6 +214,11 @@ const description =
 
     .term-body {
       font-size: 0.8rem;
+    }
+
+    /* Let the intro reflow naturally instead of forcing the line break */
+    .hero p br {
+      display: none;
     }
   }
 </style>

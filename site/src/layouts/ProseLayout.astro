@@ -37,15 +37,10 @@ const isPortfolio = Astro.url.pathname.startsWith('/portfolio/');
 </BaseLayout>
 
 <style>
+  /* The portfolio links live in the mobile menu; the rail is desktop-only */
   @media (max-width: 900px) {
-    aside ul {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.3rem 1rem;
-    }
-
-    aside li {
-      margin: 0;
+    aside {
+      display: none;
     }
   }
 </style>

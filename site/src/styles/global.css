@@ -237,6 +237,12 @@ pre code {
     position: static;
     padding-top: 0;
   }
+
+  /* Filters read better after the content on small screens */
+  .with-rail > .rail {
+    order: 2;
+    margin-top: 1.5rem;
+  }
 }
 
 /* Post prose. In-text links are underlined so they don't rely on color alone. */
