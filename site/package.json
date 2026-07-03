@@ -8,11 +8,15 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "check": "astro build && ../scripts/check-links.sh"
   },
   "dependencies": {
     "@astrojs/rss": "4.0.18",
     "@astrojs/sitemap": "3.7.3",
     "astro": "6.4.8"
+  },
+  "devDependencies": {
+    "wrangler": "4.104.0"
   }
 }
