@@ -9,11 +9,8 @@ categories:
 ---
 
 The Flux project maintainers have released the official
-[GitOps Agent Skills](https://github.com/fluxcd/agent-skills) for Flux CD,
-and this post walks through what they do and how to use them. The skills give AI agents
-expertise in Flux, Kubernetes, and GitOps best practices:
-answering questions with up-to-date knowledge, generating schema-validated
-manifests, auditing repository structure and security, and troubleshooting live clusters.
+**GitOps Agent Skills** for Flux CD,
+and this post walks through what they do and how to use them.
 
 ![Flux CD GitOps Agent Skills](/blog/assets/flux-agent-skills-banner.png)
 
@@ -37,7 +34,52 @@ right one based on context: `gitops-knowledge` for questions and manifest
 generation, `gitops-repo-audit` for validating and auditing repository
 contents, and `gitops-cluster-debug` for troubleshooting live clusters.
 
-## gitops-knowledge
+## Getting Started
+
+The recommended installation method is the Flux Operator CLI, which
+verifies the cosign signature of the OCI artifact, confirming it was
+published by the Flux team:
+
+```shell
+flux plugin install operator
+```
+
+Then, from the root of your GitOps repository:
+
+```shell
+flux operator skills install ghcr.io/fluxcd/agent-skills --agent claude-code
+```
+
+This extracts the skills to `.agents/skills` and creates per-skill
+symlinks for the chosen agent. If your agent supports the conventional
+`.agents/skills` path, you can omit the `--agent` flag. To update the
+skills later, run `flux operator skills update`.
+
+For Claude Code and Codex you can also install from the marketplace:
+
+```text
+/plugin marketplace add fluxcd/agent-skills
+/plugin install gitops-skills@fluxcd
+```
+
+Or with Vercel's skills tool, which works across agents:
+
+```shell
+npx skills add fluxcd/agent-skills
+```
+
+### Required Tools
+
+The skills rely on a few CLIs being available in the environment:
+
+- [flux](https://fluxcd.io/flux/installation/#install-the-flux-cli)
+- [flux-schema](https://fluxcd.io/flux/cli-plugins/flux-schema/) (install with `flux plugin install schema`)
+- [flux-operator-mcp](https://fluxoperator.dev/docs/mcp/install/) (for the cluster debugging skill)
+- kustomize or kubectl
+
+A [Brewfile](https://raw.githubusercontent.com/fluxcd/agent-skills/refs/heads/main/Brewfile) is provided for easy installation on macOS and Linux.
+
+## GitOps Knowledge Skill
 
 This skill turns the agent into a Flux CD and Flux Operator expert. It
 answers questions about GitOps concepts and generates YAML for all Flux
@@ -80,7 +122,7 @@ cluster topology, and secret management approach. The agent combines the
 skill's reference files with the repository context to generate manifests
 tailored to your setup.
 
-## gitops-repo-audit
+## GitOps Repo Audit Skill
 
 This skill turns the agent into a GitOps repository auditor. It works
 entirely on local files (no cluster access needed) and walks through six
@@ -115,7 +157,7 @@ for orchestrating Flux sub-agents that audit multiple repositories
 (fleet, infra, and apps repos) and aggregate the results into an
 HTML report.
 
-## gitops-cluster-debug
+## GitOps Cluster Debug Skill
 
 This skill turns the agent into a Flux troubleshooter for live Kubernetes
 clusters. It connects through the
@@ -167,7 +209,7 @@ manifests and audit findings. The
 [benchmarks](https://github.com/fluxcd/agent-skills/tree/main/benchmarks)
 are published in the repository alongside the skill releases.
 
-For the latest release (v0.1.0), the overall results:
+For the v0.1.0 release, the overall results:
 
 | Skill             | Model           | With Skill     | Baseline     |
 |-------------------|-----------------|----------------|--------------|
@@ -181,47 +223,6 @@ ResourceSets and preview environments, where the Opus 4.8 baseline scores
 33% and the skill brings it to 100%. Even frontier models cannot know APIs
 that shipped after their training cutoff, and that is precisely what the
 skills correct.
-
-## Getting Started
-
-The recommended installation method is the Flux Operator CLI, which
-verifies the cosign signature of the OCI artifact, confirming it was
-published by the Flux team:
-
-```shell
-flux plugin install operator
-```
-
-Then, from the root of your GitOps repository:
-
-```shell
-flux operator skills install ghcr.io/fluxcd/agent-skills --agent claude-code
-```
-
-This extracts the skills to `.agents/skills` and creates per-skill
-symlinks for the chosen agent. If your agent supports the conventional
-`.agents/skills` path, you can omit the `--agent` flag. To update the
-skills later, run `flux operator skills update`.
-
-For Claude Code and Codex you can also install straight from the plugin
-marketplace:
-
-```text
-/plugin marketplace add fluxcd/agent-skills
-/plugin install gitops-skills@fluxcd
-```
-
-Or with Vercel's skills tool, which works across agents:
-
-```shell
-npx skills add fluxcd/agent-skills
-```
-
-The skills rely on a few CLIs being available in the environment: `flux`,
-`flux-schema` (install with `flux plugin install schema`), `kustomize` or
-`kubectl`, and `flux-operator-mcp` for the cluster debugging skill. A
-[Brewfile](https://raw.githubusercontent.com/fluxcd/agent-skills/refs/heads/main/Brewfile)
-is provided for easy installation on macOS and Linux.
 
 ## Feedback Welcome
 
