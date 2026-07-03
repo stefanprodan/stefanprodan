@@ -30,7 +30,9 @@ const socialImage = postSocialImage(post);
     <aside class="rail meta side">
       <p class="back"><a href="/blog/">&larr; Back to index</a></p>
       <div class="author">
-        <Image src={stefan} alt="Stefan Prodan" width={44} height={44} densities={[1, 2]} />
+        <a href="/portfolio/biography/" aria-label="Biography">
+          <Image src={stefan} alt="Stefan Prodan" width={44} height={44} densities={[1, 2]} />
+        </a>
         <span>Stefan Prodan<br /><span class="dim">Author</span></span>
       </div>
       <hr class="rail-sep" />
@@ -97,8 +99,17 @@ const socialImage = postSocialImage(post);
     line-height: 1.35;
   }
 
+  .author a {
+    display: flex;
+    flex-shrink: 0;
+  }
+
   .author img {
     border-radius: 6px;
+  }
+
+  .author a:hover img {
+    outline: 1px solid var(--accent);
   }
 
   .dim {
