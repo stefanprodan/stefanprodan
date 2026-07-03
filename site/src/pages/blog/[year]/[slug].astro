@@ -56,20 +56,27 @@ const markdownUrl = postUrl(post).replace(/\/$/, '.md');
       </div>
     </article>
 
-    {
-      toc.length > 0 && (
-        <aside class="rail meta side toc">
-          <p class="rail-title">Table of contents</p>
-          <ul>
-            {toc.map((h) => (
-              <li class:list={[`depth-${h.depth}`]}>
-                <a href={`#${h.slug}`}>{h.text}</a>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      )
-    }
+    <aside class="rail meta side toc">
+      {
+        toc.length > 0 && (
+          <>
+            <p class="rail-title">Table of contents</p>
+            <ul>
+              {toc.map((h) => (
+                <li class:list={[`depth-${h.depth}`]}>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ul>
+            <hr class="rail-sep" />
+          </>
+        )
+      }
+      <ul>
+        <li><button type="button" class="copy-action" data-copy="url">Copy URL</button></li>
+        <li><button type="button" class="copy-action" data-copy="markdown">Copy markdown</button></li>
+      </ul>
+    </aside>
   </div>
 </BaseLayout>
 
@@ -139,6 +146,19 @@ const markdownUrl = postUrl(post).replace(/\/$/, '.md');
     padding-left: 0.9rem;
   }
 
+  .copy-action {
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    color: var(--muted);
+    cursor: pointer;
+  }
+
+  .copy-action:hover {
+    color: var(--accent);
+  }
+
   @media (max-width: 1080px) {
     .post-grid {
       grid-template-columns: 1fr;
@@ -192,6 +212,24 @@ const markdownUrl = postUrl(post).replace(/\/$/, '.md');
       setTimeout(() => (button.textContent = 'copy'), 1500);
     });
     pre.appendChild(button);
+  }
+
+  const markdownHref = document.querySelector<HTMLLinkElement>('link[rel="alternate"][type="text/markdown"]')?.href;
+  for (const button of document.querySelectorAll<HTMLButtonElement>('.copy-action')) {
+    const label = button.textContent;
+    button.addEventListener('click', async () => {
+      try {
+        const text =
+          button.dataset.copy === 'markdown' && markdownHref
+            ? await (await fetch(markdownHref)).text()
+            : document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href ?? location.href;
+        await navigator.clipboard.writeText(text);
+        button.textContent = 'Copied';
+      } catch {
+        button.textContent = 'Failed';
+      }
+      setTimeout(() => (button.textContent = label), 1500);
+    });
   }
 
   const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.toc a[href^="#"]')];
