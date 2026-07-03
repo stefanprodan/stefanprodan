@@ -33,7 +33,7 @@ const socialImage = postSocialImage(post);
         <Image src={stefan} alt="Stefan Prodan" width={44} height={44} densities={[1, 2]} />
         <span>Stefan Prodan<br /><span class="dim">Author</span></span>
       </div>
-      <p class="rail-title">Metadata</p>
+      <hr class="rail-sep" />
       <ul>
         <li><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time></li>
         {post.data.categories.map((c) => (
@@ -105,6 +105,12 @@ const socialImage = postSocialImage(post);
     color: var(--muted);
   }
 
+  .rail-sep {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 1.25rem 0 1rem;
+  }
+
   .side ul a {
     text-decoration: underline;
     text-underline-offset: 3px;
@@ -139,6 +145,10 @@ const socialImage = postSocialImage(post);
     }
 
     .back {
+      display: none;
+    }
+
+    .rail-sep {
       display: none;
     }
 
