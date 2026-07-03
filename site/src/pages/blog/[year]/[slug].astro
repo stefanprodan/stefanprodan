@@ -30,10 +30,12 @@ const socialImage = postSocialImage(post);
     <aside class="rail meta side">
       <p class="back"><a href="/blog/">&larr; Back to index</a></p>
       <div class="author">
-        <Image src={stefan} alt="Stefan Prodan" width={44} height={44} densities={[1, 2]} />
+        <a href="/portfolio/biography/" aria-label="Biography">
+          <Image src={stefan} alt="Stefan Prodan" width={44} height={44} densities={[1, 2]} />
+        </a>
         <span>Stefan Prodan<br /><span class="dim">Author</span></span>
       </div>
-      <p class="rail-title">Metadata</p>
+      <hr class="rail-sep" />
       <ul>
         <li><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time></li>
         {post.data.categories.map((c) => (
@@ -97,12 +99,27 @@ const socialImage = postSocialImage(post);
     line-height: 1.35;
   }
 
+  .author a {
+    display: flex;
+    flex-shrink: 0;
+  }
+
   .author img {
     border-radius: 6px;
   }
 
+  .author a:hover img {
+    outline: 1px solid var(--accent);
+  }
+
   .dim {
     color: var(--muted);
+  }
+
+  .rail-sep {
+    border: 0;
+    border-top: 1px solid var(--border);
+    margin: 1.25rem 0 1rem;
   }
 
   .side ul a {
@@ -139,6 +156,10 @@ const socialImage = postSocialImage(post);
     }
 
     .back {
+      display: none;
+    }
+
+    .rail-sep {
       display: none;
     }
 
