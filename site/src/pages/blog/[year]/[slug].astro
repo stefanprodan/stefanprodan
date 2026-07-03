@@ -28,7 +28,7 @@ const socialImage = postSocialImage(post);
 <BaseLayout wide title={`${post.data.title} | Stefan Prodan`} description={description} image={socialImage}>
   <div class:list={['post-grid', { 'has-toc': toc.length > 0 }]}>
     <aside class="rail meta side">
-      <p><a href="/blog/">&larr; Back to index</a></p>
+      <p class="back"><a href="/blog/">&larr; Back to index</a></p>
       <div class="author">
         <Image src={stefan} alt="Stefan Prodan" width={44} height={44} densities={[1, 2]} />
         <span>Stefan Prodan<br /><span class="dim">Author</span></span>
@@ -135,6 +135,10 @@ const socialImage = postSocialImage(post);
     }
 
     .author {
+      display: none;
+    }
+
+    .back {
       display: none;
     }
 
