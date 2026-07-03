@@ -84,7 +84,11 @@ const repoLabel = (url: string) => url.replace('https://github.com/', '');
     gap: 0.75rem;
   }
 
+  /* Explicit box beats the global img { height: auto }, which stretches non-square SVGs */
   .ident img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
     border-radius: 4px;
     flex-shrink: 0;
   }
@@ -100,7 +104,8 @@ const repoLabel = (url: string) => url.replace('https://github.com/', '');
     opacity: 0.5;
   }
 
-  h2 {
+  /* .ident h2 outranks .prose h2, which otherwise leaks its size and margins in */
+  .ident h2 {
     font-size: 1.15rem;
     margin: 0;
     scroll-margin-top: 1rem;
