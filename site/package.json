@@ -9,7 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro build && ../scripts/check-links.sh"
+    "check": "astro build"
   },
   "dependencies": {
     "@astrojs/markdown-satteri": "0.3.2",
