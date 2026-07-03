@@ -47,6 +47,15 @@ const markdownUrl = postUrl(post).replace(/\/$/, '.md');
         ))}
         <li>{readingMinutes} min read</li>
       </ul>
+      <hr class="rail-sep copy-actions" />
+      <ul class="copy-actions">
+        <li>
+          <button type="button" class="copy-action">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.27 19.385H1.73A1.73 1.73 0 010 17.655V6.345a1.73 1.73 0 011.73-1.73h20.54A1.73 1.73 0 0124 6.345v11.308a1.73 1.73 0 01-1.73 1.731zM5.769 15.923v-4.5l2.308 2.885 2.307-2.885v4.5h2.308V8.078h-2.308l-2.307 2.885-2.308-2.885H3.46v7.847zM21.232 12h-2.309V8.077h-2.307V12h-2.308l3.461 4.039z" /></svg>
+            <span>Copy as Markdown</span>
+          </button>
+        </li>
+      </ul>
     </aside>
 
     <article>
@@ -56,27 +65,20 @@ const markdownUrl = postUrl(post).replace(/\/$/, '.md');
       </div>
     </article>
 
-    <aside class="rail meta side toc">
-      {
-        toc.length > 0 && (
-          <>
-            <p class="rail-title">Table of contents</p>
-            <ul>
-              {toc.map((h) => (
-                <li class:list={[`depth-${h.depth}`]}>
-                  <a href={`#${h.slug}`}>{h.text}</a>
-                </li>
-              ))}
-            </ul>
-            <hr class="rail-sep" />
-          </>
-        )
-      }
-      <ul>
-        <li><button type="button" class="copy-action" data-copy="url">Copy URL</button></li>
-        <li><button type="button" class="copy-action" data-copy="markdown">Copy markdown</button></li>
-      </ul>
-    </aside>
+    {
+      toc.length > 0 && (
+        <aside class="rail meta side toc">
+          <p class="rail-title">Table of contents</p>
+          <ul>
+            {toc.map((h) => (
+              <li class:list={[`depth-${h.depth}`]}>
+                <a href={`#${h.slug}`}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )
+    }
   </div>
 </BaseLayout>
 
@@ -147,12 +149,19 @@ const markdownUrl = postUrl(post).replace(/\/$/, '.md');
   }
 
   .copy-action {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
     background: none;
     border: 0;
     padding: 0;
     font: inherit;
     color: var(--muted);
     cursor: pointer;
+  }
+
+  .copy-action svg {
+    flex-shrink: 0;
   }
 
   .copy-action:hover {
@@ -182,6 +191,11 @@ const markdownUrl = postUrl(post).replace(/\/$/, '.md');
     }
 
     .rail-sep {
+      display: none;
+    }
+
+    /* Matches .side ul's specificity so the flex layout above can't win */
+    .side .copy-actions {
       display: none;
     }
 
@@ -215,20 +229,18 @@ const markdownUrl = postUrl(post).replace(/\/$/, '.md');
   }
 
   const markdownHref = document.querySelector<HTMLLinkElement>('link[rel="alternate"][type="text/markdown"]')?.href;
-  for (const button of document.querySelectorAll<HTMLButtonElement>('.copy-action')) {
-    const label = button.textContent;
-    button.addEventListener('click', async () => {
+  const copyButton = document.querySelector<HTMLButtonElement>('.copy-action');
+  const copyLabel = copyButton?.querySelector('span');
+  if (markdownHref && copyButton && copyLabel) {
+    const label = copyLabel.textContent;
+    copyButton.addEventListener('click', async () => {
       try {
-        const text =
-          button.dataset.copy === 'markdown' && markdownHref
-            ? await (await fetch(markdownHref)).text()
-            : document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.href ?? location.href;
-        await navigator.clipboard.writeText(text);
-        button.textContent = 'Copied';
+        await navigator.clipboard.writeText(await (await fetch(markdownHref)).text());
+        copyLabel.textContent = 'Copied';
       } catch {
-        button.textContent = 'Failed';
+        copyLabel.textContent = 'Failed';
       }
-      setTimeout(() => (button.textContent = label), 1500);
+      setTimeout(() => (copyLabel.textContent = label), 1500);
     });
   }
 
