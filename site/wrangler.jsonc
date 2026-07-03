@@ -7,10 +7,9 @@
     "html_handling": "auto-trailing-slash",
     "not_found_handling": "404-page"
   },
-  // workers.dev stays on until the custom-domain cutover is verified
-  "workers_dev": true,
+  "routes": [{ "pattern": "stefanprodan.com", "custom_domain": true }],
+  "workers_dev": false,
   "preview_urls": true,
-  // Match the dashboard settings so deploys don't reset them
   "observability": {
     "enabled": false,
     "head_sampling_rate": 1,
@@ -26,5 +25,4 @@
       "head_sampling_rate": 1
     }
   }
-  // "routes" is added at cutover: [{ "pattern": "stefanprodan.com", "custom_domain": true }]
 }
