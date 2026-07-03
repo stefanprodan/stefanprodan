@@ -14,3 +14,16 @@ updates:
     schedule:
       # By default, this will be on a monday.
       interval: "weekly"
+
+  - package-ecosystem: "npm"
+    directory: "/site"
+    labels: ["dependencies"]
+    # Wait out fresh releases per the supply-chain policy.
+    cooldown:
+      default-days: 7
+    groups:
+      npm:
+        patterns:
+          - "*"
+    schedule:
+      interval: "weekly"
