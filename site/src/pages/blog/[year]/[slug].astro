@@ -25,7 +25,7 @@ const readingMinutes = Math.max(1, Math.round((post.body ?? '').split(/\s+/).len
 const socialImage = postSocialImage(post);
 ---
 
-<BaseLayout wide title={`${post.data.title} | Stefan Prodan`} description={description} image={socialImage}>
+<BaseLayout wide title={`${post.data.title}`} description={description} image={socialImage}>
   <div class:list={['post-grid', { 'has-toc': toc.length > 0 }]}>
     <aside class="rail meta side">
       <p class="back"><a href="/blog/">&larr; Back to index</a></p>

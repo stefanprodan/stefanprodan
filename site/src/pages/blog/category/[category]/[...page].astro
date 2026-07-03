@@ -33,7 +33,7 @@ const { posts, page, total, name } = Astro.props;
 const { category } = Astro.params;
 ---
 
-<BaseLayout wide title={`${name} | Stefan Prodan`} description={`Blog posts about ${name} by Stefan Prodan.`}>
+<BaseLayout wide title={`${name}`} description={`Blog posts about ${name} by Stefan Prodan.`}>
   <div class="with-rail">
     <BlogFilters activeCategory={category} />
     <div>

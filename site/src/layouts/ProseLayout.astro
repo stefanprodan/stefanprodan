@@ -11,7 +11,7 @@ const portfolioPages = [
 const isPortfolio = Astro.url.pathname.startsWith('/portfolio/');
 ---
 
-<BaseLayout wide={isPortfolio} title={`${frontmatter.title} | Stefan Prodan`} description={frontmatter.description}>
+<BaseLayout wide={isPortfolio} title={`${frontmatter.title}`} description={frontmatter.description}>
   <div class:list={[{ 'with-rail': isPortfolio }]}>
     {
       isPortfolio && (

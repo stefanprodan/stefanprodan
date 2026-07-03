@@ -21,7 +21,7 @@ const { posts } = Astro.props;
 const { year } = Astro.params;
 ---
 
-<BaseLayout wide title={`Blog - ${year} | Stefan Prodan`} description={`Blog posts from ${year} by Stefan Prodan.`}>
+<BaseLayout wide title={`Blog - ${year}`} description={`Blog posts from ${year} by Stefan Prodan.`}>
   <div class="with-rail">
     <BlogFilters activeYear={year} />
     <div>

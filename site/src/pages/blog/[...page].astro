@@ -23,7 +23,7 @@ const { posts, page, total } = Astro.props;
 const title = page === 1 ? 'Blog' : `Blog - page ${page}`;
 ---
 
-<BaseLayout wide title={`${title} | Stefan Prodan`} description="Stefan Prodan's tech blog: GitOps, Flux, Kubernetes and Cloud Native.">
+<BaseLayout wide title={`${title}`} description="Stefan Prodan's tech blog: GitOps, Flux, Kubernetes and Cloud Native.">
   <div class="with-rail">
     <BlogFilters />
     <div>
