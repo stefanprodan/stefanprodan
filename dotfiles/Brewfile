@@ -27,6 +27,7 @@ brew "yq"
 brew "watch"
 brew "micro"
 brew "pngquant"
+brew "rclone"
 
 # Security
 cask "1password-cli"
