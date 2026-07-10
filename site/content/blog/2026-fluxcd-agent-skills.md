@@ -72,7 +72,7 @@ npx skills add fluxcd/agent-skills
 
 The skills rely on a few CLIs being available in the environment:
 
-- [flux](https://fluxcd.io/flux/installation/#install-the-flux-cli)
+- [flux](https://fluxcd.io/flux/installation/#install-the-flux-cli) (v2.9 or later)
 - [flux-schema](https://fluxcd.io/flux/cli-plugins/flux-schema/) (install with `flux plugin install schema`)
 - [flux-operator-mcp](https://fluxoperator.dev/docs/mcp/install/) (for the cluster debugging skill)
 - kustomize or kubectl (for building overlays)
