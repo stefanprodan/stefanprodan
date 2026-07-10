@@ -12,7 +12,9 @@ const description =
   <section class="hero">
     <Image class="avatar" src={stefan} alt="Stefan Prodan" width={240} height={240} densities={[1, 2]} loading="eager" />
     <div>
-      <p class="meta">Head of development at ControlPlane</p>
+      <p class="meta">
+        Head of development at <a class="org" href="https://control-plane.io/enterprise-for-flux-cd/" target="_blank" rel="noopener">ControlPlane<svg class="ext" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg></a>
+      </p>
       <h1>Stefan Prodan</h1>
       <p>
         Passionate about OSS, Cloud Native and Kubernetes.<br />{' '}Core maintainer of the CNCF Flux project.
@@ -50,6 +52,19 @@ const description =
     align-items: flex-start;
     gap: 3rem;
     padding: 4.5vh 0 2.5rem;
+  }
+
+  .meta .org {
+    color: inherit;
+  }
+
+  .meta .org:hover {
+    color: var(--accent);
+  }
+
+  .meta .ext {
+    margin-left: 0.25em;
+    vertical-align: -0.1em;
   }
 
   .avatar {
