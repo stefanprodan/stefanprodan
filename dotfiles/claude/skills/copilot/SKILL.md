@@ -1,7 +1,7 @@
 ---
 name: copilot
 description: >
-  Delegate a task to GitHub Copilot CLI (GPT-5.5, high reasoning) by running
+  Delegate a task to GitHub Copilot CLI (GPT-5.6 Sol, high reasoning) by running
   copilot directly from the main conversation. Use whenever the user says
   /copilot, "use copilot", "ask copilot", or wants a Copilot second opinion,
   review, research pass, or fix. Copilot runs in its own context with tools
@@ -22,7 +22,7 @@ limit, so always run it with `run_in_background: true` and redirect to a log.
 Never run it in the foreground.
 
 ```shell
-copilot -C <working directory> --model gpt-5.5 --effort high --allow-all --no-color --log-level none -p "$(cat <<'TASK'
+copilot -C <working directory> --model gpt-5.6-sol --effort high --allow-all --no-color --log-level none -p "$(cat <<'TASK'
 <task prompt>
 TASK
 )" 2>&1 | sed -u -E '/^(Changes|AI Credits|Tokens)[[:space:]]/d' | sed -u '/^$/d' > /tmp/copilot-<task>.log

@@ -1,7 +1,7 @@
 ---
 name: kiro
 description: >
-  Delegate a task to Kiro AI (Opus LLM) by running kiro-cli directly from the
+  Delegate a task to Kiro AI (GPT-5.6 Sol) by running kiro-cli directly from the
   main conversation. Use whenever the user says /kiro, "use kiro", "ask kiro",
   or wants a Kiro second opinion, review, research pass, or fix. Kiro runs in
   its own context with tools scoped to the working directory.
@@ -21,7 +21,7 @@ limit, so always run it with `run_in_background: true` and redirect to a log.
 Never run it in the foreground.
 
 ```shell
-cd <working directory> && kiro-cli chat --no-interactive --model=claude-opus-4.8 --trust-all-tools 2>&1 <<'TASK' | sed -u 's/\x1b\[[0-9;?]*[a-zA-Z]//g' | sed -u '/^$/d' > /tmp/kiro-<task>.log
+cd <working directory> && kiro-cli chat --no-interactive --model=gpt-5.6-sol --trust-all-tools 2>&1 <<'TASK' | sed -u 's/\x1b\[[0-9;?]*[a-zA-Z]//g' | sed -u '/^$/d' > /tmp/kiro-<task>.log
 <task prompt>
 TASK
 ```
