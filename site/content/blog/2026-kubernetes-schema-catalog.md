@@ -1,8 +1,8 @@
 ---
-title: "A Kubernetes Schema Catalog for AI Agents"
+title: "Kubernetes Schema Catalog for AI Agents"
 description: >
   JSON Schemas for the Kubernetes ecosystem, served to AI agents over MCP as a free public service
-date: 2026-07-14
+date: 2026-07-22
 slug: cloud-native-schema-catalog
 categories:
   - Flux
@@ -39,7 +39,7 @@ without crawling the web. That is what the catalog provides.
 ## The Ecosystem Schema Catalog
 
 The catalog is built by extracting JSON Schemas from upstream stable releases
-and rebuilding daily. At launch, it covers 110 projects and close to 9000
+and rebuilding daily. At launch, it covers 115 projects and close to 9000
 schemas: the Kubernetes and OpenShift built-in kinds, all the CNCF projects
 that ship CRDs, and the cloud provider operators for AWS, Azure, and GCP.
 
@@ -49,14 +49,9 @@ Alongside the raw schemas, the catalog publishes LLM-optimized indexes,
 so an agent can locate the right group, version, and kind in a couple of
 small requests instead of pulling down the whole collection.
 
-Because clusters rarely run the latest release of anything, the catalog keeps
-versioned snapshots for the six most recent minor releases of Kubernetes,
-OpenShift, and Flux. An agent working on a repository that targets Kubernetes
-v1.35 can resolve schemas exactly as that minor defines them.
-
 ## An MCP Server as a Public Good
 
-The catalog is exposed as a remote MCP server, operated by the Flux Operator
+The catalog is exposed as a remote MCP server, operated by the [Flux Operator](https://github.com/controlplaneio-fluxcd/flux-operator)
 team as a free public service, with no authentication or API key required:
 
 ```text
@@ -81,7 +76,7 @@ For Codex:
 codex mcp add flux-schema-catalog --url https://schemas.fluxoperator.dev/mcp
 ```
 
-And for other MCP clients such as Cursor, VS Code, or Windsurf, add the
+And for other MCP clients such as Cursor, Copilot, or Windsurf, add the
 server to the project's `.mcp.json`:
 
 ```json
@@ -89,6 +84,20 @@ server to the project's `.mcp.json`:
   "mcpServers": {
     "flux-schema-catalog": {
       "type": "http",
+      "url": "https://schemas.fluxoperator.dev/mcp"
+    }
+  }
+}
+```
+
+For OpenCode add the following to `opencode.json`:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "flux-schema-catalog": {
+      "type": "remote",
       "url": "https://schemas.fluxoperator.dev/mcp"
     }
   }
