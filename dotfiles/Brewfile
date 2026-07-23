@@ -10,6 +10,7 @@ brew "tmux"
 brew "git"
 brew "gh"
 brew "stgit"
+brew "hunk"
 
 # Tools
 brew "bat"
@@ -60,7 +61,6 @@ brew "biome"
 # Kubernetes
 brew "kubectl"
 brew "kind"
-brew "kubeconform"
 brew "kustomize"
 brew "helm"
 brew "helm-docs"

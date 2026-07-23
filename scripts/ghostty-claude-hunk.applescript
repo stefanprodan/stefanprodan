@@ -7,7 +7,7 @@
 --   alias gch='osascript ~/path/to/ghostty-claude-hunk.applescript'
 --
 -- Prerequisites:
---   npm i -g hunkdiff
+--   brew install hunk
 
 set cwd to quoted form of (system attribute "PWD")
 set claudeArgs to system attribute "GHOSTTY_CLAUDE_ARGS"
