@@ -29,6 +29,8 @@ brew "watch"
 brew "micro"
 brew "pngquant"
 brew "rclone"
+tap "cuenv/tap", trusted: true
+brew "cuenv/tap/cuenv"
 
 # Security
 cask "1password-cli"
