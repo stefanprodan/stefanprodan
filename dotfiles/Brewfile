@@ -91,3 +91,6 @@ brew "replicatedhq/replicated/cli"
 # AI
 brew "gemini-cli"
 cask "copilot-cli"
+brew "ollama"
+tap "anomalyco/tap", trusted: true
+brew "anomalyco/tap/opencode"
