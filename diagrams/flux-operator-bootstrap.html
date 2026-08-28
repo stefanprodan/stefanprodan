@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flux Operator · Bootstrap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --paper:      #f5f5f5;
+      --paper-2:    #ffffff;
+      --ink:        #2d3142;
+      --ink-rgb:    45,49,66;
+      --muted:      #4f5d75;
+      --muted-rgb:  79,93,117;
+      --soft:       #7a8399;
+      --accent:     #eb6c36;
+      --accent-rgb: 235,108,54;
+      --link:       #2e5aa8;
+      --color-paper:  var(--paper);
+      --color-ink:    var(--ink);
+      --color-muted:  var(--muted);
+      --color-accent: var(--accent);
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-title:    'Inter', system-ui, sans-serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+    :root:has(#theme:checked),
+    :root:has(#dark:target) {
+      --paper:      #2d3142;
+      --paper-2:    #393e53;
+      --ink:        #f5f5f5;
+      --ink-rgb:    245,245,245;
+      --muted:      #bfc0c0;
+      --muted-rgb:  191,192,192;
+      --soft:       #8e98ac;
+      --accent:     #f08a59;
+      --accent-rgb: 240,138,89;
+      --link:       #6a95d8;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      display: flex;
+      justify-content: center;
+      padding: 1.25rem 1.5rem 1rem;
+    }
+
+    .frame { width: 100%; max-width: 1080px; position: relative; }
+
+    .theme-toggle {
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 120ms ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+    .frame:hover .theme-toggle, .theme-toggle:focus-within { opacity: 1; }
+    @media print { .theme-toggle { display: none; } }
+    .theme-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .theme-toggle .track {
+      width: 28px;
+      height: 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(var(--ink-rgb), 0.30);
+      background: rgba(var(--ink-rgb), 0.05);
+      position: relative;
+      transition: background 120ms ease;
+    }
+    .theme-toggle .track::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-muted);
+      transition: transform 120ms ease;
+    }
+    .theme-toggle input:checked + .track { background: rgba(var(--accent-rgb), 0.15); border-color: var(--accent); }
+    .theme-toggle input:checked + .track::after { transform: translateX(12px); background: var(--accent); }
+    .theme-toggle input:focus-visible + .track { outline: 2px solid var(--link); outline-offset: 2px; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .eyebrow-url { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--link); }
+    .eyebrow-url::before { content: "/"; color: var(--soft); margin: 0 0.6em 0 0.4em; }
+
+    h1 {
+      font-family: var(--font-title);
+      font-size: 1.375rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      font-family: var(--font-title);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    svg { width: 100%; min-width: 856px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <span id="dark" hidden></span>
+    <label class="theme-toggle"><input type="checkbox" id="theme"><span class="track"></span><span>Dark</span></label>
+    <p class="eyebrow">Architecture<span class="eyebrow-url">fluxoperator.dev</span></p>
+    <h1>Cluster bootstrap with Flux Operator</h1>
+    <p class="subtitle">From a FluxInstance to a reconciled cluster</p>
+
+    <svg viewBox="16 16 856 572" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Cluster bootstrap with Flux Operator" aria-describedby="flux-operator-bootstrap-desc">
+      <desc id="flux-operator-bootstrap-desc">Architecture diagram showing the platform team applying a FluxInstance custom resource, which the Flux Operator reconciles by pulling the distribution manifests from the OCI registry, deploying the Flux controllers with server-side apply, generating the flux-system source and Kustomization, monitoring the cluster state, and publishing a FluxReport. The Flux controllers pull the fleet repository through the generated sync objects and apply the infrastructure and applications to the cluster.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--muted)"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--accent)"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--link)"/></marker>
+      </defs>
+
+      <rect x="0" y="0" width="888" height="604" fill="var(--paper)"/>
+
+      <!-- ===== Zones (painted first) ===== -->
+      <!-- Zone: Kubernetes cluster -->
+      <rect x="224" y="136" width="632" height="372" rx="8"
+            fill="rgba(var(--ink-rgb),0.02)" stroke="rgba(var(--ink-rgb),0.10)" stroke-width="0.8"/>
+      <rect x="244" y="140" width="104" height="12" rx="2" fill="var(--paper)"/>
+      <text x="296" y="149" fill="rgba(var(--ink-rgb),0.40)" font-size="7" font-family="'Geist Mono', monospace"
+            text-anchor="middle" letter-spacing="0.14em">KUBERNETES CLUSTER</text>
+
+      <!-- ===== Arrows (behind boxes) ===== -->
+      <!-- A1 Platform team -> FluxInstance (Kubernetes API, HTTP/S) -->
+      <line x1="184" y1="200" x2="240" y2="200" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A2 FluxInstance -> Flux Operator -->
+      <line x1="392" y1="200" x2="464" y2="200" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A3 Flux Operator -> FluxReport -->
+      <line x1="616" y1="200" x2="688" y2="200" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A4 Flux distribution -> Flux Operator (OCI pull, HTTP/S) -->
+      <line x1="540" y1="96" x2="540" y2="168" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A5 Flux Operator -> Flux controllers -->
+      <line x1="540" y1="232" x2="540" y2="312" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A6 Flux Operator -> Cluster sync (exit bottom at x=480, elbow left, enter top at x=316) -->
+      <path d="M 480,232 V 264 Q 480,272 472,272 H 324 Q 316,272 316,280 V 312"
+            fill="none" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A10 Flux Operator -> Cluster state (exit bottom at x=600, elbow right, enter top at x=764) -->
+      <path d="M 600,232 V 264 Q 600,272 608,272 H 756 Q 764,272 764,280 V 312"
+            fill="none" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A7 Fleet repository -> Cluster sync (HTTP/S) -->
+      <line x1="184" y1="344" x2="240" y2="344" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A8 Cluster sync -> Flux controllers -->
+      <line x1="392" y1="344" x2="464" y2="344" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A9 Flux controllers -> Cluster state -->
+      <line x1="616" y1="344" x2="688" y2="344" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- ===== Arrow labels (masked, 8px above the stroke or beside vertical segments) ===== -->
+      <rect x="192" y="180" width="40" height="12" rx="2" fill="var(--paper)"/>
+      <text x="212" y="189" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">APPLY</text>
+
+      <rect x="396" y="180" width="64" height="12" rx="2" fill="var(--paper)"/>
+      <text x="428" y="189" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">RECONCILE</text>
+
+      <rect x="630" y="180" width="44" height="12" rx="2" fill="var(--paper)"/>
+      <text x="652" y="189" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">REPORT</text>
+
+      <rect x="548" y="120" width="36" height="12" rx="2" fill="var(--paper)"/>
+      <text x="552" y="129" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="start" letter-spacing="0.08em">PULL</text>
+
+      <rect x="548" y="264" width="40" height="12" rx="2" fill="var(--paper)"/>
+      <text x="552" y="273" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="start" letter-spacing="0.08em">DEPLOY</text>
+
+      <rect x="656" y="252" width="52" height="12" rx="2" fill="var(--paper)"/>
+      <text x="682" y="261" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">MONITOR</text>
+
+      <rect x="368" y="252" width="60" height="12" rx="2" fill="var(--paper)"/>
+      <text x="398" y="261" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">GENERATE</text>
+
+      <rect x="194" y="324" width="36" height="12" rx="2" fill="var(--paper)"/>
+      <text x="212" y="333" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">PULL</text>
+
+      <rect x="398" y="324" width="60" height="12" rx="2" fill="var(--paper)"/>
+      <text x="428" y="333" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">ARTIFACT</text>
+
+      <rect x="630" y="324" width="44" height="12" rx="2" fill="var(--paper)"/>
+      <text x="652" y="333" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">APPLY</text>
+
+      <!-- ===== Nodes ===== -->
+      <!-- N1: Flux distribution (external, registry) -->
+      <rect x="464" y="32" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="464" y="32" width="152" height="64" rx="6" fill="rgba(var(--ink-rgb),0.03)" stroke="rgba(var(--ink-rgb),0.30)" stroke-width="1"/>
+      <rect x="472" y="40" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--ink-rgb),0.22)" stroke-width="0.8"/>
+      <text x="486" y="49" fill="var(--soft)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">OCI</text>
+      <text x="540" y="68" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Flux distribution</text>
+      <text x="540" y="84" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">manifests · images</text>
+
+      <!-- N2: Platform team (actor) -->
+      <rect x="32" y="168" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="32" y="168" width="152" height="64" rx="6" fill="rgba(var(--muted-rgb),0.10)" stroke="var(--soft)" stroke-width="1"/>
+      <g transform="translate(40,176) scale(0.6667)" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/></g>
+      <text x="108" y="204" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Platform team</text>
+      <text x="108" y="220" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Helm · Terraform · CLI</text>
+
+      <!-- N3: FluxInstance (custom resource) -->
+      <rect x="240" y="168" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="240" y="168" width="152" height="64" rx="6" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <rect x="248" y="176" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--muted-rgb),0.50)" stroke-width="0.8"/>
+      <text x="262" y="185" fill="var(--muted)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CR</text>
+      <text x="316" y="204" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">FluxInstance</text>
+      <text x="316" y="220" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">version · cluster · sync</text>
+
+      <!-- N4: Flux Operator (focal) -->
+      <rect x="464" y="168" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="464" y="168" width="152" height="64" rx="6" fill="rgba(var(--accent-rgb),0.08)" stroke="var(--accent)" stroke-width="1"/>
+      <rect x="472" y="176" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--accent-rgb),0.50)" stroke-width="0.8"/>
+      <text x="486" y="185" fill="var(--accent)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CTRL</text>
+      <text x="540" y="204" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Flux Operator</text>
+      <text x="540" y="220" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Lifecycle Management</text>
+
+      <!-- N5: FluxReport (custom resource) -->
+      <rect x="688" y="168" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="688" y="168" width="152" height="64" rx="6" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <rect x="696" y="176" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--muted-rgb),0.50)" stroke-width="0.8"/>
+      <text x="710" y="185" fill="var(--muted)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CR</text>
+      <text x="764" y="204" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">FluxReport</text>
+      <text x="764" y="220" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">status · stats · metrics</text>
+
+      <!-- N6: Fleet repository (external) -->
+      <rect x="32" y="312" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="32" y="312" width="152" height="64" rx="6" fill="rgba(var(--ink-rgb),0.03)" stroke="rgba(var(--ink-rgb),0.30)" stroke-width="1"/>
+      <rect x="40" y="320" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--ink-rgb),0.22)" stroke-width="0.8"/>
+      <text x="54" y="329" fill="var(--soft)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SRC</text>
+      <text x="108" y="348" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Fleet repository</text>
+      <text x="108" y="364" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Git repo or OCI artifact</text>
+
+      <!-- N7: Cluster sync (custom resources generated from spec.sync) -->
+      <rect x="240" y="312" width="152" height="108" rx="6" fill="var(--paper)"/>
+      <rect x="240" y="312" width="152" height="108" rx="6" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <rect x="248" y="320" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--muted-rgb),0.50)" stroke-width="0.8"/>
+      <text x="262" y="329" fill="var(--muted)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CR</text>
+      <text x="316" y="348" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Cluster sync</text>
+      <text x="316" y="364" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">Git · OCI · Bucket</text>
+      <line x1="240" y1="372" x2="392" y2="372" stroke="rgba(var(--muted-rgb),0.30)" stroke-width="0.8"/>
+      <g fill="var(--ink)" font-size="8" font-family="'Geist Mono', monospace" xml:space="preserve">
+        <text x="252" y="392">source/flux-system</text>
+        <text x="252" y="408">kustomization/flux-system</text>
+      </g>
+
+      <!-- N8: Flux controllers (controller) with component rows -->
+      <rect x="464" y="312" width="152" height="180" rx="6" fill="var(--paper)"/>
+      <rect x="464" y="312" width="152" height="180" rx="6" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1"/>
+      <rect x="472" y="320" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--ink-rgb),0.40)" stroke-width="0.8"/>
+      <text x="486" y="329" fill="var(--ink)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CTRL</text>
+      <text x="540" y="348" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Flux controllers</text>
+      <text x="540" y="364" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">GitOps Toolkit · v2.x</text>
+      <line x1="464" y1="372" x2="616" y2="372" stroke="rgba(var(--muted-rgb),0.30)" stroke-width="0.8"/>
+      <g fill="var(--ink)" font-size="9" font-family="'Geist Mono', monospace" xml:space="preserve">
+        <text x="476" y="392">source-controller</text>
+        <text x="476" y="412">source-watcher</text>
+        <text x="476" y="432">kustomize-controller</text>
+        <text x="476" y="452">helm-controller</text>
+        <text x="476" y="472">notification-controller</text>
+      </g>
+
+      <!-- N9: Cluster state -->
+      <rect x="688" y="312" width="152" height="180" rx="6" fill="var(--paper)"/>
+      <rect x="688" y="312" width="152" height="180" rx="6" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <rect x="696" y="320" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--muted-rgb),0.50)" stroke-width="0.8"/>
+      <text x="710" y="329" fill="var(--muted)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">K8S</text>
+      <text x="764" y="348" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Cluster state</text>
+      <text x="764" y="364" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">infrastructure · apps</text>
+      <line x1="688" y1="372" x2="840" y2="372" stroke="rgba(var(--muted-rgb),0.30)" stroke-width="0.8"/>
+      <g fill="var(--ink)" font-size="9" font-family="'Geist Mono', monospace" xml:space="preserve">
+        <text x="700" y="392">cluster add-ons</text>
+        <text x="700" y="412">security policies</text>
+        <text x="700" y="432">tenant namespaces</text>
+        <text x="700" y="452">tenant workloads</text>
+      </g>
+
+      <!-- ===== Legend strip ===== -->
+      <line x1="32" y1="532" x2="856" y2="532" stroke="rgba(var(--ink-rgb),0.10)" stroke-width="0.8"/>
+      <text x="32" y="548" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+      <rect x="32" y="560" width="14" height="10" rx="2" fill="rgba(var(--accent-rgb),0.08)" stroke="var(--accent)" stroke-width="1"/>
+      <text x="52" y="568" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Operator</text>
+
+      <rect x="136" y="560" width="14" height="10" rx="2" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1"/>
+      <text x="156" y="568" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Flux controller</text>
+
+      <rect x="272" y="560" width="14" height="10" rx="2" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <text x="292" y="568" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Kubernetes object</text>
+
+      <rect x="416" y="560" width="14" height="10" rx="2" fill="rgba(var(--ink-rgb),0.03)" stroke="rgba(var(--ink-rgb),0.30)" stroke-width="1"/>
+      <text x="436" y="568" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">External</text>
+
+      <rect x="520" y="560" width="14" height="10" rx="2" fill="rgba(var(--muted-rgb),0.10)" stroke="var(--soft)" stroke-width="1"/>
+      <text x="540" y="568" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Actor</text>
+
+      <line x1="612" y1="566" x2="640" y2="566" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <text x="648" y="568" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Reconciliation</text>
+
+      <line x1="760" y1="566" x2="788" y2="566" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <text x="796" y="568" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">HTTP/S</text>
+    </svg>
+  </div>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flux Operator · Gitless GitOps</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --paper:      #f5f5f5;
+      --paper-2:    #ffffff;
+      --ink:        #2d3142;
+      --ink-rgb:    45,49,66;
+      --muted:      #4f5d75;
+      --muted-rgb:  79,93,117;
+      --soft:       #7a8399;
+      --accent:     #eb6c36;
+      --accent-rgb: 235,108,54;
+      --link:       #2e5aa8;
+      --color-paper:  var(--paper);
+      --color-ink:    var(--ink);
+      --color-muted:  var(--muted);
+      --color-accent: var(--accent);
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-title:    'Inter', system-ui, sans-serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+    :root:has(#theme:checked),
+    :root:has(#dark:target) {
+      --paper:      #2d3142;
+      --paper-2:    #393e53;
+      --ink:        #f5f5f5;
+      --ink-rgb:    245,245,245;
+      --muted:      #bfc0c0;
+      --muted-rgb:  191,192,192;
+      --soft:       #8e98ac;
+      --accent:     #f08a59;
+      --accent-rgb: 240,138,89;
+      --link:       #6a95d8;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      display: flex;
+      justify-content: center;
+      padding: 1.25rem 1.5rem 1rem;
+    }
+
+    .frame { width: 100%; max-width: 1080px; position: relative; }
+
+    .theme-toggle {
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 120ms ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+    .frame:hover .theme-toggle, .theme-toggle:focus-within { opacity: 1; }
+    @media print { .theme-toggle { display: none; } }
+    .theme-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .theme-toggle .track {
+      width: 28px;
+      height: 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(var(--ink-rgb), 0.30);
+      background: rgba(var(--ink-rgb), 0.05);
+      position: relative;
+      transition: background 120ms ease;
+    }
+    .theme-toggle .track::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-muted);
+      transition: transform 120ms ease;
+    }
+    .theme-toggle input:checked + .track { background: rgba(var(--accent-rgb), 0.15); border-color: var(--accent); }
+    .theme-toggle input:checked + .track::after { transform: translateX(12px); background: var(--accent); }
+    .theme-toggle input:focus-visible + .track { outline: 2px solid var(--link); outline-offset: 2px; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .eyebrow-url { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--link); }
+    .eyebrow-url::before { content: "/"; color: var(--soft); margin: 0 0.6em 0 0.4em; }
+
+    h1 {
+      font-family: var(--font-title);
+      font-size: 1.375rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      font-family: var(--font-title);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    svg { width: 100%; min-width: 872px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <span id="dark" hidden></span>
+    <label class="theme-toggle"><input type="checkbox" id="theme"><span class="track"></span><span>Dark</span></label>
+    <p class="eyebrow">Architecture<span class="eyebrow-url">fluxoperator.dev</span></p>
+    <h1>Gitless GitOps with Flux Operator</h1>
+    <p class="subtitle">From a Git push to a signed artifact deployed by ResourceSets</p>
+
+    <svg viewBox="16 56 872 548" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Gitless GitOps with Flux Operator" aria-describedby="flux-operator-gitless-desc">
+      <desc id="flux-operator-gitless-desc">Architecture diagram of the Gitless GitOps flow. A developer pushes to the Git repository, which triggers the CI pipeline to publish and sign an OCI artifact in the container registry with flux push and cosign. Inside the Kubernetes cluster, a ResourceSetInputProvider of type OCIArtifactTag scans the registry for new tags and exports them as inputs, a ResourceSet renders its templates for the new tag and digest, and the Flux Operator reconciles it by generating an OCIRepository together with a HelmRelease or Kustomization. The Flux controllers pull and verify the signed artifact from the registry and apply the application.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--muted)"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--accent)"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--link)"/></marker>
+      </defs>
+
+      <rect x="0" y="0" width="904" height="620" fill="var(--paper)"/>
+
+      <!-- ===== Zones (painted first) ===== -->
+      <!-- Zone A: Source and CI -->
+      <rect x="256" y="72" width="408" height="112" rx="8"
+            fill="rgba(var(--ink-rgb),0.02)" stroke="rgba(var(--ink-rgb),0.10)" stroke-width="0.8"/>
+      <rect x="420" y="76" width="80" height="12" rx="2" fill="var(--paper)"/>
+      <text x="460" y="85" fill="rgba(var(--ink-rgb),0.40)" font-size="7" font-family="'Geist Mono', monospace"
+            text-anchor="middle" letter-spacing="0.14em">SOURCE AND CI</text>
+
+      <!-- Zone B: Kubernetes cluster -->
+      <rect x="32" y="216" width="856" height="324" rx="8"
+            fill="rgba(var(--ink-rgb),0.02)" stroke="rgba(var(--ink-rgb),0.10)" stroke-width="0.8"/>
+      <rect x="52" y="220" width="104" height="12" rx="2" fill="var(--paper)"/>
+      <text x="104" y="229" fill="rgba(var(--ink-rgb),0.40)" font-size="7" font-family="'Geist Mono', monospace"
+            text-anchor="middle" letter-spacing="0.14em">KUBERNETES CLUSTER</text>
+
+      <!-- ===== Arrows (behind boxes) ===== -->
+      <!-- A1 Developer -> Git repository (HTTP/S) -->
+      <line x1="200" y1="136" x2="272" y2="136" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A2 Git repository -> CI pipeline (HTTP/S) -->
+      <line x1="424" y1="136" x2="496" y2="136" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A3 CI pipeline -> Container registry (HTTP/S) -->
+      <line x1="648" y1="136" x2="720" y2="136" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A4 Container registry -> Input provider (exit bottom at x=736, run left between rows, enter top at x=124) (HTTP/S) -->
+      <path d="M 736,168 V 192 Q 736,200 728,200 H 132 Q 124,200 124,208 V 248"
+            fill="none" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A5 Container registry -> Flux controllers (HTTP/S) -->
+      <line x1="796" y1="168" x2="796" y2="248" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A6 Input provider -> ResourceSet -->
+      <line x1="200" y1="280" x2="272" y2="280" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A7 ResourceSet -> Flux Operator -->
+      <line x1="424" y1="280" x2="496" y2="280" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A8 Flux Operator -> Flux controllers -->
+      <line x1="648" y1="280" x2="720" y2="280" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A9 Flux controllers -> Application -->
+      <line x1="796" y1="404" x2="796" y2="460" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+      <!-- ===== Arrow labels (masked, 8px above the stroke or beside vertical segments) ===== -->
+      <rect x="210" y="116" width="52" height="12" rx="2" fill="var(--paper)"/>
+      <text x="236" y="125" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">GIT PUSH</text>
+
+      <rect x="436" y="116" width="48" height="12" rx="2" fill="var(--paper)"/>
+      <text x="460" y="125" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">TRIGGER</text>
+
+      <rect x="656" y="116" width="56" height="12" rx="2" fill="var(--paper)"/>
+      <text x="684" y="125" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">FLUX PUSH</text>
+
+      <rect x="412" y="180" width="36" height="12" rx="2" fill="var(--paper)"/>
+      <text x="430" y="189" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SCAN</text>
+
+      <rect x="708" y="224" width="80" height="12" rx="2" fill="var(--paper)"/>
+      <text x="712" y="233" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="start" letter-spacing="0.08em">PULL · VERIFY</text>
+
+      <rect x="214" y="260" width="44" height="12" rx="2" fill="var(--paper)"/>
+      <text x="236" y="269" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">INPUTS</text>
+
+      <rect x="428" y="260" width="64" height="12" rx="2" fill="var(--paper)"/>
+      <text x="460" y="269" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">RECONCILE</text>
+
+      <rect x="654" y="260" width="60" height="12" rx="2" fill="var(--paper)"/>
+      <text x="684" y="269" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">GENERATE</text>
+
+      <rect x="804" y="420" width="40" height="12" rx="2" fill="var(--paper)"/>
+      <text x="808" y="429" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="start" letter-spacing="0.08em">APPLY</text>
+
+      <!-- ===== Nodes ===== -->
+      <!-- N1: Developer (actor) -->
+      <rect x="48" y="104" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="48" y="104" width="152" height="64" rx="6" fill="rgba(var(--muted-rgb),0.10)" stroke="var(--soft)" stroke-width="1"/>
+      <g transform="translate(56,112) scale(0.6667)" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/></g>
+      <text x="124" y="140" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Developers</text>
+      <text x="124" y="156" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">commits · pull requests</text>
+
+      <!-- N2: Git repository (external) -->
+      <rect x="272" y="104" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="272" y="104" width="152" height="64" rx="6" fill="rgba(var(--ink-rgb),0.03)" stroke="rgba(var(--ink-rgb),0.30)" stroke-width="1"/>
+      <rect x="280" y="112" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--ink-rgb),0.22)" stroke-width="0.8"/>
+      <text x="294" y="121" fill="var(--soft)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">GIT</text>
+      <text x="348" y="140" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Git repository</text>
+      <text x="348" y="156" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">source of truth</text>
+
+      <!-- N3: CI pipeline (external) -->
+      <rect x="496" y="104" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="496" y="104" width="152" height="64" rx="6" fill="rgba(var(--ink-rgb),0.03)" stroke="rgba(var(--ink-rgb),0.30)" stroke-width="1"/>
+      <rect x="504" y="112" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--ink-rgb),0.22)" stroke-width="0.8"/>
+      <text x="518" y="121" fill="var(--soft)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CI</text>
+      <text x="572" y="140" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">CI pipeline</text>
+      <text x="572" y="156" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">flux push · cosign sign</text>
+
+      <!-- N4: Container registry (external) -->
+      <rect x="720" y="104" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="720" y="104" width="152" height="64" rx="6" fill="rgba(var(--ink-rgb),0.03)" stroke="rgba(var(--ink-rgb),0.30)" stroke-width="1"/>
+      <rect x="728" y="112" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--ink-rgb),0.22)" stroke-width="0.8"/>
+      <text x="742" y="121" fill="var(--soft)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">OCI</text>
+      <text x="796" y="140" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Container registry</text>
+      <text x="796" y="156" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">signed OCI artifacts</text>
+
+      <!-- N5: Input provider (custom resource) -->
+      <rect x="48" y="248" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="48" y="248" width="152" height="64" rx="6" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <rect x="56" y="256" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--muted-rgb),0.50)" stroke-width="0.8"/>
+      <text x="70" y="265" fill="var(--muted)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CR</text>
+      <text x="124" y="284" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Input provider</text>
+      <text x="124" y="300" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">OCIArtifactTag · semver</text>
+
+      <!-- N6: ResourceSet (custom resource) -->
+      <rect x="272" y="248" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="272" y="248" width="152" height="64" rx="6" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <rect x="280" y="256" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--muted-rgb),0.50)" stroke-width="0.8"/>
+      <text x="294" y="265" fill="var(--muted)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CR</text>
+      <text x="348" y="284" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">ResourceSet</text>
+      <text x="348" y="300" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">&lt;&lt; inputs.tag &gt;&gt; templates</text>
+
+      <!-- N7: Flux Operator (focal) -->
+      <rect x="496" y="248" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="496" y="248" width="152" height="64" rx="6" fill="rgba(var(--accent-rgb),0.08)" stroke="var(--accent)" stroke-width="1"/>
+      <rect x="504" y="256" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--accent-rgb),0.50)" stroke-width="0.8"/>
+      <text x="518" y="265" fill="var(--accent)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CTRL</text>
+      <text x="572" y="284" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Flux Operator</text>
+      <text x="572" y="300" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">render · apply · prune</text>
+
+      <!-- N8: Flux controllers with the generated objects they reconcile -->
+      <rect x="720" y="248" width="152" height="156" rx="6" fill="var(--paper)"/>
+      <rect x="720" y="248" width="152" height="156" rx="6" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1"/>
+      <rect x="728" y="256" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--ink-rgb),0.40)" stroke-width="0.8"/>
+      <text x="742" y="265" fill="var(--ink)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CTRL</text>
+      <text x="796" y="284" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Flux controllers</text>
+      <text x="796" y="300" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">GitOps Toolkit</text>
+      <line x1="720" y1="308" x2="872" y2="308" stroke="rgba(var(--muted-rgb),0.30)" stroke-width="0.8"/>
+      <text x="732" y="328" fill="var(--ink)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="start">OCIRepository</text>
+      <text x="860" y="328" fill="var(--muted)" font-size="9" font-family="'Geist', sans-serif" text-anchor="end">source</text>
+      <line x1="720" y1="340" x2="872" y2="340" stroke="rgba(var(--muted-rgb),0.30)" stroke-width="0.8"/>
+      <text x="732" y="360" fill="var(--ink)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="start">HelmRelease</text>
+      <text x="860" y="360" fill="var(--muted)" font-size="9" font-family="'Geist', sans-serif" text-anchor="end">helm</text>
+      <line x1="720" y1="372" x2="872" y2="372" stroke="rgba(var(--muted-rgb),0.30)" stroke-width="0.8"/>
+      <text x="732" y="392" fill="var(--ink)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="start">Kustomization</text>
+      <text x="860" y="392" fill="var(--muted)" font-size="9" font-family="'Geist', sans-serif" text-anchor="end">kustomize</text>
+
+      <!-- N9: Application -->
+      <rect x="48" y="460" width="824" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="48" y="460" width="824" height="64" rx="6" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <rect x="56" y="468" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--muted-rgb),0.50)" stroke-width="0.8"/>
+      <text x="70" y="477" fill="var(--muted)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">K8S</text>
+      <text x="460" y="496" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Application</text>
+      <text x="460" y="512" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">tenant namespace · workloads · services · ingress · config</text>
+
+      <!-- ===== Legend strip ===== -->
+      <line x1="48" y1="564" x2="872" y2="564" stroke="rgba(var(--ink-rgb),0.10)" stroke-width="0.8"/>
+      <text x="48" y="580" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+      <rect x="48" y="592" width="14" height="10" rx="2" fill="rgba(var(--accent-rgb),0.08)" stroke="var(--accent)" stroke-width="1"/>
+      <text x="68" y="600" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Operator</text>
+
+      <rect x="152" y="592" width="14" height="10" rx="2" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1"/>
+      <text x="172" y="600" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Flux controller</text>
+
+      <rect x="288" y="592" width="14" height="10" rx="2" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <text x="308" y="600" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Kubernetes object</text>
+
+      <rect x="432" y="592" width="14" height="10" rx="2" fill="rgba(var(--ink-rgb),0.03)" stroke="rgba(var(--ink-rgb),0.30)" stroke-width="1"/>
+      <text x="452" y="600" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">External</text>
+
+      <rect x="536" y="592" width="14" height="10" rx="2" fill="rgba(var(--muted-rgb),0.10)" stroke="var(--soft)" stroke-width="1"/>
+      <text x="556" y="600" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Actor</text>
+
+      <line x1="628" y1="598" x2="656" y2="598" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <text x="664" y="600" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Reconciliation</text>
+
+      <line x1="776" y1="598" x2="804" y2="598" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <text x="812" y="600" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">HTTP/S</text>
+    </svg>
+  </div>
+</body>
+</html>

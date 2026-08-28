@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flux Operator · Components</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600&family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --paper:      #f5f5f5;
+      --paper-2:    #ffffff;
+      --ink:        #2d3142;
+      --ink-rgb:    45,49,66;
+      --muted:      #4f5d75;
+      --muted-rgb:  79,93,117;
+      --soft:       #7a8399;
+      --accent:     #eb6c36;
+      --accent-rgb: 235,108,54;
+      --link:       #2e5aa8;
+      --color-paper:  var(--paper);
+      --color-ink:    var(--ink);
+      --color-muted:  var(--muted);
+      --color-accent: var(--accent);
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-title:    'Inter', system-ui, sans-serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace;
+    }
+    :root:has(#theme:checked),
+    :root:has(#dark:target) {
+      --paper:      #2d3142;
+      --paper-2:    #393e53;
+      --ink:        #f5f5f5;
+      --ink-rgb:    245,245,245;
+      --muted:      #bfc0c0;
+      --muted-rgb:  191,192,192;
+      --soft:       #8e98ac;
+      --accent:     #f08a59;
+      --accent-rgb: 240,138,89;
+      --link:       #6a95d8;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-paper);
+      color: var(--color-ink);
+      display: flex;
+      justify-content: center;
+      padding: 1.25rem 1.5rem 1rem;
+    }
+
+    .frame { width: 100%; max-width: 1080px; position: relative; }
+
+    .theme-toggle {
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0;
+      transition: opacity 120ms ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+    }
+    .frame:hover .theme-toggle, .theme-toggle:focus-within { opacity: 1; }
+    @media print { .theme-toggle { display: none; } }
+    .theme-toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
+    .theme-toggle .track {
+      width: 28px;
+      height: 16px;
+      border-radius: 8px;
+      border: 1px solid rgba(var(--ink-rgb), 0.30);
+      background: rgba(var(--ink-rgb), 0.05);
+      position: relative;
+      transition: background 120ms ease;
+    }
+    .theme-toggle .track::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-muted);
+      transition: transform 120ms ease;
+    }
+    .theme-toggle input:checked + .track { background: rgba(var(--accent-rgb), 0.15); border-color: var(--accent); }
+    .theme-toggle input:checked + .track::after { transform: translateX(12px); background: var(--accent); }
+    .theme-toggle input:focus-visible + .track { outline: 2px solid var(--link); outline-offset: 2px; }
+
+    .eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.66rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .eyebrow-url { text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--link); }
+    .eyebrow-url::before { content: "/"; color: var(--soft); margin: 0 0.6em 0 0.4em; }
+
+    h1 {
+      font-family: var(--font-title);
+      font-size: 1.375rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      color: var(--color-ink);
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      font-family: var(--font-title);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      color: var(--color-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    svg { width: 100%; min-width: 872px; display: block; }
+  </style>
+</head>
+<body>
+  <div class="frame">
+    <span id="dark" hidden></span>
+    <label class="theme-toggle"><input type="checkbox" id="theme"><span class="track"></span><span>Dark</span></label>
+    <p class="eyebrow">Architecture<span class="eyebrow-url">fluxoperator.dev</span></p>
+    <h1>Flux Operator components</h1>
+    <p class="subtitle">The operator, its APIs, the Web UI, the CLI and the MCP server</p>
+
+    <svg viewBox="16 56 872 492" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Flux Operator components" aria-describedby="flux-operator-components-desc">
+      <desc id="flux-operator-components-desc">Architecture diagram of the Flux Operator project. The Flux Operator CLI and the Flux MCP Server connect to the Kubernetes API through a kubeconfig. The Kubernetes API holds the operator custom resources: FluxInstance, FluxReport, ResourceSet and ResourceSetInputProvider, together with the Flux CRDs. The Flux Operator reconciles these resources, deploys the Flux controllers, serves the Web UI on port 9080 to the platform team through OIDC single sign-on, and exposes Prometheus metrics on port 8080.</desc>
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--muted)"/></marker>
+        <marker id="arrow-accent" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--accent)"/></marker>
+        <marker id="arrow-link" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="var(--link)"/></marker>
+      </defs>
+
+      <rect x="0" y="0" width="904" height="564" fill="var(--paper)"/>
+
+      <!-- ===== Zones (painted first) ===== -->
+      <!-- Zone A: Client tools -->
+      <rect x="32" y="72" width="184" height="208" rx="8"
+            fill="rgba(var(--ink-rgb),0.02)" stroke="rgba(var(--ink-rgb),0.10)" stroke-width="0.8"/>
+      <rect x="88" y="76" width="72" height="12" rx="2" fill="var(--paper)"/>
+      <text x="124" y="85" fill="rgba(var(--ink-rgb),0.40)" font-size="7" font-family="'Geist Mono', monospace"
+            text-anchor="middle" letter-spacing="0.14em">CLIENT TOOLS</text>
+
+      <!-- Zone B: Kubernetes cluster -->
+      <rect x="256" y="72" width="408" height="412" rx="8"
+            fill="rgba(var(--ink-rgb),0.02)" stroke="rgba(var(--ink-rgb),0.10)" stroke-width="0.8"/>
+      <rect x="276" y="76" width="104" height="12" rx="2" fill="var(--paper)"/>
+      <text x="328" y="85" fill="rgba(var(--ink-rgb),0.40)" font-size="7" font-family="'Geist Mono', monospace"
+            text-anchor="middle" letter-spacing="0.14em">KUBERNETES CLUSTER</text>
+
+      <!-- ===== Arrows (behind boxes) ===== -->
+      <!-- A1 CLI -> Kubernetes API (HTTP/S) -->
+      <line x1="200" y1="136" x2="272" y2="136" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A2 MCP server -> Kubernetes API (HTTP/S) -->
+      <line x1="200" y1="232" x2="272" y2="232" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A3 Kubernetes API -> Flux Operator (reconcilers row) -->
+      <line x1="424" y1="192" x2="496" y2="192" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A4 Flux Operator -> Flux controllers -->
+      <line x1="572" y1="332" x2="572" y2="404" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <!-- A5 Flux Operator (Web UI row) -> Platform team (HTTP/S) -->
+      <line x1="648" y1="248" x2="720" y2="248" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <!-- A6 Flux Operator (metrics row) -> Prometheus (HTTP/S) -->
+      <line x1="648" y1="304" x2="720" y2="304" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+
+      <!-- ===== Arrow labels (masked, 8px above the stroke or beside vertical segments) ===== -->
+      <rect x="206" y="116" width="60" height="12" rx="2" fill="var(--paper)"/>
+      <text x="236" y="125" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">KUBECONFIG</text>
+
+      <rect x="206" y="212" width="60" height="12" rx="2" fill="var(--paper)"/>
+      <text x="236" y="221" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">KUBECONFIG</text>
+
+      <rect x="428" y="172" width="64" height="12" rx="2" fill="var(--paper)"/>
+      <text x="460" y="181" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">RECONCILE</text>
+
+      <rect x="580" y="356" width="40" height="12" rx="2" fill="var(--paper)"/>
+      <text x="584" y="365" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="start" letter-spacing="0.08em">DEPLOY</text>
+
+      <rect x="658" y="228" width="52" height="12" rx="2" fill="var(--paper)"/>
+      <text x="684" y="237" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">OIDC SSO</text>
+
+      <rect x="662" y="284" width="44" height="12" rx="2" fill="var(--paper)"/>
+      <text x="684" y="293" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SCRAPE</text>
+
+      <!-- ===== Nodes ===== -->
+      <!-- N1: Flux Operator CLI (client) -->
+      <rect x="48" y="104" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="48" y="104" width="152" height="64" rx="6" fill="rgba(var(--muted-rgb),0.10)" stroke="var(--soft)" stroke-width="1"/>
+      <g transform="translate(56,112) scale(0.6667)" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7l5 5l-5 5"/><path d="M12 19l7 0"/></g>
+      <text x="124" y="140" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Flux Operator CLI</text>
+      <text x="124" y="156" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">build · trace · install</text>
+
+      <!-- N2: Flux MCP Server (client) -->
+      <rect x="48" y="200" width="152" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="48" y="200" width="152" height="64" rx="6" fill="rgba(var(--muted-rgb),0.10)" stroke="var(--soft)" stroke-width="1"/>
+      <g transform="translate(56,208) scale(0.6667)" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v4a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2l0 -4"/><path d="M12 2v2"/><path d="M9 12v9"/><path d="M15 12v9"/><path d="M5 16l4 -2"/><path d="M15 14l4 2"/><path d="M9 18h6"/><path d="M10 8v.01"/><path d="M14 8v.01"/></g>
+      <text x="124" y="236" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Flux MCP Server</text>
+      <text x="124" y="252" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">stdio · http · read-only</text>
+
+      <!-- N3: Kubernetes API with the operator CRDs -->
+      <rect x="272" y="104" width="152" height="228" rx="6" fill="var(--paper)"/>
+      <rect x="272" y="104" width="152" height="228" rx="6" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <rect x="280" y="112" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--muted-rgb),0.50)" stroke-width="0.8"/>
+      <text x="294" y="121" fill="var(--muted)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">K8S</text>
+      <text x="348" y="140" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Kubernetes API</text>
+      <text x="348" y="156" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">fluxcd.controlplane.io</text>
+      <line x1="272" y1="164" x2="424" y2="164" stroke="rgba(var(--muted-rgb),0.30)" stroke-width="0.8"/>
+      <g fill="var(--ink)" font-size="8" font-family="'Geist Mono', monospace" xml:space="preserve">
+        <text x="284" y="188">fluxinstances</text>
+        <text x="284" y="216">fluxreports</text>
+        <text x="284" y="244">resourcesets</text>
+        <text x="284" y="272">resourcesetinputproviders</text>
+        <text x="284" y="300">+ toolkit.fluxcd.io CRDs</text>
+      </g>
+
+      <!-- N4: Flux Operator (focal) with three surface rows -->
+      <rect x="496" y="104" width="152" height="228" rx="6" fill="var(--paper)"/>
+      <rect x="496" y="104" width="152" height="228" rx="6" fill="rgba(var(--accent-rgb),0.08)" stroke="var(--accent)" stroke-width="1"/>
+      <rect x="504" y="112" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--accent-rgb),0.50)" stroke-width="0.8"/>
+      <text x="518" y="121" fill="var(--accent)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CTRL</text>
+      <text x="572" y="140" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Flux Operator</text>
+      <text x="572" y="156" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">flux-system namespace</text>
+      <line x1="496" y1="164" x2="648" y2="164" stroke="rgba(var(--accent-rgb),0.30)" stroke-width="0.8"/>
+      <text x="508" y="196" fill="var(--ink)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="start">CRDs</text>
+      <text x="636" y="196" fill="var(--muted)" font-size="9" font-family="'Geist', sans-serif" text-anchor="end">reconcilers</text>
+      <line x1="496" y1="220" x2="648" y2="220" stroke="rgba(var(--accent-rgb),0.30)" stroke-width="0.8"/>
+      <text x="508" y="252" fill="var(--ink)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="start">:9080</text>
+      <text x="636" y="252" fill="var(--muted)" font-size="9" font-family="'Geist', sans-serif" text-anchor="end">Web UI</text>
+      <line x1="496" y1="276" x2="648" y2="276" stroke="rgba(var(--accent-rgb),0.30)" stroke-width="0.8"/>
+      <text x="508" y="308" fill="var(--ink)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="start">:8080</text>
+      <text x="636" y="308" fill="var(--muted)" font-size="9" font-family="'Geist', sans-serif" text-anchor="end">metrics</text>
+
+      <!-- N5: Flux controllers -->
+      <rect x="272" y="404" width="376" height="64" rx="6" fill="var(--paper)"/>
+      <rect x="272" y="404" width="376" height="64" rx="6" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1"/>
+      <rect x="280" y="412" width="28" height="12" rx="2" fill="transparent" stroke="rgba(var(--ink-rgb),0.40)" stroke-width="0.8"/>
+      <text x="294" y="421" fill="var(--ink)" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">CTRL</text>
+      <text x="460" y="440" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Flux controllers</text>
+      <text x="460" y="456" fill="var(--muted)" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">source · kustomize · helm · notification · image automation</text>
+
+      <!-- N6: Platform team (client, browser) -->
+      <rect x="720" y="232" width="152" height="32" rx="6" fill="var(--paper)"/>
+      <rect x="720" y="232" width="152" height="32" rx="6" fill="rgba(var(--muted-rgb),0.10)" stroke="var(--soft)" stroke-width="1"/>
+      <g transform="translate(728,240) scale(0.6667)" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"/><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0 -3 -3.85"/></g>
+      <text x="756" y="252" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">Platform team</text>
+
+      <!-- N7: Prometheus (client) -->
+      <rect x="720" y="288" width="152" height="32" rx="6" fill="var(--paper)"/>
+      <rect x="720" y="288" width="152" height="32" rx="6" fill="rgba(var(--muted-rgb),0.10)" stroke="var(--soft)" stroke-width="1"/>
+      <g transform="translate(728,296) scale(0.6667)" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M20 18v3"/><path d="M16 16v5"/><path d="M12 13v8"/><path d="M8 16v5"/><path d="M3 11c6 0 5 -5 9 -5s3 5 9 5"/></g>
+      <text x="756" y="308" fill="var(--ink)" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="start">Prometheus</text>
+
+      <!-- ===== Legend strip ===== -->
+      <line x1="48" y1="508" x2="872" y2="508" stroke="rgba(var(--ink-rgb),0.10)" stroke-width="0.8"/>
+      <text x="48" y="524" fill="var(--muted)" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+
+      <rect x="48" y="536" width="14" height="10" rx="2" fill="rgba(var(--accent-rgb),0.08)" stroke="var(--accent)" stroke-width="1"/>
+      <text x="68" y="544" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Operator</text>
+
+      <rect x="152" y="536" width="14" height="10" rx="2" fill="var(--paper-2)" stroke="var(--ink)" stroke-width="1"/>
+      <text x="172" y="544" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Flux controller</text>
+
+      <rect x="288" y="536" width="14" height="10" rx="2" fill="rgba(var(--ink-rgb),0.08)" stroke="rgba(var(--ink-rgb),0.25)" stroke-width="1"/>
+      <text x="308" y="544" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Kubernetes API</text>
+
+      <rect x="424" y="536" width="14" height="10" rx="2" fill="rgba(var(--muted-rgb),0.10)" stroke="var(--soft)" stroke-width="1"/>
+      <text x="444" y="544" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Client</text>
+
+      <line x1="520" y1="542" x2="548" y2="542" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#arrow)"/>
+      <text x="556" y="544" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">Reconciliation</text>
+
+      <line x1="680" y1="542" x2="708" y2="542" stroke="var(--link)" stroke-width="1.2" marker-end="url(#arrow-link)"/>
+      <text x="716" y="544" fill="var(--muted)" font-size="8.5" font-family="'Geist', sans-serif">HTTP/S</text>
+    </svg>
+  </div>
+</body>
+</html>
