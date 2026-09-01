@@ -9,3 +9,4 @@ _site
 bin/node_modules/
 site/dist/
 site/.astro/
+homelab/
