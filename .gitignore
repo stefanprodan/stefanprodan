@@ -10,3 +10,4 @@ bin/node_modules/
 site/dist/
 site/.astro/
 homelab/
+__pycache__/
