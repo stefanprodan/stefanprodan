@@ -32,16 +32,42 @@ failure, pulling just the error excerpt.
 
 The run is in the background and notifies you when it finishes, so don't poll.
 For a mid-run peek, run a bare `tail -n 20 /tmp/kiro-<task>.log` (no `sleep`
-prefix; the harness blocks `sleep N; tail`). A growing log means it is working;
-a flat one only hints it may be stuck, since Kiro buffers its own stdout. If it
-goes silent, wrap the tool in `stdbuf -oL` or a PTY (`script -q /dev/null
-kiro-cli ...`).
+prefix; the harness blocks `sleep N; tail`). If the log stays empty from the
+start, Kiro is buffering its stdout: wrap the tool in `stdbuf -oL` or a PTY
+(`script -q /dev/null kiro-cli ...`).
 
 - For review/research/analysis, state "Do NOT modify any files" in the prompt.
 - The output interleaves tool-activity lines ("Reading file: ...", "Completed
   in 0.1s") with Kiro's response; `sed` strips ANSI codes (the log still holds
   both, so relay only the response), and `-u` runs it unbuffered so each line
   flushes to the log instead of block-buffering.
+
+## Liveness watch
+
+A finished run notifies you; a hung one never does, and a hung Kiro looks
+exactly like a working one. A stalled run once cost an hour while it was
+being reported as working. So right after every launch, arm a Monitor on the
+log that fires when the log has been flat for 8 minutes or kiro-cli is gone:
+
+```shell
+L=/tmp/kiro-<task>.log; while true; do
+  if ! pgrep -f kiro-cli >/dev/null; then echo "kiro-cli exited; log $(wc -l <"$L") lines"; exit 0; fi
+  age=$(( $(date +%s) - $(stat -f %m "$L") ))
+  if [ "$age" -ge 480 ]; then echo "STALL: log flat for ${age}s"; exit 0; fi
+  sleep 20
+done
+```
+
+- Pass it to the Monitor tool with `timeout_ms: 1800000` (the maximum). When
+  the monitor expires and the run is still going, re-arm it.
+- Judge liveness by the log's mtime against `date`, never by its tail: the
+  last lines of a stalled log read like work in progress.
+- With parallel runs, arm one monitor per log. `pgrep -f kiro-cli` sees any
+  of them, so the exit line is only reliable for the last run standing; the
+  stall check is per log and always holds.
+- On STALL: `pkill -9 -f kiro-cli` (a plain kill leaves a child that keeps
+  editing files; with parallel runs it ends all of them), say so, then take
+  the task over or re-dispatch it. Do not wait for it to recover.
 
 ## Composing the task prompt
 
