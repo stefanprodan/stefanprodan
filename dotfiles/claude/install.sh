@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Symlink the Claude Code config tracked in this repo into ~/.claude/ so the CLI
-# discovers it: skills, the status line script, and hook scripts.
+# discovers it: skills and the status line script.
 # Safe to re-run (idempotent).
 #
 # NOTE: this does NOT manage ~/.claude/settings.json (which references these
@@ -29,7 +29,6 @@ for skill_dir in "$SRC"/skills/*/; do
   link "skills/$(basename "$skill_dir")" "$DEST/skills/$(basename "$skill_dir")"
 done
 
-# Status line + hooks
-chmod +x "$SRC"/status/*.sh "$SRC"/hooks/*.sh
+# Status line
+chmod +x "$SRC"/status/*.sh
 link "status/statusline.sh" "$DEST/status/statusline.sh"
-link "hooks/load-agents-md.sh" "$DEST/hooks/load-agents-md.sh"

@@ -10,8 +10,6 @@ config, symlinked into `~/.claude/` so the CLI discovers it.
   - **copilot** — delegate a task to GitHub Copilot CLI.
   - **gemini** — delegate a task to Gemini CLI.
 - `status/statusline.sh` — status line: `⎇ branch | model | ctx%` (or `▸ dir` when not in a git repo).
-- `hooks/load-agents-md.sh` — SessionStart hook: if a repo has `AGENTS.md` but
-  no `CLAUDE.md`, tell Claude to read and follow `AGENTS.md`.
 
 ## Install
 
@@ -57,19 +55,6 @@ it (plugin toggles, `/config`), so it stays a real file. It only needs to
   "statusLine": {
     "type": "command",
     "command": "bash \"$HOME/.claude/status/statusline.sh\""
-  },
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$HOME/.claude/hooks/load-agents-md.sh\"",
-            "statusMessage": "Loading AGENTS.md"
-          }
-        ]
-      }
-    ]
   }
 }
 ```
