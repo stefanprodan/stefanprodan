@@ -6,9 +6,7 @@ config, symlinked into `~/.claude/` so the CLI discovers it.
 ## Contents
 
 - `skills/` — custom skills (each a directory with a `SKILL.md`):
-  - **kiro** — delegate a task to Kiro CLI.
-  - **copilot** — delegate a task to GitHub Copilot CLI.
-  - **gemini** — delegate a task to Gemini CLI.
+  - **delegate** — delegate a task to OpenCode (default), Kiro or Copilot CLI.
 - `status/statusline.sh` — status line: `⎇ branch | model | ctx%` (or `▸ dir` when not in a git repo).
 
 ## Install
