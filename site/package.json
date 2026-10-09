@@ -19,6 +19,6 @@
     "satteri": "0.10.5"
   },
   "devDependencies": {
-    "wrangler": "4.146.0"
+    "wrangler": "4.149.0"
   }
 }
