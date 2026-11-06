@@ -12,13 +12,13 @@
     "check": "astro build"
   },
   "dependencies": {
-    "@astrojs/markdown-satteri": "0.4.5",
+    "@astrojs/markdown-satteri": "0.4.6",
     "@astrojs/rss": "4.0.19",
     "@astrojs/sitemap": "3.7.4",
-    "astro": "7.4.2",
-    "satteri": "0.10.5"
+    "astro": "7.4.4",
+    "satteri": "0.11.6"
   },
   "devDependencies": {
-    "wrangler": "4.152.0"
+    "wrangler": "4.156.0"
   }
 }
