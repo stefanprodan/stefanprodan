@@ -1,9 +1,10 @@
 ---
 name: delegate
 description: >
-  Delegate a task to another coding agent CLI (OpenCode with GPT-6.1 Sol by
-  default, Kiro with GPT-5.6 Sol, or GitHub Copilot with GPT-6 Astra) by
-  running it directly from the main conversation. Use whenever the user says
+  Delegate a task to another coding agent CLI (OpenCode with GPT-6 Astra by
+  default or GPT-6.1 Sol, Kiro with GPT-5.6 Sol, or GitHub Copilot with
+  GPT-6 Astra) by running it directly from the main conversation. Use
+  whenever the user says
   /delegate, names a tool or model ("use opencode", "ask kiro", "use copilot",
   "review with Sol", "ask Astra"), or wants a second opinion, review, research
   pass, or fix from another model. Several tools can run in parallel for
@@ -21,9 +22,10 @@ prompt, the tool does the work, you verify and relay.
 
 | User says | Tool | Model |
 |---|---|---|
-| nothing specific, "Sol", "6.1 Sol", "opencode" | OpenCode (default) | `azure/gpt-6.1-sol#high` |
+| nothing specific, "Astra", "GPT-6", "opencode" | OpenCode (default) | `azure/gpt-6-astra#medium` |
+| "Sol", "6.1 Sol" | OpenCode | `azure/gpt-6.1-sol#high` |
 | "kiro", "5.6 Sol" | Kiro | `gpt-5.6-sol`, effort high |
-| "copilot", "Astra", "GPT-6" | Copilot | `gpt-6-astra`, effort high |
+| "copilot" | Copilot | `gpt-6-astra`, effort medium |
 
 When the user names several ("have Astra and Sol both review"), run each in
 parallel (see Parallel tasks) and present the findings side by side, noting
@@ -54,12 +56,13 @@ prompt runs as shell).
 **OpenCode**
 
 ```shell
-set -o pipefail; { D=$(mktemp -d) && jq 'del(.mcp)' ~/.config/opencode/opencode.jsonc > "$D/opencode.jsonc" && cd -- "<working directory>" && OPENCODE_CONFIG_DIR="$D" timeout --verbose -s KILL 45m opencode run --standalone --auto --title "<task>" -m 'azure/gpt-6.1-sol#high' "$(cat <<'PROMPT_EOF'
+set -o pipefail; { D=$(mktemp -d) && jq 'del(.mcp)' ~/.config/opencode/opencode.jsonc > "$D/opencode.jsonc" && cd -- "<working directory>" && OPENCODE_CONFIG_DIR="$D" timeout --verbose -s KILL 45m opencode run --standalone --auto --title "<task>" -m '<model>' "$(cat <<'PROMPT_EOF'
 <task prompt>
 PROMPT_EOF
 )" < /dev/null; rc=$?; rm -rf "$D"; exit $rc; } 2>&1 | sed -u 's/\x1b\[[0-9;?]*[a-zA-Z]//g' > "/tmp/opencode-<task>-<n>.log"
 ```
 
+- `<model>` is the OpenCode row's model from the table above.
 - MCP servers are disabled: `OPENCODE_CONFIG_DIR` points at a temporary copy
   of the config without the `mcp` block (there is no CLI flag for it), removed
   when the run ends. Credentials live outside the config dir, so auth is
@@ -90,7 +93,7 @@ PROMPT_EOF
 **Copilot**
 
 ```shell
-timeout --verbose -s KILL 45m copilot -C "<working directory>" --model gpt-6-astra --reasoning-effort high --allow-all --silent --no-color --log-level none -p "$(cat <<'PROMPT_EOF'
+timeout --verbose -s KILL 45m copilot -C "<working directory>" --model gpt-6-astra --reasoning-effort medium --allow-all --silent --no-color --log-level none -p "$(cat <<'PROMPT_EOF'
 <task prompt>
 PROMPT_EOF
 )" < /dev/null > "/tmp/copilot-<task>-<n>.log" 2>&1
