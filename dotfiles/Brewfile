@@ -1,5 +1,6 @@
 # Terminal
 cask "ghostty"
+cask "font-jetbrains-mono-nerd-font"
 brew "bash"
 brew "bash-completion@2"
 brew "shellcheck"
