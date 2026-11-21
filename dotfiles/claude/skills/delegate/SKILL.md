@@ -1,9 +1,9 @@
 ---
 name: delegate
 description: >
-  Delegate a task to another coding agent CLI (OpenCode with GPT-6 Astra by
+  Delegate a task to another coding agent CLI (OpenCode with GPT-6.2 Astra by
   default or GPT-6.1 Sol, Kiro with GPT-5.6 Sol, or GitHub Copilot with
-  GPT-6 Astra) by running it directly from the main conversation. Use
+  GPT-6.2 Astra) by running it directly from the main conversation. Use
   whenever the user says
   /delegate, names a tool or model ("use opencode", "ask kiro", "use copilot",
   "review with Sol", "ask Astra"), or wants a second opinion, review, research
@@ -22,10 +22,10 @@ prompt, the tool does the work, you verify and relay.
 
 | User says | Tool | Model |
 |---|---|---|
-| nothing specific, "Astra", "GPT-6", "opencode" | OpenCode (default) | `azure/gpt-6-astra#medium` |
+| nothing specific, "Astra", "GPT-6", "opencode" | OpenCode (default) | `azure/gpt-6.2-astra#medium` |
 | "Sol", "6.1 Sol" | OpenCode | `azure/gpt-6.1-sol#high` |
 | "kiro", "5.6 Sol" | Kiro | `gpt-5.6-sol`, effort high |
-| "copilot" | Copilot | `gpt-6-astra`, effort medium |
+| "copilot" | Copilot | `gpt-6.2-astra`, effort medium |
 
 When the user names several ("have Astra and Sol both review"), run each in
 parallel (see Parallel tasks) and present the findings side by side, noting
@@ -93,7 +93,7 @@ PROMPT_EOF
 **Copilot**
 
 ```shell
-timeout --verbose -s KILL 45m copilot -C "<working directory>" --model gpt-6-astra --reasoning-effort medium --allow-all --silent --no-color --log-level none -p "$(cat <<'PROMPT_EOF'
+timeout --verbose -s KILL 45m copilot -C "<working directory>" --model gpt-6.2-astra --reasoning-effort medium --allow-all --silent --no-color --log-level none -p "$(cat <<'PROMPT_EOF'
 <task prompt>
 PROMPT_EOF
 )" < /dev/null > "/tmp/copilot-<task>-<n>.log" 2>&1
