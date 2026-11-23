@@ -20,12 +20,14 @@ brew "coreutils"
 brew "gawk"
 brew "gnu-sed"
 brew "gnu-tar"
+brew "findutils"
 brew "grep"
 brew "diffutils"
 brew "gpatch"
 brew "ripgrep"
 brew "jq"
 brew "hey"
+brew "grpcurl"
 brew "pv"
 brew "tokei"
 brew "tree"
@@ -49,6 +51,7 @@ brew "sops"
 brew "step"
 brew "zizmor"
 brew "pinact"
+brew "actionlint"
 
 # Languages
 brew "cue"
@@ -79,7 +82,6 @@ brew "controlplaneio-fluxcd/tap/flux-operator"
 brew "controlplaneio-fluxcd/tap/flux-operator-mcp"
 tap "stefanprodan/tap", trusted: true
 brew "stefanprodan/tap/timoni"
-brew "stefanprodan/tap/cctop"
 
 # OCI
 brew "crane"
@@ -96,8 +98,7 @@ tap "replicatedhq/replicated", trusted: true
 brew "replicatedhq/replicated/cli"
 
 # AI
-brew "gemini-cli"
 cask "copilot-cli"
 brew "ollama"
 tap "anomalyco/tap", trusted: true
-brew "anomalyco/tap/opencode"
+brew "anomalyco/tap/opencode-v2"
