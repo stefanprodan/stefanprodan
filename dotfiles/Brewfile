@@ -44,6 +44,7 @@ brew "cfssl"
 brew "gnupg"
 brew "pinentry-mac"
 brew "trufflehog"
+brew "betterleaks"
 brew "sops"
 brew "step"
 brew "zizmor"
@@ -78,6 +79,7 @@ brew "controlplaneio-fluxcd/tap/flux-operator"
 brew "controlplaneio-fluxcd/tap/flux-operator-mcp"
 tap "stefanprodan/tap", trusted: true
 brew "stefanprodan/tap/timoni"
+brew "stefanprodan/tap/cctop"
 
 # OCI
 brew "crane"
