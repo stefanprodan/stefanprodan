@@ -50,5 +50,9 @@
   "https://speakerdeck.com/stefanprodan/stefanprodan-fluxcon-na-2026": {
     "id": "fe5784e387d2483da65fd717befa953c",
     "title": "GitOps for Humans and Agents"
+  },
+  "https://speakerdeck.com/stefanprodan/stefanprodan-kubecon-na-2026": {
+    "id": "23845c19bc6a468c85845b3ec481aeb4",
+    "title": "GitOps Without You Writing YAML"
   }
 }
