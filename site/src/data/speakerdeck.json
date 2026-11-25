@@ -10,5 +10,6 @@
   "https://speakerdeck.com/stefanprodan/introducing-timoni-next-gen-package-manager-for-kubernetes": { "id": "ec7b9a7c28964ca0986ad81dd441ae95", "title": "Introducing Timoni - Next-Gen Package Manager for Kubernetes" },
   "https://speakerdeck.com/stefanprodan/progressive-delivery-techniques-with-flagger": { "id": "551118f5c3004e5199d00113cd96eba0", "title": "Progressive Delivery Techniques with Flagger" },
   "https://speakerdeck.com/stefanprodan/the-evolution-of-fluxcd": { "id": "6134d8bbd2f943dba509bb1ef79cf322", "title": "The evolution of FluxCD" },
-  "https://speakerdeck.com/stefanprodan/vibe-coding-meets-gitops": { "id": "e396e61eea4047b8af6d96619e884969", "title": "Vibe Coding Meets GitOps" }
+  "https://speakerdeck.com/stefanprodan/vibe-coding-meets-gitops": { "id": "e396e61eea4047b8af6d96619e884969", "title": "Vibe Coding Meets GitOps" },
+  "https://speakerdeck.com/stefanprodan/stefanprodan-fluxcon-na-2026": { "id": "fe5784e387d2483da65fd717befa953c", "title": "GitOps for Humans and Agents" }
 }
